@@ -43,6 +43,8 @@ const BreadIco   = ({ s=24 }) => <Icon size={s} d={<path d="M3 11c0-3.87 4.03-7 
 const GlobeIco   = ({ s=24 }) => <Icon size={s} d={<><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></>} />;
 const BarIco     = ({ s=22 }) => <Icon size={s} d={<><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></>} />;
 const PlusIco    = ({ s=20 }) => <Icon size={s} d={<><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></>} />;
+const ChevLIco   = ({ s=20 }) => <Icon size={s} d={<polyline points="15 18 9 12 15 6"/>} />;
+const ChevRIco   = ({ s=20 }) => <Icon size={s} d={<polyline points="9 18 15 12 9 6"/>} />;
 
 /* ─────────────────────────────────────────────────────────────────
    DATA
@@ -82,10 +84,10 @@ const DATA = {
   },
 
   certs: [
-    { org: "IBM · Cognitive Class", c: "#ffcb05", I: DbIco,    title: "SQL and Relational Databases 101",        url: "https://courses.cognitiveclass.ai/certificates/248159af4c5846d4ab620d5e39948f5e" },
-    { org: "Oracle Cloud",          c: "#00719a", I: CloudIco, title: "OCI 2025 Certified Foundations Associate",  url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=6941EF3CB5EB7C0833D64EF5BF8A257C21D53C11A362E7DD0DAB73518C59AF58" },
-    { org: "Oracle Cloud",          c: "#00719a", I: BarIco,   title: "Oracle Data Platform Foundations Associate", url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=FC6BF38C8A976E45FFE6F233D652B85BF2EF4C7AEBBE068491AA129A001DBC33" },
-    { org: "Oracle Cloud",          c: "#00719a", I: BotIco,   title: "OCI AI Foundations Associate (2025)",       url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=71CC11DCFE431802B2DE719C81F52F2AF2478ABAB7563607DBE6DB72E5B607C0" },
+    { org: "IBM · Cognitive Class", c: "#ffcb05", I: DbIco,    title: "SQL and Relational Databases 101",         url: "https://courses.cognitiveclass.ai/certificates/248159af4c5846d4ab620d5e39948f5e",                                                                                             img: "https://images.credly.com/images/5c8fca38-b0d2-49e5-9ad2-f3f8e79b327f/twitter_thumb_201604_image.png" },
+    { org: "Oracle Cloud",          c: "#00719a", I: CloudIco, title: "OCI 2025 Certified Foundations Associate",  url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=6941EF3CB5EB7C0833D64EF5BF8A257C21D53C11A362E7DD0DAB73518C59AF58", img: "https://brm-workforce.oracle.com/edu/images/oracle-certification-badge_OCI-foundations.png" },
+    { org: "Oracle Cloud",          c: "#00719a", I: BarIco,   title: "Oracle Data Platform Foundations Associate", url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=FC6BF38C8A976E45FFE6F233D652B85BF2EF4C7AEBBE068491AA129A001DBC33", img: "https://brm-workforce.oracle.com/edu/images/oracle-certification-badge_OCI-foundations.png" },
+    { org: "Oracle Cloud",          c: "#00719a", I: BotIco,   title: "OCI AI Foundations Associate (2025)",       url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=71CC11DCFE431802B2DE719C81F52F2AF2478ABAB7563607DBE6DB72E5B607C0", img: "https://brm-workforce.oracle.com/edu/images/oracle-certification-badge_OCI-AI-foundations.png" },
   ],
 
   projects: [
@@ -95,58 +97,60 @@ const DATA = {
 };
 
 /* ─────────────────────────────────────────────────────────────────
-   CSS — Tajmirul-inspired: bold grid lines, stark type, comic energy
+   CSS
 ───────────────────────────────────────────────────────────────── */
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Archivo+Black&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap');
 
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html { scroll-behavior:smooth; }
 html, body { height:100%; -webkit-font-smoothing:antialiased; }
 
 :root {
-  /* Sunny Sea Adventure palette: 00719a / 2dbec0 / 024456 / ffcb05 / fff200 */
-  --bg:#021820;
-  --bg2:#04303c;
-  --bg3:#063e4c;
-  --border:#0d4a59;
-  --border2:#0f5d70;
-  --tx:#5fa0ad;
-  --txh:#f3fdfb;
-  --txm:#7fb9c4;
+  --bg:#ffffff;
+  --bg2:#f5f5f0;
+  --bg3:#ebebе3;
+  --border:#d4d0c8;
+  --border2:#b8b4aa;
+  --tx:#555550;
+  --txh:#111110;
+  --txm:#444440;
   --ac:#ffcb05;
-  --acd:#fff200;
-  --sea:#2dbec0;
-  --sea2:#00719a;
-  --acbg:rgba(255,203,5,.07);
-  --acborder:rgba(255,203,5,.32);
-  --sh:0 4px 40px rgba(0,0,0,.8);
-  --shl:0 20px 60px rgba(0,0,0,.9);
+  --acd:#f0be00;
+  --sea:#222220;
+  --sea2:#333330;
+  --acbg:rgba(255,203,5,.12);
+  --acborder:rgba(0,0,0,.25);
+  --sh:0 4px 24px rgba(0,0,0,.12);
+  --shl:0 12px 40px rgba(0,0,0,.16);
   --sans:'Syne',sans-serif;
-  --display:'Archivo Black',sans-serif;
+  --display:'Bebas Neue',sans-serif;
   --mono:'DM Mono',monospace;
   --ease-out-expo:cubic-bezier(.16,1,.3,1);
   --ease-bounce:cubic-bezier(.34,1.56,.64,1);
   --ink:none;
 }
 
+/* FIX 4: custom cursor everywhere — no pointer fallbacks */
 body { background:var(--bg); font-family:var(--sans); color:var(--tx); overflow-x:hidden; cursor:none; }
-button { cursor:none; font-family:var(--sans); }
-a, input, textarea { cursor:none; }
-a { text-decoration:none; color:inherit; }
-input, textarea { font-family:var(--sans); }
+button { cursor:none !important; font-family:var(--sans); }
+a { cursor:none !important; text-decoration:none; color:inherit; }
+input, textarea { cursor:none !important; font-family:var(--sans); }
+* { cursor:none !important; }
 
-/* ── CUSTOM THEMED CURSOR ── */
-.cursor-dot { position:fixed; top:var(--my,50%); left:var(--mx,50%); width:7px; height:7px;
-  border-radius:50%; background:var(--ac); transform:translate(-50%,-50%);
-  pointer-events:none; z-index:9999; transition:width .15s ease,height .15s ease,background .15s ease; }
-.cursor-dot.hover { width:5px; height:5px; background:var(--bg); }
-.cursor-ring { position:fixed; top:var(--my,50%); left:var(--mx,50%); width:30px; height:30px;
-  border-radius:50%; border:1.5px solid var(--ac); transform:translate(-50%,-50%);
-  pointer-events:none; z-index:9998;
-  transition:top .12s ease-out, left .12s ease-out, width .2s ease, height .2s ease, border-color .2s ease, background .2s ease; }
-.cursor-ring.hover { width:48px; height:48px; background:var(--acbg); border-color:var(--acd); }
-@media(max-width:960px){ .cursor-dot,.cursor-ring{ display:none; } body,button,a,input,textarea{ cursor:auto; } }
+/* ── CUSTOM CURSOR (arrow/pointer style) ── */
+.cursor-arrow {
+  position:fixed;
+  top:0; left:0;
+  width:27px; height:30px;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(0,0);
+  transition:opacity .2s ease;
+  opacity:0;
+}
+/* Keep custom cursor on mobile too, just hide the SVG since touch has no cursor */
+@media(max-width:960px){ .cursor-arrow{ display:none; } }
 
 /* ── GRAIN TEXTURE OVERLAY ── */
 body::before {
@@ -155,13 +159,27 @@ body::before {
   opacity:.035; background-repeat:repeat; background-size:180px;
 }
 
-/* ── CURSOR GLOW ── */
-.glow { position:fixed; inset:0; pointer-events:none; z-index:1;
-  background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%), rgba(255,203,5,.05), transparent 60%); }
-
-/* ── PROGRESS BAR ── */
-.progress-track { position:fixed; top:0; left:0; right:0; height:2px; z-index:900; background:#111; }
-.progress-fill { height:100%; background:var(--ac); transition:width .1s linear; }
+/* ── MINI PROGRESS BAR ── */
+.mini-progress {
+  position:fixed;
+  top:20px; left:20px;
+  z-index:600;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:5px;
+}
+.mini-progress-track {
+  width:120px; height:10px;
+  background:rgba(0,0,0,.10);
+  border-radius:999px;
+  position:relative; overflow:hidden;
+}
+.mini-progress-fill {
+  position:absolute; top:0; left:0; bottom:0;
+  background:var(--ac); border-radius:999px;
+  transition:width .15s ease-out; min-width:10px;
+}
 
 /* ── LOGO ── */
 .logo { position:fixed; top:20px; left:20px; z-index:600;
@@ -197,23 +215,22 @@ body::before {
 .p1-wrap { min-height:100vh; display:flex; align-items:center;
   justify-content:center; gap:100px; padding:0 64px; max-width:1360px;
   margin:0 auto; position:relative; }
-
 .p1-left { flex:0 0 auto; max-width:560px; }
-
 .p1-eyebrow { font-family:var(--mono); font-size:10px; color:var(--ac);
   letter-spacing:.3em; text-transform:uppercase; margin-bottom:24px;
   opacity:0; animation:fadeUp .5s var(--ease-out-expo) .1s both;
   display:flex; align-items:center; gap:12px; }
 .p1-eyebrow::before { content:''; display:block; width:32px; height:1px; background:var(--ac); }
-
 .p1-title { font-family:var(--display); font-size:clamp(52px,8vw,108px);
-  line-height:.88; letter-spacing:-3px; color:var(--txh);
+  line-height:.88; letter-spacing:2px; color:var(--txh);
+  -webkit-text-stroke:2px #111110; paint-order:stroke fill;
   margin-bottom:36px; text-transform:uppercase;
   opacity:0; animation:fadeUp .6s var(--ease-out-expo) .2s both; }
-.p1-title span { color:var(--ac); display:block;
-  -webkit-text-stroke:2px var(--ac); color:transparent; }
-.p1-title span.solid { -webkit-text-stroke:0; color:var(--ac); }
-
+.p1-title .p1-line1 { display:block; color:var(--txh); }
+.p1-title .p1-line2 { display:block; color:var(--ac); }
+.p1-title span { display:block; }
+.p1-title span.solid { color:var(--ac); }
+.p1-line2 { margin-top:-4px; }
 .p1-pills { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:40px;
   opacity:0; animation:fadeUp .5s var(--ease-out-expo) .35s both; }
 .p1-pill { display:inline-flex; align-items:center; gap:7px;
@@ -223,22 +240,16 @@ body::before {
   transition:all .2s ease; }
 .p1-pill:hover { border-color:var(--ac); color:var(--ac);
   box-shadow:2px 2px 0 var(--ac); transform:translate(-1px,-1px); }
-
 .enter-btn-wrap { opacity:0; animation:fadeUp .5s var(--ease-out-expo) .48s both; }
 
-/* ── PROFILE PHOTO — panel 1 right ── */
+/* ── PROFILE PHOTO ── */
 .profile-seam { flex:0 0 auto;
   width:min(420px,34vw); height:min(420px,34vw);
   z-index:10; pointer-events:none;
   animation:floatY 6s ease-in-out infinite; }
 .profile-seam img { width:100%; height:100%; object-fit:cover; border-radius:50%;
-  border:3px solid var(--ac);
-  box-shadow:6px 6px 0 var(--ac), 0 0 60px rgba(255,203,5,.18), var(--shl);
-  display:block; }
-@keyframes floatY {
-  0%,100% { transform:translateY(0); }
-  50%     { transform:translateY(-18px); }
-}
+  border:3px solid var(--ac); box-shadow:6px 6px 0 #111110; display:block; }
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
 
 /* ── SCROLL CUE ── */
 .scroll-cue { display:flex; flex-direction:column; align-items:center; gap:8px;
@@ -253,10 +264,10 @@ body::before {
 /* ── BUTTON STYLES ── */
 .mag-btn { position:relative; display:inline-flex; align-items:center; gap:10px;
   background:var(--ac); color:#000;
-  font-family:var(--display); font-size:13px;
-  letter-spacing:.04em; text-transform:uppercase;
+  font-family:var(--display); font-size:15px;
+  letter-spacing:.08em; text-transform:uppercase;
   padding:14px 32px; border-radius:0; border:none;
-  overflow:hidden; cursor:pointer;
+  overflow:hidden;
   box-shadow:4px 4px 0 #000;
   transition:box-shadow .15s ease, transform .15s ease; }
 .mag-btn::before { content:''; position:absolute; inset:0;
@@ -267,11 +278,10 @@ body::before {
 .mag-btn span,.mag-btn svg { position:relative; z-index:1; }
 .mag-btn svg { transition:transform .3s var(--ease-bounce); }
 .mag-btn:hover svg { transform:translateX(5px); }
-
 .mag-btn-ghost { position:relative; display:inline-flex; align-items:center; gap:10px;
   background:transparent; color:var(--txm);
-  font-family:var(--display); font-size:13px; letter-spacing:.04em; text-transform:uppercase;
-  padding:14px 32px; border-radius:0; border:1px solid var(--border2); overflow:hidden; cursor:pointer;
+  font-family:var(--display); font-size:15px; letter-spacing:.08em; text-transform:uppercase;
+  padding:14px 32px; border-radius:0; border:1px solid var(--border2); overflow:hidden;
   box-shadow:3px 3px 0 var(--border2);
   transition:all .15s ease; }
 .mag-btn-ghost::before { content:''; position:absolute; inset:0;
@@ -283,15 +293,22 @@ body::before {
 .mag-btn-ghost span,.mag-btn-ghost svg { position:relative; z-index:1; }
 .mag-btn-ghost svg { transition:transform .3s var(--ease-bounce); }
 .mag-btn-ghost:hover svg { transform:translateX(5px); }
+.ripple-circle {
+  position:absolute; border-radius:50%;
+  transform:translate(-50%,-50%) scale(0);
+  animation:rippleAnim .6s linear; pointer-events:none;
+  width:30px; height:30px; background:rgba(255,255,255,.35);
+}
+.mag-btn .ripple-circle { background:rgba(255,255,255,.3); }
+.mag-btn-ghost .ripple-circle { background:rgba(255,203,5,.3); }
+@keyframes rippleAnim { to{transform:translate(-50%,-50%) scale(12);opacity:0} }
 
 /* ══════════════════════════════════════════════════════════
    SCROLL PANEL INNER
 ══════════════════════════════════════════════════════════ */
 .sp-inner { width:100%; padding:0 80px 120px 120px; }
-
 @keyframes fadeUp   { from{opacity:0;transform:translateY(36px)} to{opacity:1;transform:translateY(0)} }
 @keyframes fadeLeft { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
-
 .reveal { opacity:0; transform:translateY(40px);
   transition:opacity .3s var(--ease-out-expo), transform .3s var(--ease-out-expo); }
 .reveal.out { opacity:0; transform:translateY(-24px);
@@ -299,30 +316,22 @@ body::before {
 .reveal.vis { opacity:1; transform:translateY(0); }
 
 /* ══════════════════════════════════════════════════════════
-   HERO #2 — HI I'M REB  (full viewport, centered)
+   HERO #2
 ══════════════════════════════════════════════════════════ */
 .hero2-wrap { display:flex; align-items:center; justify-content:center;
   gap:100px; height:100vh; max-width:1360px; margin:0 auto; padding:0 64px; }
-
 .hero2-photo { flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
 .hero2-photo img { width:min(400px,36vw); height:min(400px,36vw);
-  object-fit:cover; border-radius:50%;
-  border:3px solid var(--ac);
-  box-shadow:6px 6px 0 var(--ac), 0 0 60px rgba(255,203,5,.15), var(--shl);
+  object-fit:cover; border-radius:50%; border:3px solid var(--ac);
+  box-shadow:6px 6px 0 #111110;
   animation:floatY2 6s ease-in-out infinite; }
-@keyframes floatY2 {
-  0%,100% { transform:translateY(0); }
-  50%     { transform:translateY(-16px); }
-}
-
+@keyframes floatY2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
 .hero2-text { flex:1; max-width:620px; }
-
 .fsd-badge { display:inline-flex; align-items:center; gap:8px;
   background:var(--ac); color:#000;
   font-family:var(--mono); font-size:10px; font-weight:700;
   padding:7px 16px; border-radius:0; letter-spacing:.1em;
   margin-bottom:20px; width:fit-content; }
-
 .status-pill { display:inline-flex; align-items:center; gap:7px;
   border:1px solid var(--border2); background:transparent;
   padding:5px 13px; border-radius:0;
@@ -333,18 +342,14 @@ body::before {
   box-shadow:0 0 0 3px rgba(34,197,94,.2);
   animation:blink 2.2s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
-
 .hero2-name { font-family:var(--display); font-size:clamp(52px,7vw,96px);
-  color:var(--txh); line-height:.88; letter-spacing:-3px;
+  color:var(--txh); line-height:.92; letter-spacing:2px;
+  -webkit-text-stroke:1.5px #111110; paint-order:stroke fill;
   margin-bottom:28px; text-transform:uppercase; }
-.hero2-name em { font-style:normal; color:var(--ac);
-  -webkit-text-stroke:2px var(--ac); color:transparent; }
-.hero2-name em.solid { -webkit-text-stroke:0; color:var(--ac); }
-
+.hero2-name em { font-style:normal; color:var(--ac); }
 .hero-bio { font-size:15px; color:var(--txm); line-height:1.85;
   margin-bottom:36px; max-width:520px; border-left:2px solid var(--ac);
   padding-left:20px; }
-
 .cta-row { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:28px; }
 .social-row { display:flex; gap:8px; flex-wrap:wrap; }
 .soc-link { display:inline-flex; align-items:center; gap:7px;
@@ -356,7 +361,7 @@ body::before {
   box-shadow:2px 2px 0 var(--ac); transform:translate(-1px,-1px); }
 
 /* ══════════════════════════════════════════════════════════
-   SECTION DIVIDERS — Tajmirul grid lines
+   SECTION DIVIDERS
 ══════════════════════════════════════════════════════════ */
 .sec-divider { display:flex; align-items:center; gap:0;
   margin:100px 0 56px; border-top:var(--ink); padding-top:20px; }
@@ -365,17 +370,27 @@ body::before {
 .sec-divider-lbl { font-family:var(--mono); font-size:9px; font-weight:700;
   letter-spacing:.28em; text-transform:uppercase; color:var(--txm); }
 .sec-divider-line { flex:1; height:1px; background:var(--border); margin-left:20px; }
-
 .eyebrow { font-family:var(--mono); font-size:9px; color:var(--ac);
   letter-spacing:.28em; text-transform:uppercase; margin-bottom:12px;
   display:flex; align-items:center; gap:10px; }
 .eyebrow::before { content:''; display:block; width:20px; height:1px; background:var(--ac); }
-
 .pg-title { font-family:var(--display); font-size:clamp(44px,6.5vw,86px);
-  color:var(--txh); line-height:.9; letter-spacing:-2.5px;
+  color:var(--txh); line-height:.92; letter-spacing:2px;
+  -webkit-text-stroke:1.5px #111110; paint-order:stroke fill;
   margin-bottom:48px; text-transform:uppercase; }
-.pg-title em { font-style:normal; color:transparent;
-  -webkit-text-stroke:2px var(--ac); }
+.pg-title em { font-style:normal; color:var(--ac); }
+
+/* ── FIX 3: Get in Touch centered ── */
+.contact-heading-wrap {
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.contact-heading-wrap .eyebrow {
+  justify-content:center;
+}
+.contact-heading-wrap .eyebrow::before { display:none; }
 
 /* ══════════════════════════════════════════════════════════
    PROJECTS
@@ -399,7 +414,6 @@ body::before {
 .folder-hint { font-family:var(--mono); font-size:9px; color:var(--tx); }
 .proj-pop { animation:popIn .45s var(--ease-out-expo) both; }
 @keyframes popIn { from{opacity:0;transform:scale(.92) translateY(18px)} to{opacity:1;transform:scale(1) translateY(0)} }
-
 .back-row { display:flex; align-items:center; gap:10px; margin-bottom:32px; }
 .back-btn { display:inline-flex; align-items:center; gap:7px;
   border:1px solid var(--border2); color:var(--txm);
@@ -408,12 +422,10 @@ body::before {
   transition:all .2s ease; }
 .back-btn:hover { border-color:var(--ac); color:var(--ac);
   box-shadow:2px 2px 0 var(--ac); transform:translate(-1px,-1px); }
-
-/* Tajmirul-style project list rows */
 .proj-grid { display:flex; flex-direction:column; border-top:var(--ink); }
 .pcard { display:flex; align-items:center; justify-content:space-between;
   gap:24px; padding:28px 0; border-bottom:var(--ink);
-  color:var(--txh); cursor:pointer; text-decoration:none;
+  color:var(--txh); text-decoration:none;
   position:relative; overflow:hidden;
   transition:padding-left .3s var(--ease-out-expo); }
 .pcard::before { content:''; position:absolute; left:0; top:0; bottom:0; width:0;
@@ -426,94 +438,218 @@ body::before {
 .pcard-icon { color:var(--ac); opacity:.7; transition:opacity .2s; }
 .pcard:hover .pcard-icon { opacity:1; }
 .pcard-info { flex:1; }
-.pcard-info h3 { font-family:var(--display); font-size:18px; color:var(--txh);
-  text-transform:uppercase; letter-spacing:-.5px; margin-bottom:4px;
+.pcard-info h3 { font-family:var(--display); font-size:20px; color:var(--txh);
+  text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px;
   transition:color .2s; }
 .pcard:hover .pcard-info h3 { color:var(--ac); }
 .pcard-info p { font-size:12px; color:var(--tx); line-height:1.6; max-width:480px; }
 .ptags { display:flex; flex-wrap:wrap; gap:5px; z-index:1; }
 .ptag { border:1px solid var(--border2); color:var(--tx);
   font-family:var(--mono); font-size:8px; font-weight:700; letter-spacing:.08em;
-  padding:3px 8px; border-radius:0;
-  transition:all .2s; }
+  padding:3px 8px; border-radius:0; transition:all .2s; }
 .pcard:hover .ptag { border-color:var(--acborder); color:var(--ac); }
 .pcard-arr { color:var(--tx); z-index:1; transition:all .3s var(--ease-bounce); flex-shrink:0; }
 .pcard:hover .pcard-arr { color:var(--ac); transform:translateX(6px); }
-
 .proj-footer { display:flex; align-items:center; gap:18px; margin-top:28px; padding-top:20px; }
 .more-circle { display:flex; flex-direction:column; align-items:center;
   justify-content:center; gap:5px; width:86px; height:86px;
   border:2px solid var(--ac); background:transparent; color:var(--ac);
-  cursor:pointer; font-family:var(--mono); font-size:9px; font-weight:700;
+  font-family:var(--mono); font-size:9px; font-weight:700;
   box-shadow:4px 4px 0 var(--ac);
   transition:all .2s ease; text-align:center; line-height:1.3; }
 .more-circle:hover { background:var(--ac); color:#000;
   box-shadow:2px 2px 0 #000; transform:translate(2px,2px); }
 
 /* ══════════════════════════════════════════════════════════
-   CERTIFICATIONS
+   FIX 5: 3D CERT SLIDER
 ══════════════════════════════════════════════════════════ */
-.scert-wrap { position:relative; overflow:hidden; cursor:grab; border:var(--ink); }
-.scert-track { display:flex; gap:0; padding:0; overflow-x:auto; scrollbar-width:none; }
-.scert-track::-webkit-scrollbar { display:none; }
-.scert-reveal { flex-shrink:0; }
-.scert-card { background:var(--bg2); border-right:var(--ink);
-  flex-shrink:0; width:300px; display:flex; flex-direction:column;
-  transition:background .25s ease; }
-.scert-card:hover { background:var(--bg3); }
-.scert-banner { height:120px; display:flex; align-items:center;
-  justify-content:center; position:relative;
-  border-bottom:var(--ink); color:var(--ac); }
-.scert-chip { position:absolute; top:10px; left:0;
+.cert-slider-outer {
+  position:relative;
+  width:100%;
+  height:420px;
+  overflow:hidden;
+  background:linear-gradient(135deg, #0a0a0a 0%, #111110 100%);
+  border:1px solid var(--border);
+}
+.cert-slider-stage {
+  position:relative;
+  width:100%;
+  height:100%;
+}
+.cert-slide {
+  position:absolute;
+  top:50%; left:50%;
+  width:260px; height:340px;
+  margin-top:-170px; margin-left:-130px;
+  border-radius:0;
+  overflow:hidden;
+  will-change:transform;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);
+  border:1px solid rgba(255,255,255,.08);
+}
+.cert-slide-inner {
+  width:100%; height:100%;
+  position:relative;
+  transition:opacity .3s ease;
+}
+.cert-slide-inner::after {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(to bottom,rgba(0,0,0,.2) 0%,transparent 40%,rgba(0,0,0,.65) 100%);
+  z-index:1;
+}
+.cert-slide-img {
+  width:100%; height:55%;
+  object-fit:contain;
+  padding:24px;
+  background:linear-gradient(135deg,#1a1a1a,#0d0d0d);
+}
+.cert-slide-body {
+  padding:16px 18px;
+  background:#111;
+  height:45%;
+  display:flex; flex-direction:column; justify-content:space-between;
+}
+.cert-slide-org {
   font-family:var(--mono); font-size:8px; font-weight:700;
-  padding:3px 10px; color:#000; letter-spacing:.1em; }
-.scert-body { padding:20px 22px 24px; flex:1; display:flex; flex-direction:column; gap:8px; }
-.scert-body h3 { font-family:var(--display); font-size:11px;
-  color:var(--txh); line-height:1.55; text-transform:uppercase; letter-spacing:.02em; }
-.scert-sub { font-family:var(--mono); font-size:8px; color:var(--tx); letter-spacing:.08em; }
-.scert-verify { display:inline-flex; align-items:center; gap:5px;
-  width:fit-content; border:1px solid var(--border2);
-  color:var(--txm); font-size:8px; font-weight:700; letter-spacing:.1em;
-  padding:5px 10px; border-radius:0; margin-top:auto;
-  transition:all .2s; font-family:var(--mono); }
-.scert-card:hover .scert-verify { border-color:var(--ac); color:var(--ac);
-  box-shadow:2px 2px 0 var(--ac); }
-.scert-edge { position:absolute; top:0; bottom:0; width:10%; z-index:2; pointer-events:none; }
-.scert-edge.l { left:0; background:linear-gradient(90deg,var(--bg),transparent); }
-.scert-edge.r { right:0; background:linear-gradient(-90deg,var(--bg),transparent); }
-.scert-hint { text-align:center; font-family:var(--mono); font-size:8px;
+  letter-spacing:.2em; text-transform:uppercase;
+  color:var(--ac); margin-bottom:6px;
+}
+.cert-slide-title {
+  font-family:var(--display); font-size:14px;
+  text-transform:uppercase; letter-spacing:.04em;
+  color:#fff; line-height:1.4; flex:1;
+}
+.cert-slide-verify {
+  display:inline-flex; align-items:center; gap:5px;
+  font-family:var(--mono); font-size:8px; font-weight:700;
+  letter-spacing:.1em; color:rgba(255,255,255,.5);
+  margin-top:8px; padding-top:8px;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+.cert-slide-num {
+  position:absolute; top:12px; left:14px; z-index:5;
+  font-family:var(--display); font-size:48px; line-height:1;
+  color:rgba(255,255,255,.12); pointer-events:none;
+}
+.cert-slider-controls {
+  position:absolute; bottom:16px; left:50%; transform:translateX(-50%);
+  display:flex; align-items:center; gap:12px; z-index:10;
+}
+.cert-ctrl-btn {
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.2); background:rgba(0,0,0,.4);
+  display:flex; align-items:center; justify-content:center;
+  color:rgba(255,255,255,.7);
+  transition:all .2s ease;
+}
+.cert-ctrl-btn:hover { border-color:var(--ac); color:var(--ac);
+  background:rgba(255,203,5,.1); box-shadow:0 0 0 2px rgba(255,203,5,.2); }
+.cert-ctrl-dots { display:flex; gap:6px; }
+.cert-dot { width:6px; height:6px; border-radius:50%;
+  background:rgba(255,255,255,.2); transition:all .3s ease; }
+.cert-dot.active { background:var(--ac); width:18px; border-radius:3px; }
+.cert-hint { text-align:center; font-family:var(--mono); font-size:8px;
   color:var(--tx); margin-top:12px; letter-spacing:.12em; text-transform:uppercase; }
 
 /* ══════════════════════════════════════════════════════════
-   TECH STACK — Tajmirul horizontal category rows
+   FIX 2: TECH STACK — side by side, title left / chips right
 ══════════════════════════════════════════════════════════ */
-.stack-wrap { display:flex; flex-direction:column; border-top:var(--ink); }
-.stack-row { display:grid; grid-template-columns:160px 1fr;
-  gap:0; align-items:start; border-bottom:var(--ink); padding:28px 0; }
-.stack-cat { font-family:var(--mono); font-size:9px; font-weight:700;
+.stack-section-wrap {
+  display:flex;
+  gap:0;
+  align-items:flex-start;
+  border-top:1px solid var(--border);
+  padding-top:0;
+}
+
+/* Left column: sticky "MY STACK" title */
+.stack-title-col {
+  flex:0 0 260px;
+  position:sticky;
+  top:60px;
+  align-self:flex-start;
+  padding:40px 0 40px 0;
+}
+.stack-big-title {
+  font-family:var(--display);
+  font-size:clamp(52px,5.5vw,80px);
+  color:var(--txh);
+  line-height:.9;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  -webkit-text-stroke:1.5px #111110;
+  paint-order:stroke fill;
+}
+.stack-big-title em { font-style:normal; color:var(--ac); }
+
+/* Right column: rows of chips */
+.stack-rows-col {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  border-left:1px solid var(--border);
+  padding-left:48px;
+}
+.stack-row {
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  padding:28px 0;
+  border-bottom:1px solid var(--border);
+}
+.stack-row:last-child { border-bottom:none; }
+.stack-cat-wrap { overflow:hidden; }
+.stack-cat {
+  font-family:var(--mono); font-size:9px; font-weight:700;
   letter-spacing:.2em; text-transform:uppercase; color:var(--ac);
-  padding-top:4px; }
-.stack-items { display:flex; flex-wrap:wrap; gap:8px; }
-.stack-chip { display:flex; align-items:center; gap:9px;
-  border:1px solid var(--border2); background:transparent;
-  padding:8px 14px 8px 10px; border-radius:0;
-  transition:all .2s ease; }
-.stack-chip:hover { border-color:var(--ac); box-shadow:2px 2px 0 var(--ac);
-  transform:translate(-1px,-1px); }
-.stack-sq { width:26px; height:26px; display:flex; align-items:center;
+  transform:translateY(100%); opacity:0;
+  transition:transform .5s cubic-bezier(.16,1,.3,1), opacity .4s ease;
+  display:block;
+}
+.stack-cat.sliced { transform:translateY(0); opacity:1; }
+.stack-items { display:flex; flex-wrap:wrap; gap:10px; }
+.stack-chip {
+  display:flex; align-items:center; gap:10px;
+  background:transparent; border:1px solid var(--border2);
+  padding:10px 16px; border-radius:0;
+  transition:all .2s ease;
+}
+.stack-chip:hover { transform:translateY(-2px); border-color:var(--ac); box-shadow:2px 2px 0 #111110; }
+.stack-sq { width:28px; height:28px; display:flex; align-items:center;
   justify-content:center; flex-shrink:0; }
-.stack-name { font-size:11px; font-weight:700; color:var(--txh);
-  white-space:nowrap; letter-spacing:.02em; }
+.stack-name { font-size:13px; font-weight:700; color:var(--txm);
+  white-space:nowrap; letter-spacing:.02em; transition:color .2s ease; }
+.stack-chip:hover .stack-name { color:var(--txh); }
+
+/* Blur-pop for profile images — FIX 1: removed scale() so no enlarge */
+.profile-seam img,
+.hero2-photo img {
+  animation:blurPopFloat 1s cubic-bezier(.16,1,.3,1) both, floatY 6s ease-in-out 1s infinite;
+}
+.hero2-photo img {
+  animation:blurPop .8s cubic-bezier(.16,1,.3,1) both, floatY2 6s ease-in-out .8s infinite;
+}
+@keyframes blurPopFloat {
+  0%   { opacity:0; filter:blur(20px); }
+  60%  { filter:blur(0px); }
+  100% { opacity:1; filter:blur(0px); }
+}
+@keyframes blurPop {
+  0%   { opacity:0; filter:blur(24px); }
+  60%  { filter:blur(0px); }
+  100% { opacity:1; filter:blur(0px); }
+}
 
 /* ══════════════════════════════════════════════════════════
-   CONTACT — "have a project in mind?" style
+   CONTACT
 ══════════════════════════════════════════════════════════ */
 .contact-cta { display:flex; flex-direction:column; align-items:center;
   text-align:center; padding:60px 20px 40px; gap:18px; }
 .cta-label { font-family:var(--mono); font-size:13px; color:var(--txm);
   letter-spacing:.06em; }
 .cta-email { font-family:var(--display); font-size:clamp(28px,5.2vw,56px);
-  color:var(--txh); letter-spacing:-1px; text-transform:lowercase;
+  color:var(--txh); letter-spacing:1px; text-transform:lowercase;
   padding:6px 4px; border-bottom:2px solid transparent;
   transition:color .25s ease, border-color .25s ease; }
 .cta-email:hover { color:var(--ac); border-color:var(--ac); }
@@ -525,76 +661,250 @@ body::before {
 .footer-back { display:inline-flex; align-items:center; gap:8px;
   border:1px solid var(--border2); color:var(--txm);
   font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:.12em;
-  text-transform:uppercase; padding:10px 22px; cursor:pointer; background:transparent;
+  text-transform:uppercase; padding:10px 22px; background:transparent;
   transition:all .2s ease; }
 .footer-back:hover { border-color:var(--ac); color:var(--ac);
   box-shadow:3px 3px 0 var(--ac); transform:translate(-2px,-2px); }
 
 /* ── FLOATING NAV ── */
-.fnav { position:fixed; left:18px; top:50%; transform:translateY(-50%);
-  z-index:600; display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
-.fnav-trigger { width:42px; height:42px; border:1px solid var(--border2);
-  background:var(--bg); display:flex; align-items:center;
-  justify-content:center; color:var(--tx);
-  transition:all .25s ease; box-shadow:2px 2px 0 var(--border2); }
-.fnav-trigger:hover { border-color:var(--ac); color:var(--ac); box-shadow:3px 3px 0 var(--ac); }
-.fnav-items { display:flex; flex-direction:column; align-items:flex-start; gap:6px;
+.fnav {
+  position:fixed; left:16px; top:50%; transform:translateY(-50%);
+  z-index:600; display:flex; flex-direction:column; align-items:center;
+  gap:8px; background:transparent; border:none; border-radius:999px;
+  padding:10px 8px; box-shadow:none;
+}
+.fnav:has(.fnav-items.open) {
+  background:rgba(255,255,255,.9); border:1px solid var(--border);
+  box-shadow:3px 3px 0 #111110;
+}
+.fnav-trigger {
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid var(--border2); background:transparent;
+  display:flex; align-items:center; justify-content:center; color:var(--txm);
+  transition:all .2s ease;
+}
+.fnav-trigger:hover { border-color:var(--ac); color:#000; background:var(--ac); box-shadow:2px 2px 0 #111110; }
+.fnav-items {
+  display:flex; flex-direction:column; align-items:center; gap:8px;
   overflow:hidden; max-height:0; opacity:0;
-  transition:max-height .5s var(--ease-out-expo), opacity .3s ease;
-  pointer-events:none; }
-.fnav-items.open { max-height:380px; opacity:1; pointer-events:auto; }
-.fnav-item { display:flex; align-items:center; gap:0; position:relative;
-  opacity:0; transform:translateX(-10px);
-  transition:opacity .3s ease, transform .3s var(--ease-bounce); }
+  transition:max-height .45s cubic-bezier(.16,1,.3,1), opacity .25s ease;
+  pointer-events:none;
+}
+.fnav-items.open { max-height:400px; opacity:1; pointer-events:auto; }
+.fnav-item {
+  display:flex; align-items:center; position:relative;
+  opacity:0; transform:translateX(-8px);
+  transition:opacity .25s ease, transform .3s cubic-bezier(.34,1.56,.64,1);
+}
 .fnav-items.open .fnav-item { opacity:1; transform:translateX(0); }
-.fnav-btn { width:42px; height:42px; border:1px solid var(--border2);
-  background:var(--bg); display:flex; align-items:center;
-  justify-content:center; color:var(--tx);
-  transition:all .25s ease; flex-shrink:0; z-index:1; order:1; }
-.fnav-btn:hover { border-color:var(--ac); color:var(--ac); box-shadow:2px 2px 0 var(--ac); }
-.fnav-btn.active { border-color:var(--ac); color:var(--ac);
-  background:var(--acbg); box-shadow:2px 2px 0 var(--ac); }
-.fnav-lbl { font-family:var(--mono); font-size:9px; font-weight:700;
-  letter-spacing:.12em; text-transform:uppercase; color:var(--ac);
-  background:var(--bg); border:1px solid var(--ac); border-left:none;
-  padding:0 14px 0 10px; height:42px; display:flex; align-items:center;
-  white-space:nowrap; max-width:0; overflow:hidden; opacity:0;
-  transition:max-width .3s var(--ease-out-expo), opacity .2s ease; order:2; }
-.fnav-item:hover .fnav-lbl { max-width:140px; opacity:1; }
-.fnav-item:hover .fnav-btn { border-right:none; border-color:var(--ac); }
-.fnav-close { width:42px; height:42px; border:1px solid var(--border2);
-  background:var(--bg); display:flex; align-items:center;
-  justify-content:center; color:var(--tx); transition:all .25s ease; }
-.fnav-close:hover { border-color:#f87171; color:#f87171; box-shadow:2px 2px 0 #f87171; }
+.fnav-items.open .fnav-item:nth-child(1){transition-delay:.04s}
+.fnav-items.open .fnav-item:nth-child(2){transition-delay:.08s}
+.fnav-items.open .fnav-item:nth-child(3){transition-delay:.12s}
+.fnav-items.open .fnav-item:nth-child(4){transition-delay:.16s}
+.fnav-items.open .fnav-item:nth-child(5){transition-delay:.20s}
+.fnav-lbl {
+  position:absolute; left:calc(100% + 10px); top:50%; transform:translateY(-50%);
+  font-family:var(--mono); font-size:9px; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--txh);
+  background:#ffffff; border:1px solid var(--border2);
+  padding:5px 10px; height:28px;
+  display:flex; align-items:center; white-space:nowrap; border-radius:4px;
+  box-shadow:2px 2px 0 #111110; opacity:0; pointer-events:none;
+  transition:opacity .15s ease, transform .15s ease;
+  transform:translateY(-50%) translateX(-4px);
+}
+.fnav-btn {
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid var(--border2); background:transparent;
+  display:flex; align-items:center; justify-content:center; color:var(--txm);
+  transition:all .2s ease;
+}
+.fnav-btn:hover, .fnav-btn.active {
+  border-color:var(--ac); color:#000; background:var(--ac); box-shadow:2px 2px 0 #111110;
+}
+.fnav-item:hover .fnav-lbl { opacity:1; transform:translateY(-50%) translateX(0); }
+.fnav-close {
+  width:36px; height:36px; border-radius:50%;
+  border:1px solid var(--border2); background:transparent;
+  display:flex; align-items:center; justify-content:center; color:var(--txm);
+  transition:all .2s ease;
+}
+.fnav-close:hover { border-color:#ef4444; color:#ef4444; box-shadow:2px 2px 0 #ef4444; }
 
 /* ── RESPONSIVE ── */
 @media(max-width:1200px){
-  .sp-inner { padding:0 60px 100px 100px; }
-  .p1-wrap { padding:0 48px; gap:60px; }
-  .hero2-wrap { padding:0 48px; gap:60px; }
+  .sp-inner{padding:0 60px 100px 100px}
+  .p1-wrap{padding:0 48px;gap:60px}
+  .hero2-wrap{padding:0 48px;gap:60px}
+  .stack-title-col{flex:0 0 200px}
 }
 @media(max-width:960px){
-  .p1-wrap { padding:0 32px; flex-direction:column; justify-content:center; gap:40px; }
-  .profile-seam { width:min(280px,60vw); height:min(280px,60vw); }
-  .stack-row { grid-template-columns:1fr; gap:12px; }
-  .ctc-grid { grid-template-columns:1fr; }
-  .ctc-link { border-right:none; }
-  .sp-inner { padding:0 40px 80px 72px; }
-  .hero2-wrap { flex-direction:column; justify-content:center; gap:36px; height:auto; min-height:100vh; padding:80px 32px 60px; }
-  .hero2-photo img { width:240px; height:240px; }
-  .proj-grid { flex-direction:column; }
-  .pcard { flex-direction:column; align-items:flex-start; gap:12px; }
+  .p1-wrap{padding:0 32px;flex-direction:column;justify-content:center;gap:40px}
+  .profile-seam{width:min(280px,60vw);height:min(280px,60vw)}
+  .sp-inner{padding:0 40px 80px 72px}
+  .hero2-wrap{flex-direction:column;justify-content:center;gap:36px;height:auto;min-height:100vh;padding:80px 32px 60px}
+  .hero2-photo img{width:240px;height:240px}
+  .pcard{flex-direction:column;align-items:flex-start;gap:12px}
+  .stack-section-wrap{flex-direction:column}
+  .stack-title-col{position:static;padding:32px 0 16px;flex:none}
+  .stack-rows-col{border-left:none;padding-left:0;border-top:1px solid var(--border)}
 }
 @media(max-width:600px){
-  .ctc-grid { grid-template-columns:1fr; }
-  .form-row { grid-template-columns:1fr; }
-  .sp-inner { padding:0 20px 60px 20px; }
-  .p1-wrap { padding:0 20px 0 20px; }
-  .p1-title { font-size:clamp(44px,14vw,72px); }
-  .scert-card { width:260px; }
-  .stack-row { grid-template-columns:1fr; }
+  .sp-inner{padding:0 20px 60px 20px}
+  .p1-wrap{padding:0 20px}
+  .p1-title{font-size:clamp(44px,14vw,72px)}
+  .cert-slide{width:220px;height:290px;margin-top:-145px;margin-left:-110px}
+  .stack-row{grid-template-columns:1fr}
 }
 `;
+
+/* ─────────────────────────────────────────────────────────────────
+   FIX 1: PARTICLE BACKGROUND — no scale, just blur fade
+───────────────────────────────────────────────────────────────── */
+function ParticleBackground() {
+  const canvasRef = useRef(null);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const COLORS = ["#000000"];
+    const COUNT = 60;
+    let w = 0, h = 0, dpr = 1, raf = 0, running = true;
+
+    const px = new Float32Array(COUNT);
+    const py = new Float32Array(COUNT);
+    const pvx = new Float32Array(COUNT);
+    const pvy = new Float32Array(COUNT);
+    const pr = new Float32Array(COUNT);
+    const pa = new Float32Array(COUNT);
+    const pc = new Uint8Array(COUNT);
+
+    /* FIX 1: sprites drawn without scale transform — plain radial gradient only */
+    const sprites = COLORS.map(color => {
+      const sz = 120;
+      const c = document.createElement("canvas");
+      c.width = sz; c.height = sz;
+      const cx2 = sz / 2;
+      const g = c.getContext("2d");
+      const grad = g.createRadialGradient(cx2, cx2, 0, cx2, cx2, cx2);
+      grad.addColorStop(0, color + "cc");
+      grad.addColorStop(0.4, color + "44");
+      grad.addColorStop(1, color + "00");
+      g.beginPath();
+      g.arc(cx2, cx2, cx2, 0, Math.PI * 2);
+      g.fillStyle = grad;
+      g.fill();
+      return c;
+    });
+
+    const init = () => {
+      for (let i = 0; i < COUNT; i++) {
+        px[i] = Math.random() * w;
+        py[i] = Math.random() * h;
+        pvx[i] = (Math.random() - 0.5) * 0.6;
+        pvy[i] = (Math.random() - 0.5) * 0.6;
+        pr[i] = 6 + Math.random() * 18;
+        pa[i] = 0.15 + Math.random() * 0.25;
+        pc[i] = Math.floor(Math.random() * COLORS.length);
+      }
+    };
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = container.clientWidth;
+      h = container.clientHeight;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.scale(dpr, dpr);
+      init();
+    };
+
+    const tick = () => {
+      if (!running) return;
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < COUNT; i++) {
+        px[i] += pvx[i]; py[i] += pvy[i];
+        const r = pr[i];
+        if (px[i] < r) { px[i] = r; pvx[i] *= -1; }
+        else if (px[i] > w - r) { px[i] = w - r; pvx[i] *= -1; }
+        if (py[i] < r) { py[i] = r; pvy[i] *= -1; }
+        else if (py[i] > h - r) { py[i] = h - r; pvy[i] *= -1; }
+        /* FIX 1: drawSize is fixed — no scale/enlarge, just constant size */
+        const drawSize = r * 8;
+        ctx.globalAlpha = pa[i];
+        ctx.drawImage(sprites[pc[i]], px[i] - drawSize / 2, py[i] - drawSize / 2, drawSize, drawSize);
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(tick);
+    };
+
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(container);
+    raf = requestAnimationFrame(tick);
+    return () => { running = false; cancelAnimationFrame(raf); ro.disconnect(); };
+  }, []);
+
+  return (
+    <div ref={containerRef} style={{ position:"fixed", inset:0, zIndex:1, pointerEvents:"none" }}>
+      <canvas ref={canvasRef} style={{ width:"100%", height:"100%", display:"block" }} />
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   FIX 4: CUSTOM CURSOR — always active, no pointer fallback
+───────────────────────────────────────────────────────────────── */
+function CustomCursor() {
+  const ref = useRef(null);
+  const pos = useRef({ x: -100, y: -100 });
+  const target = useRef({ x: -100, y: -100 });
+  const raf = useRef(null);
+
+  useEffect(() => {
+    const onMove = (e) => {
+      target.current = { x: e.clientX, y: e.clientY };
+      if (ref.current) ref.current.style.opacity = "1";
+    };
+    const tick = () => {
+      pos.current.x += (target.current.x - pos.current.x) * 0.18;
+      pos.current.y += (target.current.y - pos.current.y) * 0.18;
+      if (ref.current) {
+        ref.current.style.transform = `translate(${pos.current.x}px, ${pos.current.y}px)`;
+      }
+      raf.current = requestAnimationFrame(tick);
+    };
+    window.addEventListener("mousemove", onMove);
+    raf.current = requestAnimationFrame(tick);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf.current);
+    };
+  }, []);
+
+  return (
+    <svg
+      ref={ref}
+      className="cursor-arrow"
+      width="27" height="30"
+      viewBox="0 0 27 30"
+      fill="none"
+      strokeWidth="2"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M20.0995 11.0797L3.72518 1.13204C2.28687 0.258253 0.478228 1.44326 0.704999 3.11083L3.28667 22.0953C3.58333 24.2768 7.33319 24.6415 8.3792 22.7043C9.5038 20.6215 10.8639 18.7382 12.43 17.7122C13.996 16.6861 16.2658 16.1911 18.6244 15.9918C20.8181 15.8063 21.9811 12.2227 20.0995 11.0797Z"
+        fill="#ffcb05"
+        stroke="rgba(0,0,0,0.4)"
+      />
+    </svg>
+  );
+}
 
 /* ─────────────────────────────────────────────────────────────────
    REVEAL
@@ -629,100 +939,179 @@ function Reveal({ children, delay = 0, className = "" }) {
 ───────────────────────────────────────────────────────────────── */
 function MagBtn({ children, onClick, href, ghost = false, className = "" }) {
   const btnRef = useRef(null);
-  const onMove = (e) => {
+  const addRipple = (e) => {
     const btn = btnRef.current; if (!btn) return;
     const rect = btn.getBoundingClientRect();
-    const x = (e.clientX - rect.left - rect.width / 2) * 0.22;
-    const y = (e.clientY - rect.top - rect.height / 2) * 0.22;
-    btn.style.transform = `translate(${x}px, ${y}px)`;
+    const span = document.createElement("span");
+    span.className = "ripple-circle";
+    span.style.left = `${e.clientX - rect.left}px`;
+    span.style.top = `${e.clientY - rect.top}px`;
+    btn.appendChild(span);
+    setTimeout(() => span.remove(), 700);
   };
-  const onLeave = () => { if (btnRef.current) btnRef.current.style.transform = ""; };
   const cls = `${ghost ? "mag-btn-ghost" : "mag-btn"} ${className}`;
   const inner = <><span>{children}</span><ArrowIco s={13} /></>;
-  if (href) return <a ref={btnRef} href={href} target="_blank" rel="noreferrer" className={cls} onMouseMove={onMove} onMouseLeave={onLeave}>{inner}</a>;
-  return <button ref={btnRef} className={cls} onClick={onClick} onMouseMove={onMove} onMouseLeave={onLeave}>{inner}</button>;
+  if (href) return <a ref={btnRef} href={href} target="_blank" rel="noreferrer" className={cls} onClick={addRipple}>{inner}</a>;
+  return <button ref={btnRef} className={cls} onClick={(e) => { addRipple(e); onClick?.(); }}>{inner}</button>;
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   CERTS SCROLLER
+   FIX 5: 3D CERT SLIDER
 ───────────────────────────────────────────────────────────────── */
-function CertsScroller() {
-  const wrapRef = useRef(null), trackRef = useRef(null);
-  const speedRef = useRef(0), rafRef = useRef(null);
-  const loop = useCallback(() => {
-    if (trackRef.current && speedRef.current !== 0) trackRef.current.scrollLeft += speedRef.current;
+function CertSlider() {
+  const [active, setActive] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const startX = useRef(0);
+  const startActive = useRef(0);
+  const stageRef = useRef(null);
+  const rafRef = useRef(null);
+  const progressRef = useRef(0); // 0 to (n-1)
+  const targetRef = useRef(0);
+  const n = DATA.certs.length;
+
+  // smooth lerp loop
+  useEffect(() => {
+    let running = true;
+    const loop = () => {
+      if (!running) return;
+      progressRef.current += (targetRef.current - progressRef.current) * 0.1;
+      updateSlides(progressRef.current);
+      rafRef.current = requestAnimationFrame(loop);
+    };
     rafRef.current = requestAnimationFrame(loop);
+    return () => { running = false; cancelAnimationFrame(rafRef.current); };
   }, []);
-  useEffect(() => { rafRef.current = requestAnimationFrame(loop); return () => cancelAnimationFrame(rafRef.current); }, [loop]);
-  const onMove = (e) => {
-    const wrap = wrapRef.current; if (!wrap) return;
-    const rect = wrap.getBoundingClientRect();
-    const pct = (e.clientX - rect.left) / rect.width;
-    const EDGE = 0.25, MAX = 10;
-    if (pct < EDGE) speedRef.current = -(1 - pct / EDGE) * MAX;
-    else if (pct > 1 - EDGE) speedRef.current = ((pct - (1 - EDGE)) / EDGE) * MAX;
-    else speedRef.current = 0;
+
+  const updateSlides = (prog) => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const slides = stage.querySelectorAll(".cert-slide");
+    slides.forEach((el, i) => {
+      const diff = i - prog;
+      const tx = diff * 55;
+      const tz = -Math.abs(diff) * 120;
+      const ry = diff * -18;
+      const scale = 1 - Math.abs(diff) * 0.12;
+      const opacity = Math.max(0, 1 - Math.abs(diff) * 0.35);
+      const zIndex = Math.round(100 - Math.abs(diff) * 10);
+      el.style.transform = `translate3d(${tx}%, 0, ${tz}px) rotateY(${ry}deg) scale(${scale})`;
+      el.style.opacity = opacity;
+      el.style.zIndex = zIndex;
+    });
+    // update active dot
+    const rounded = Math.round(prog);
+    setActive(Math.max(0, Math.min(n - 1, rounded)));
   };
+
+  const goTo = (idx) => {
+    const clamped = Math.max(0, Math.min(n - 1, idx));
+    targetRef.current = clamped;
+  };
+
+  const onMouseDown = (e) => {
+    setDragging(true);
+    startX.current = e.clientX;
+    startActive.current = targetRef.current;
+  };
+  const onMouseMove = (e) => {
+    if (!dragging) return;
+    const diff = (startX.current - e.clientX) / 180;
+    targetRef.current = Math.max(0, Math.min(n - 1, startActive.current + diff));
+  };
+  const onMouseUp = () => {
+    setDragging(false);
+    targetRef.current = Math.round(targetRef.current);
+  };
+
   return (
     <>
-      <div ref={wrapRef} className="scert-wrap" onMouseMove={onMove} onMouseLeave={() => { speedRef.current = 0; }}>
-        <div className="scert-track" ref={trackRef}>
-          {DATA.certs.map((c, i) => {
-            const I = c.I;
-            return (
-              <Reveal key={i} delay={i * 60} className="scert-reveal">
-                <a href={c.url} target="_blank" rel="noreferrer" className="scert-card">
-                  <div className="scert-banner" style={{ background: `linear-gradient(135deg,${c.c}18,${c.c}04)` }}>
-                    <I s={40} />
-                    <span className="scert-chip" style={{ background: c.c }}>{c.org}</span>
+      <div className="cert-slider-outer"
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}
+        style={{ perspective:"1200px", perspectiveOrigin:"50% 50%" }}
+      >
+        <div className="cert-slider-stage" ref={stageRef} style={{ transformStyle:"preserve-3d" }}>
+          {DATA.certs.map((c, i) => (
+            <div key={i} className="cert-slide" onClick={() => goTo(i)}>
+              <div className="cert-slide-inner">
+                <span className="cert-slide-num">{String(i + 1).padStart(2, "0")}</span>
+                <img className="cert-slide-img" src={c.img} alt={c.title}
+                  onError={e => { e.target.style.display = "none"; }} />
+                <div className="cert-slide-body">
+                  <div>
+                    <div className="cert-slide-org">{c.org}</div>
+                    <div className="cert-slide-title">{c.title}</div>
                   </div>
-                  <div className="scert-body">
-                    <h3>{c.title}</h3>
-                    <div className="scert-sub">{c.org}</div>
-                    <span className="scert-verify"><CheckIco s={10} /> Verify <ExtIco s={9} /></span>
-                  </div>
-                </a>
-              </Reveal>
-            );
-          })}
+                  <a href={c.url} target="_blank" rel="noreferrer" className="cert-slide-verify"
+                    onClick={e => e.stopPropagation()}>
+                    <CheckIco s={10} /> Verify <ExtIco s={9} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="scert-edge l" /><div className="scert-edge r" />
+
+        <div className="cert-slider-controls">
+          <button className="cert-ctrl-btn" onClick={() => goTo(active - 1)}><ChevLIco s={16} /></button>
+          <div className="cert-ctrl-dots">
+            {DATA.certs.map((_, i) => (
+              <div key={i} className={`cert-dot${i === active ? " active" : ""}`}
+                onClick={() => goTo(i)} />
+            ))}
+          </div>
+          <button className="cert-ctrl-btn" onClick={() => goTo(active + 1)}><ChevRIco s={16} /></button>
+        </div>
       </div>
-      <div className="scert-hint">← hover edges to scroll →</div>
+      <div className="cert-hint">← drag or click to navigate →</div>
     </>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   STACK
+   FIX 2: STACK SECTION — side by side
 ───────────────────────────────────────────────────────────────── */
 function StackSection() {
   return (
-    <div className="stack-wrap">
-      {Object.entries(DATA.stack).map(([cat, skills]) => (
-        <div className="stack-row" key={cat}>
-          <div className="stack-cat">{cat}</div>
-          <div className="stack-items">
-            {skills.map((s, i) => {
-              const I = s.I;
-              return (
-                <Reveal key={s.n} delay={i * 50} className="stack-chip-reveal">
-                  <div className="stack-chip">
-                    <span className="stack-sq" style={{ color: s.fg }}><I s={16} /></span>
-                    <span className="stack-name">{s.n}</span>
-                  </div>
-                </Reveal>
-              );
-            })}
+    <div className="stack-section-wrap">
+      {/* Left: big sticky title */}
+      <div className="stack-title-col">
+        <Reveal>
+          <div className="stack-big-title">My<br /><em>Stack</em></div>
+        </Reveal>
+      </div>
+
+      {/* Right: category rows */}
+      <div className="stack-rows-col">
+        {Object.entries(DATA.stack).map(([cat, skills]) => (
+          <div className="stack-row" key={cat}>
+            <div className="stack-cat-wrap">
+              <span className="stack-cat sliced">{cat}</span>
+            </div>
+            <div className="stack-items">
+              {skills.map((s, i) => {
+                const I = s.I;
+                return (
+                  <Reveal key={s.n} delay={i * 50} className="stack-chip-reveal">
+                    <div className="stack-chip">
+                      <span className="stack-sq" style={{ color: s.fg }}><I s={22} /></span>
+                      <span className="stack-name">{s.n}</span>
+                    </div>
+                  </Reveal>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   PROJECTS — Tajmirul numbered list style
+   PROJECTS
 ───────────────────────────────────────────────────────────────── */
 function ProjectsSection() {
   const [open, setOpen] = useState(false);
@@ -770,7 +1159,7 @@ function ProjectsSection() {
         <a href={DATA.github} target="_blank" rel="noreferrer" className="more-circle">
           <PlusIco s={18} /><span>More on<br />GitHub</span>
         </a>
-        <div style={{ fontFamily: "var(--mono)", fontSize: "9px", color: "var(--tx)", letterSpacing: ".08em" }}>
+        <div style={{ fontFamily:"var(--mono)", fontSize:"9px", color:"var(--tx)", letterSpacing:".08em" }}>
           // github.com/RebEmnacin
         </div>
       </div>
@@ -782,23 +1171,22 @@ function ProjectsSection() {
    FLOATING NAV
 ───────────────────────────────────────────────────────────────── */
 const NAV_ITEMS = [
-  { id: "home",     I: HomeIco,    lbl: "Home"     },
-  { id: "projects", I: MonitorIco, lbl: "Projects"  },
-  { id: "certs",    I: StarIco,    lbl: "Certs"    },
-  { id: "stack",    I: UserIco,    lbl: "Stack"    },
-  { id: "contact",  I: MailIco,    lbl: "Contact"  },
+  { id:"home",     I:HomeIco,    lbl:"Home"    },
+  { id:"projects", I:MonitorIco, lbl:"Projects" },
+  { id:"certs",    I:StarIco,    lbl:"Certs"   },
+  { id:"stack",    I:UserIco,    lbl:"Stack"   },
+  { id:"contact",  I:MailIco,    lbl:"Contact" },
 ];
 function FloatingNav({ onNav, onOpenChange, activeSection }) {
   const [open, setOpen] = useState(false);
   const toggle = (v) => { setOpen(v); onOpenChange?.(v); };
-  const handleNav = (id) => { onNav(id); toggle(false); };
   return (
     <div className="fnav">
       {open && <button className="fnav-close" onClick={() => toggle(false)}><XIco s={16} /></button>}
       <div className={`fnav-items${open ? " open" : ""}`}>
         {NAV_ITEMS.map(item => (
           <div key={item.id} className="fnav-item">
-            <button className={`fnav-btn${activeSection === item.id ? " active" : ""}`} onClick={() => handleNav(item.id)}>
+            <button className={`fnav-btn${activeSection === item.id ? " active" : ""}`} onClick={() => { onNav(item.id); toggle(false); }}>
               <item.I s={16} />
             </button>
             <span className="fnav-lbl">{item.lbl}</span>
@@ -811,7 +1199,7 @@ function FloatingNav({ onNav, onOpenChange, activeSection }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   INTRO PANEL (Panel 1)
+   INTRO PANEL
 ───────────────────────────────────────────────────────────────── */
 function IntroPanel({ goScroll }) {
   return (
@@ -819,9 +1207,8 @@ function IntroPanel({ goScroll }) {
       <div className="p1-left">
         <div className="p1-eyebrow">Jolts · Reb Emnacin</div>
         <h1 className="p1-title">
-          Full<br />
-          <span>Stack</span><br />
-          <span className="solid">Dev</span>
+          <span className="p1-line1">Full Stack</span>
+          <span className="p1-line2 solid">Developer</span>
         </h1>
         <div className="p1-pills">
           <a href={DATA.email}    className="p1-pill"><MailIco s={12} /> Gmail</a>
@@ -845,7 +1232,7 @@ function IntroPanel({ goScroll }) {
 }
 
 /* ─────────────────────────────────────────────────────────────────
-   HERO INTRO (Panel 2 top)
+   HERO INTRO
 ───────────────────────────────────────────────────────────────── */
 function HeroIntro({ goScroll }) {
   return (
@@ -856,9 +1243,7 @@ function HeroIntro({ goScroll }) {
       <div className="hero2-text">
         <Reveal delay={0}><div className="fsd-badge"><ZapIco s={11} /> Full Stack Developer</div></Reveal>
         <Reveal delay={60}><div className="status-pill"><span className="sdot" /> {DATA.status}</div></Reveal>
-        <Reveal delay={120}>
-          <h1 className="hero2-name">Hi, I'm <em className="solid">Reb</em></h1>
-        </Reveal>
+        <Reveal delay={120}><h1 className="hero2-name">Hi, I'm <em>Reb</em></h1></Reveal>
         <Reveal delay={180}><p className="hero-bio">{DATA.bio}</p></Reveal>
         <Reveal delay={240}>
           <div className="cta-row">
@@ -885,24 +1270,25 @@ function ScrollPanel({ goScroll }) {
     <div className="sp-inner">
       <HeroIntro goScroll={goScroll} />
 
-      {/* PROJECTS */}
-
-      <Reveal><div className="eyebrow">Portfolio</div><h2 className="pg-title">Selected <em>Work</em></h2></Reveal>
+      <Reveal><div id="sec-projects" /><div className="eyebrow">Portfolio</div><h2 className="pg-title">Selected <em>Work</em></h2></Reveal>
       <ProjectsSection />
 
-      {/* CERTS */}
+      {/* FIX 5: 3D cert slider */}
+      <Reveal><div id="sec-certs" /><div className="eyebrow">Credentials</div><h2 className="pg-title">My <em>Certifications</em></h2></Reveal>
+      <CertSlider />
 
-      <Reveal><div className="eyebrow">Credentials</div><h2 className="pg-title">My <em>Certifications</em></h2></Reveal>
-      <CertsScroller />
-
-      {/* STACK */}
-
-      <Reveal><div className="eyebrow">Skills</div><h2 className="pg-title">My <em>Stack</em></h2></Reveal>
+      {/* FIX 2: Stack side-by-side — no extra heading needed, it's inside StackSection */}
+      <div id="sec-stack" style={{ marginTop:"100px" }} />
       <StackSection />
 
-      {/* CONTACT */}
-
-      <Reveal><div className="eyebrow">Let's Talk</div><h2 className="pg-title">Get in <em>Touch</em></h2></Reveal>
+      {/* FIX 3: Get in Touch centered */}
+      <div id="sec-contact" style={{ marginTop:"100px" }} />
+      <Reveal>
+        <div className="contact-heading-wrap">
+          <div className="eyebrow">Let's Talk</div>
+          <h2 className="pg-title">Get in <em>Touch</em></h2>
+        </div>
+      </Reveal>
 
       <div className="contact-cta">
         <Reveal><p className="cta-label">Have a project in mind?</p></Reveal>
@@ -917,9 +1303,9 @@ function ScrollPanel({ goScroll }) {
         </div>
       </div>
 
-      <div style={{ textAlign: "center", marginTop: "80px", paddingTop: "40px", borderTop: "var(--ink)" }}>
+      <div style={{ textAlign:"center", marginTop:"80px", paddingTop:"40px", borderTop:"var(--ink)" }}>
         <button className="footer-back" onClick={() => goScroll("home")}>↑ Back to Top</button>
-        <div style={{ fontFamily: "var(--mono)", fontSize: "8px", color: "var(--tx)", marginTop: "20px", letterSpacing: ".12em", textTransform: "uppercase" }}>
+        <div style={{ fontFamily:"var(--mono)", fontSize:"8px", color:"var(--tx)", marginTop:"20px", letterSpacing:".12em", textTransform:"uppercase" }}>
           jolts.dev · {new Date().getFullYear()}
         </div>
       </div>
@@ -935,7 +1321,6 @@ export default function App() {
   const [navOpen, setNavOpen] = useState(false);
   const [scrollPct, setScrollPct] = useState(0);
   const [activeSection, setActiveSection] = useState("home");
-  const [cursorHover, setCursorHover] = useState(false);
   const scrollRef = useRef(null);
   const lockRef = useRef(false);
 
@@ -948,7 +1333,7 @@ export default function App() {
     setPanel("scroll");
     setTimeout(() => {
       const el = document.getElementById(`sec-${sectionId}`);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      if (el) el.scrollIntoView({ behavior:"smooth" });
       else if (scrollRef.current) scrollRef.current.scrollTop = 0;
     }, 900);
   }, []);
@@ -975,23 +1360,14 @@ export default function App() {
   }, [panel, goScroll]);
 
   useEffect(() => {
-    const h = (e) => {
-      document.documentElement.style.setProperty("--mx", `${e.clientX}px`);
-      document.documentElement.style.setProperty("--my", `${e.clientY}px`);
-    };
-    window.addEventListener("mousemove", h);
-    return () => window.removeEventListener("mousemove", h);
-  }, []);
-
-  useEffect(() => {
     const sp = scrollRef.current;
     const update = () => {
       if (panel === "home") { setScrollPct(0); setActiveSection("home"); return; }
       if (!sp) return;
       const max = sp.scrollHeight - sp.clientHeight;
       setScrollPct(max > 0 ? Math.min(100, (sp.scrollTop / max) * 100) : 0);
-      const secs = ["hero", "projects", "certs", "stack", "contact"];
-      const idMap = { hero: "home", projects: "projects", certs: "certs", stack: "stack", contact: "contact" };
+      const secs = ["hero","projects","certs","stack","contact"];
+      const idMap = { hero:"home", projects:"projects", certs:"certs", stack:"stack", contact:"contact" };
       for (let i = secs.length - 1; i >= 0; i--) {
         const el = document.getElementById(`sec-${secs[i]}`);
         if (el && el.getBoundingClientRect().top <= 160) { setActiveSection(idMap[secs[i]]); break; }
@@ -1005,14 +1381,18 @@ export default function App() {
   return (
     <>
       <style>{CSS}</style>
-      <div className="glow" />
-      <div className="progress-track">
-        <div className="progress-fill" style={{ width: `${scrollPct}%` }} />
+      <ParticleBackground />
+      <CustomCursor />
+
+      <div className="mini-progress">
+        <div className="mini-progress-track">
+          <div className="mini-progress-fill" style={{ width:`${scrollPct}%` }} />
+        </div>
       </div>
-      
+
       <FloatingNav onNav={handleNav} onOpenChange={setNavOpen} activeSection={activeSection} />
       <div
-        className={`stage${panel === "scroll" ? " panned" : ""}`}
+        className="stage"
         style={{ transform: panel === "scroll" ? "translateX(-100vw)" : "translateX(0)" }}
       >
         <div className="panel-home"><IntroPanel goScroll={goScroll} /></div>
