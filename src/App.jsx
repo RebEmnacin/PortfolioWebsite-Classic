@@ -54,7 +54,7 @@ const DATA = {
   github: "https://github.com/RebEmnacin",
   linkedin: "https://www.linkedin.com/in/reb-emnacin-a9752b404/",
   telegram: "https://t.me/RebEmnacin",
-  email: "mailto:reb@email.com",
+  email: "mailto:rebqemnacin@gmail.com",
   school: "New Era University", degree: "BS Computer Science", year: "2024–present",
 
   stack: {
@@ -82,10 +82,10 @@ const DATA = {
   },
 
   certs: [
-    { org: "IBM · Cognitive Class", c: "#ffc300", I: DbIco,    title: "SQL and Relational Databases 101",        url: "https://courses.cognitiveclass.ai/certificates/248159af4c5846d4ab620d5e39948f5e" },
-    { org: "Oracle Cloud",          c: "#003566", I: CloudIco, title: "OCI 2025 Certified Foundations Associate",  url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=6941EF3CB5EB7C0833D64EF5BF8A257C21D53C11A362E7DD0DAB73518C59AF58" },
-    { org: "Oracle Cloud",          c: "#003566", I: BarIco,   title: "Oracle Data Platform Foundations Associate", url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=FC6BF38C8A976E45FFE6F233D652B85BF2EF4C7AEBBE068491AA129A001DBC33" },
-    { org: "Oracle Cloud",          c: "#003566", I: BotIco,   title: "OCI AI Foundations Associate (2025)",       url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=71CC11DCFE431802B2DE719C81F52F2AF2478ABAB7563607DBE6DB72E5B607C0" },
+    { org: "IBM · Cognitive Class", c: "#ffcb05", I: DbIco,    title: "SQL and Relational Databases 101",        url: "https://courses.cognitiveclass.ai/certificates/248159af4c5846d4ab620d5e39948f5e" },
+    { org: "Oracle Cloud",          c: "#00719a", I: CloudIco, title: "OCI 2025 Certified Foundations Associate",  url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=6941EF3CB5EB7C0833D64EF5BF8A257C21D53C11A362E7DD0DAB73518C59AF58" },
+    { org: "Oracle Cloud",          c: "#00719a", I: BarIco,   title: "Oracle Data Platform Foundations Associate", url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=FC6BF38C8A976E45FFE6F233D652B85BF2EF4C7AEBBE068491AA129A001DBC33" },
+    { org: "Oracle Cloud",          c: "#00719a", I: BotIco,   title: "OCI AI Foundations Associate (2025)",       url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=71CC11DCFE431802B2DE719C81F52F2AF2478ABAB7563607DBE6DB72E5B607C0" },
   ],
 
   projects: [
@@ -105,18 +105,21 @@ html { scroll-behavior:smooth; }
 html, body { height:100%; -webkit-font-smoothing:antialiased; }
 
 :root {
-  --bg:#0a0a0a;
-  --bg2:#111111;
-  --bg3:#1a1a1a;
-  --border:#222;
-  --border2:#333;
-  --tx:#555;
-  --txh:#f5f5f0;
-  --txm:#888;
-  --ac:#ffc300;
-  --acd:#ffd60a;
-  --acbg:rgba(255,195,0,.06);
-  --acborder:rgba(255,195,0,.3);
+  /* Sunny Sea Adventure palette: 00719a / 2dbec0 / 024456 / ffcb05 / fff200 */
+  --bg:#021820;
+  --bg2:#04303c;
+  --bg3:#063e4c;
+  --border:#0d4a59;
+  --border2:#0f5d70;
+  --tx:#5fa0ad;
+  --txh:#f3fdfb;
+  --txm:#7fb9c4;
+  --ac:#ffcb05;
+  --acd:#fff200;
+  --sea:#2dbec0;
+  --sea2:#00719a;
+  --acbg:rgba(255,203,5,.07);
+  --acborder:rgba(255,203,5,.32);
   --sh:0 4px 40px rgba(0,0,0,.8);
   --shl:0 20px 60px rgba(0,0,0,.9);
   --sans:'Syne',sans-serif;
@@ -124,13 +127,26 @@ html, body { height:100%; -webkit-font-smoothing:antialiased; }
   --mono:'DM Mono',monospace;
   --ease-out-expo:cubic-bezier(.16,1,.3,1);
   --ease-bounce:cubic-bezier(.34,1.56,.64,1);
-  --ink:2px solid #222;
+  --ink:none;
 }
 
-body { background:var(--bg); font-family:var(--sans); color:var(--tx); overflow-x:hidden; }
-button { cursor:pointer; font-family:var(--sans); }
+body { background:var(--bg); font-family:var(--sans); color:var(--tx); overflow-x:hidden; cursor:none; }
+button { cursor:none; font-family:var(--sans); }
+a, input, textarea { cursor:none; }
 a { text-decoration:none; color:inherit; }
 input, textarea { font-family:var(--sans); }
+
+/* ── CUSTOM THEMED CURSOR ── */
+.cursor-dot { position:fixed; top:var(--my,50%); left:var(--mx,50%); width:7px; height:7px;
+  border-radius:50%; background:var(--ac); transform:translate(-50%,-50%);
+  pointer-events:none; z-index:9999; transition:width .15s ease,height .15s ease,background .15s ease; }
+.cursor-dot.hover { width:5px; height:5px; background:var(--bg); }
+.cursor-ring { position:fixed; top:var(--my,50%); left:var(--mx,50%); width:30px; height:30px;
+  border-radius:50%; border:1.5px solid var(--ac); transform:translate(-50%,-50%);
+  pointer-events:none; z-index:9998;
+  transition:top .12s ease-out, left .12s ease-out, width .2s ease, height .2s ease, border-color .2s ease, background .2s ease; }
+.cursor-ring.hover { width:48px; height:48px; background:var(--acbg); border-color:var(--acd); }
+@media(max-width:960px){ .cursor-dot,.cursor-ring{ display:none; } body,button,a,input,textarea{ cursor:auto; } }
 
 /* ── GRAIN TEXTURE OVERLAY ── */
 body::before {
@@ -141,7 +157,7 @@ body::before {
 
 /* ── CURSOR GLOW ── */
 .glow { position:fixed; inset:0; pointer-events:none; z-index:1;
-  background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%), rgba(255,195,0,.04), transparent 60%); }
+  background:radial-gradient(500px circle at var(--mx,50%) var(--my,50%), rgba(255,203,5,.05), transparent 60%); }
 
 /* ── PROGRESS BAR ── */
 .progress-track { position:fixed; top:0; left:0; right:0; height:2px; z-index:900; background:#111; }
@@ -179,14 +195,10 @@ body::before {
    PANEL 1 — LANDING
 ══════════════════════════════════════════════════════════ */
 .p1-wrap { min-height:100vh; display:flex; align-items:center;
-  justify-content:space-between; padding:0 80px 0 120px; position:relative;
-  border-bottom:var(--ink); }
+  justify-content:center; gap:100px; padding:0 64px; max-width:1360px;
+  margin:0 auto; position:relative; }
 
-/* vertical rule — Tajmirul signature grid line */
-.p1-wrap::after { content:''; position:absolute; left:calc(120px + 580px + 40px);
-  top:10%; bottom:10%; width:1px; background:var(--border2); pointer-events:none; }
-
-.p1-left { flex:0 0 auto; max-width:580px; }
+.p1-left { flex:0 0 auto; max-width:560px; }
 
 .p1-eyebrow { font-family:var(--mono); font-size:10px; color:var(--ac);
   letter-spacing:.3em; text-transform:uppercase; margin-bottom:24px;
@@ -215,19 +227,17 @@ body::before {
 .enter-btn-wrap { opacity:0; animation:fadeUp .5s var(--ease-out-expo) .48s both; }
 
 /* ── PROFILE PHOTO — panel 1 right ── */
-.profile-seam { position:absolute; top:50%; right:80px;
-  width:min(440px,38vw); height:min(440px,38vw);
-  z-index:10; pointer-events:none; transform:translateY(-50%);
-  transition:right 1s cubic-bezier(.77,0,.175,1);
+.profile-seam { flex:0 0 auto;
+  width:min(420px,34vw); height:min(420px,34vw);
+  z-index:10; pointer-events:none;
   animation:floatY 6s ease-in-out infinite; }
-.stage.panned .profile-seam { right:calc(100vw - 120px); }
 .profile-seam img { width:100%; height:100%; object-fit:cover; border-radius:50%;
   border:3px solid var(--ac);
-  box-shadow:6px 6px 0 var(--ac), 0 0 60px rgba(255,195,0,.15), var(--shl);
+  box-shadow:6px 6px 0 var(--ac), 0 0 60px rgba(255,203,5,.18), var(--shl);
   display:block; }
 @keyframes floatY {
-  0%,100% { transform:translateY(-50%); }
-  50%     { transform:translateY(calc(-50% - 18px)); }
+  0%,100% { transform:translateY(0); }
+  50%     { transform:translateY(-18px); }
 }
 
 /* ── SCROLL CUE ── */
@@ -283,22 +293,22 @@ body::before {
 @keyframes fadeLeft { from{opacity:0;transform:translateX(40px)} to{opacity:1;transform:translateX(0)} }
 
 .reveal { opacity:0; transform:translateY(40px);
-  transition:opacity .7s var(--ease-out-expo), transform .7s var(--ease-out-expo); }
+  transition:opacity .3s var(--ease-out-expo), transform .3s var(--ease-out-expo); }
 .reveal.out { opacity:0; transform:translateY(-24px);
-  transition:opacity .35s ease, transform .35s ease; }
+  transition:opacity .5s ease, transform .5s ease; }
 .reveal.vis { opacity:1; transform:translateY(0); }
 
 /* ══════════════════════════════════════════════════════════
    HERO #2 — HI I'M REB  (full viewport, centered)
 ══════════════════════════════════════════════════════════ */
-.hero2-wrap { display:flex; align-items:center; justify-content:space-between;
-  gap:80px; height:100vh; border-bottom:var(--ink); }
+.hero2-wrap { display:flex; align-items:center; justify-content:center;
+  gap:100px; height:100vh; max-width:1360px; margin:0 auto; padding:0 64px; }
 
 .hero2-photo { flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
 .hero2-photo img { width:min(400px,36vw); height:min(400px,36vw);
   object-fit:cover; border-radius:50%;
   border:3px solid var(--ac);
-  box-shadow:6px 6px 0 var(--ac), 0 0 60px rgba(255,195,0,.12), var(--shl);
+  box-shadow:6px 6px 0 var(--ac), 0 0 60px rgba(255,203,5,.15), var(--shl);
   animation:floatY2 6s ease-in-out infinite; }
 @keyframes floatY2 {
   0%,100% { transform:translateY(0); }
@@ -446,6 +456,7 @@ body::before {
 .scert-wrap { position:relative; overflow:hidden; cursor:grab; border:var(--ink); }
 .scert-track { display:flex; gap:0; padding:0; overflow-x:auto; scrollbar-width:none; }
 .scert-track::-webkit-scrollbar { display:none; }
+.scert-reveal { flex-shrink:0; }
 .scert-card { background:var(--bg2); border-right:var(--ink);
   flex-shrink:0; width:300px; display:flex; flex-direction:column;
   transition:background .25s ease; }
@@ -495,62 +506,20 @@ body::before {
   white-space:nowrap; letter-spacing:.02em; }
 
 /* ══════════════════════════════════════════════════════════
-   CONTACT
+   CONTACT — "have a project in mind?" style
 ══════════════════════════════════════════════════════════ */
-.ctc-grid { display:grid; grid-template-columns:repeat(3,1fr);
-  gap:0; margin-bottom:40px; border:var(--ink); }
-.ctc-link { display:flex; align-items:center; gap:14px;
-  border-right:var(--ink); padding:24px 20px; color:var(--txh);
-  transition:all .25s ease; position:relative; overflow:hidden; }
-.ctc-link:last-child { border-right:none; }
-.ctc-link::before { content:''; position:absolute; inset:0;
-  background:var(--acbg); transform:translateY(101%);
-  transition:transform .35s cubic-bezier(.83,0,.17,1); }
-.ctc-link:hover::before { transform:translateY(0); }
-.ctc-link:hover { color:var(--ac); }
-.ctc-ico { width:40px; height:40px; flex-shrink:0;
-  border:1px solid var(--border2); display:flex; align-items:center;
-  justify-content:center; color:var(--ac); position:relative; z-index:1;
-  transition:all .25s; }
-.ctc-link:hover .ctc-ico { border-color:var(--ac); box-shadow:2px 2px 0 var(--ac); }
-.ctc-info { position:relative; z-index:1; }
-.ctc-info h3 { font-size:12px; font-weight:700; color:var(--txh); margin-bottom:3px;
-  transition:color .2s; }
-.ctc-link:hover .ctc-info h3 { color:var(--ac); }
-.ctc-info p { font-family:var(--mono); font-size:9px; color:var(--tx); letter-spacing:.04em; }
-.ctc-arr { margin-left:auto; color:var(--tx); opacity:.4;
-  transition:all .25s; position:relative; z-index:1; }
-.ctc-link:hover .ctc-arr { transform:translateX(4px); color:var(--ac); opacity:1; }
-
-/* Contact form */
-.form-card { border:var(--ink); padding:40px; }
-.form-card h2 { font-family:var(--display); font-size:24px; color:var(--txh);
-  margin-bottom:6px; text-transform:uppercase; letter-spacing:-.5px; }
-.form-card > p { font-size:12px; color:var(--tx); margin-bottom:28px;
-  border-left:2px solid var(--ac); padding-left:14px; }
-.form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
-.fg { margin-bottom:12px; }
-.fl { display:block; font-family:var(--mono); font-size:8px; font-weight:700;
-  letter-spacing:.18em; text-transform:uppercase; color:var(--tx); margin-bottom:6px; }
-.fi { width:100%; padding:11px 14px; background:var(--bg2);
-  border:1px solid var(--border2); border-radius:0;
-  font-size:12px; color:var(--txh); outline:none;
-  transition:border-color .2s, box-shadow .2s; }
-.fi::placeholder { color:var(--tx); opacity:.4; }
-.fi:focus { border-color:var(--ac); box-shadow:2px 2px 0 var(--ac); }
-textarea.fi { resize:vertical; min-height:110px; }
-.fsub { width:100%; background:var(--ac); color:#000;
-  font-weight:700; font-size:12px; letter-spacing:.06em; padding:13px; border:none;
-  border-radius:0; transition:all .2s ease; margin-top:4px;
-  box-shadow:4px 4px 0 #000; position:relative; overflow:hidden; }
-.fsub::before { content:''; position:absolute; inset:0;
-  background:#000; transform:translateX(-101%);
-  transition:transform .35s cubic-bezier(.83,0,.17,1); }
-.fsub:hover::before { transform:translateX(0); }
-.fsub:hover { box-shadow:2px 2px 0 var(--ac); transform:translate(2px,2px); color:var(--ac); }
-.fsub span { position:relative; z-index:1; }
-.fsub.ok { background:#22c55e; box-shadow:4px 4px 0 #000; }
-.fsub.ok::before { display:none; }
+.contact-cta { display:flex; flex-direction:column; align-items:center;
+  text-align:center; padding:60px 20px 40px; gap:18px; }
+.cta-label { font-family:var(--mono); font-size:13px; color:var(--txm);
+  letter-spacing:.06em; }
+.cta-email { font-family:var(--display); font-size:clamp(28px,5.2vw,56px);
+  color:var(--txh); letter-spacing:-1px; text-transform:lowercase;
+  padding:6px 4px; border-bottom:2px solid transparent;
+  transition:color .25s ease, border-color .25s ease; }
+.cta-email:hover { color:var(--ac); border-color:var(--ac); }
+.cta-credit { font-family:var(--mono); font-size:11px; color:var(--tx);
+  letter-spacing:.08em; margin-top:6px; }
+.cta-social { display:flex; gap:10px; margin-top:8px; }
 
 /* ── FOOTER ── */
 .footer-back { display:inline-flex; align-items:center; gap:8px;
@@ -601,18 +570,17 @@ textarea.fi { resize:vertical; min-height:110px; }
 /* ── RESPONSIVE ── */
 @media(max-width:1200px){
   .sp-inner { padding:0 60px 100px 100px; }
-  .p1-wrap { padding:0 60px 0 100px; }
+  .p1-wrap { padding:0 48px; gap:60px; }
+  .hero2-wrap { padding:0 48px; gap:60px; }
 }
 @media(max-width:960px){
-  .p1-wrap { padding:0 32px 0 72px; flex-direction:column; justify-content:center; gap:40px; }
-  .p1-wrap::after { display:none; }
-  .profile-seam { display:none; }
+  .p1-wrap { padding:0 32px; flex-direction:column; justify-content:center; gap:40px; }
+  .profile-seam { width:min(280px,60vw); height:min(280px,60vw); }
   .stack-row { grid-template-columns:1fr; gap:12px; }
-  .ctc-grid { grid-template-columns:1fr; border:var(--ink); }
-  .ctc-link { border-right:none; border-bottom:var(--ink); }
-  .ctc-link:last-child { border-bottom:none; }
+  .ctc-grid { grid-template-columns:1fr; }
+  .ctc-link { border-right:none; }
   .sp-inner { padding:0 40px 80px 72px; }
-  .hero2-wrap { flex-direction:column; justify-content:center; gap:36px; height:auto; min-height:100vh; padding:80px 0 60px; }
+  .hero2-wrap { flex-direction:column; justify-content:center; gap:36px; height:auto; min-height:100vh; padding:80px 32px 60px; }
   .hero2-photo img { width:240px; height:240px; }
   .proj-grid { flex-direction:column; }
   .pcard { flex-direction:column; align-items:flex-start; gap:12px; }
@@ -702,17 +670,19 @@ function CertsScroller() {
           {DATA.certs.map((c, i) => {
             const I = c.I;
             return (
-              <a key={i} href={c.url} target="_blank" rel="noreferrer" className="scert-card">
-                <div className="scert-banner" style={{ background: `linear-gradient(135deg,${c.c}18,${c.c}04)` }}>
-                  <I s={40} />
-                  <span className="scert-chip" style={{ background: c.c }}>{c.org}</span>
-                </div>
-                <div className="scert-body">
-                  <h3>{c.title}</h3>
-                  <div className="scert-sub">{c.org}</div>
-                  <span className="scert-verify"><CheckIco s={10} /> Verify <ExtIco s={9} /></span>
-                </div>
-              </a>
+              <Reveal key={i} delay={i * 60} className="scert-reveal">
+                <a href={c.url} target="_blank" rel="noreferrer" className="scert-card">
+                  <div className="scert-banner" style={{ background: `linear-gradient(135deg,${c.c}18,${c.c}04)` }}>
+                    <I s={40} />
+                    <span className="scert-chip" style={{ background: c.c }}>{c.org}</span>
+                  </div>
+                  <div className="scert-body">
+                    <h3>{c.title}</h3>
+                    <div className="scert-sub">{c.org}</div>
+                    <span className="scert-verify"><CheckIco s={10} /> Verify <ExtIco s={9} /></span>
+                  </div>
+                </a>
+              </Reveal>
             );
           })}
         </div>
@@ -729,23 +699,23 @@ function CertsScroller() {
 function StackSection() {
   return (
     <div className="stack-wrap">
-      {Object.entries(DATA.stack).map(([cat, skills], i) => (
-        <Reveal key={cat} delay={i * 60}>
-          <div className="stack-row">
-            <div className="stack-cat">{cat}</div>
-            <div className="stack-items">
-              {skills.map(s => {
-                const I = s.I;
-                return (
-                  <div key={s.n} className="stack-chip">
+      {Object.entries(DATA.stack).map(([cat, skills]) => (
+        <div className="stack-row" key={cat}>
+          <div className="stack-cat">{cat}</div>
+          <div className="stack-items">
+            {skills.map((s, i) => {
+              const I = s.I;
+              return (
+                <Reveal key={s.n} delay={i * 50} className="stack-chip-reveal">
+                  <div className="stack-chip">
                     <span className="stack-sq" style={{ color: s.fg }}><I s={16} /></span>
                     <span className="stack-name">{s.n}</span>
                   </div>
-                );
-              })}
-            </div>
+                </Reveal>
+              );
+            })}
           </div>
-        </Reveal>
+        </div>
       ))}
     </div>
   );
@@ -779,18 +749,20 @@ function ProjectsSection() {
         {DATA.projects.map((p, i) => {
           const PI = p.I;
           return (
-            <a key={i} href={p.url} target="_blank" rel="noreferrer" className="pcard">
-              <div className="pcard-left">
-                <span className="pcard-num">_{String(i + 1).padStart(2, "0")}.</span>
-                <span className="pcard-icon"><PI s={20} /></span>
-                <div className="pcard-info">
-                  <h3>{p.n}</h3>
-                  <p>{p.d}</p>
+            <Reveal key={i} delay={i * 60}>
+              <a href={p.url} target="_blank" rel="noreferrer" className="pcard">
+                <div className="pcard-left">
+                  <span className="pcard-num">_{String(i + 1).padStart(2, "0")}.</span>
+                  <span className="pcard-icon"><PI s={20} /></span>
+                  <div className="pcard-info">
+                    <h3>{p.n}</h3>
+                    <p>{p.d}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="ptags">{p.tags.map(t => <span key={t} className="ptag">{t}</span>)}</div>
-              <span className="pcard-arr"><ArrowIco s={16} /></span>
-            </a>
+                <div className="ptags">{p.tags.map(t => <span key={t} className="ptag">{t}</span>)}</div>
+                <span className="pcard-arr"><ArrowIco s={16} /></span>
+              </a>
+            </Reveal>
           );
         })}
       </div>
@@ -909,94 +881,41 @@ function HeroIntro({ goScroll }) {
    SCROLL PANEL
 ───────────────────────────────────────────────────────────────── */
 function ScrollPanel({ goScroll }) {
-  const [sent, setSent] = useState(false);
-  const [f, setF] = useState({ name: "", email: "", msg: "" });
-  const sub = (e) => {
-    e.preventDefault(); setSent(true);
-    setTimeout(() => setSent(false), 4000);
-    setF({ name: "", email: "", msg: "" });
-  };
   return (
     <div className="sp-inner">
       <HeroIntro goScroll={goScroll} />
 
       {/* PROJECTS */}
-      <div className="sec-divider" id="sec-projects">
-        <span className="sec-num">01</span>
-        <span className="sec-divider-lbl">Portfolio</span>
-        <div className="sec-divider-line" />
-      </div>
+
       <Reveal><div className="eyebrow">Portfolio</div><h2 className="pg-title">Selected <em>Work</em></h2></Reveal>
-      <Reveal delay={80}><ProjectsSection /></Reveal>
+      <ProjectsSection />
 
       {/* CERTS */}
-      <div className="sec-divider" id="sec-certs">
-        <span className="sec-num">02</span>
-        <span className="sec-divider-lbl">Credentials</span>
-        <div className="sec-divider-line" />
-      </div>
+
       <Reveal><div className="eyebrow">Credentials</div><h2 className="pg-title">My <em>Certifications</em></h2></Reveal>
-      <Reveal delay={80}><CertsScroller /></Reveal>
+      <CertsScroller />
 
       {/* STACK */}
-      <div className="sec-divider" id="sec-stack">
-        <span className="sec-num">03</span>
-        <span className="sec-divider-lbl">Skills</span>
-        <div className="sec-divider-line" />
-      </div>
+
       <Reveal><div className="eyebrow">Skills</div><h2 className="pg-title">My <em>Stack</em></h2></Reveal>
       <StackSection />
 
       {/* CONTACT */}
-      <div className="sec-divider" id="sec-contact">
-        <span className="sec-num">04</span>
-        <span className="sec-divider-lbl">Contact</span>
-        <div className="sec-divider-line" />
-      </div>
+
       <Reveal><div className="eyebrow">Let's Talk</div><h2 className="pg-title">Get in <em>Touch</em></h2></Reveal>
 
-      <Reveal delay={80}>
-        <div className="ctc-grid">
-          {[
-            { href: DATA.github,   I: GhIco,   title: "GitHub",   sub: "github.com/RebEmnacin"       },
-            { href: DATA.linkedin, I: LiIco,   title: "LinkedIn", sub: "linkedin.com/in/reb-emnacin"  },
-            { href: DATA.email,    I: MailIco, title: "Email",    sub: "Drop me a message"            },
-          ].map(({ href, I, title, sub: s }) => (
-            <a key={title} href={href} target="_blank" rel="noreferrer" className="ctc-link">
-              <div className="ctc-ico"><I s={18} /></div>
-              <div className="ctc-info"><h3>{title}</h3><p>{s}</p></div>
-              <span className="ctc-arr"><ArrowIco s={12} /></span>
-            </a>
-          ))}
+      <div className="contact-cta">
+        <Reveal><p className="cta-label">Have a project in mind?</p></Reveal>
+        <Reveal delay={60}>
+          <a href={DATA.email} className="cta-email">{DATA.email.replace("mailto:", "")}</a>
+        </Reveal>
+        <Reveal delay={120}><p className="cta-credit">Designed &amp; built by {DATA.name}</p></Reveal>
+        <div className="cta-social">
+          <Reveal delay={160}><a href={DATA.github} target="_blank" rel="noreferrer" className="soc-link"><GhIco s={13} /> GitHub</a></Reveal>
+          <Reveal delay={200}><a href={DATA.linkedin} target="_blank" rel="noreferrer" className="soc-link"><LiIco s={13} /> LinkedIn</a></Reveal>
+          <Reveal delay={240}><a href={DATA.telegram} target="_blank" rel="noreferrer" className="soc-link"><TgIco s={13} /> Telegram</a></Reveal>
         </div>
-      </Reveal>
-
-      <Reveal delay={160}>
-        <form onSubmit={sub} className="form-card">
-          <h2>Say Hello 👋</h2>
-          <p>Fill out the form and I'll get back to you as soon as possible.</p>
-          <div className="form-row">
-            <div className="fg">
-              <label className="fl">Your Name</label>
-              <input className="fi" type="text" placeholder="Juan dela Cruz"
-                value={f.name} onChange={e => setF({ ...f, name: e.target.value })} required />
-            </div>
-            <div className="fg">
-              <label className="fl">Your Email</label>
-              <input className="fi" type="email" placeholder="juan@email.com"
-                value={f.email} onChange={e => setF({ ...f, email: e.target.value })} required />
-            </div>
-          </div>
-          <div className="fg">
-            <label className="fl">Message</label>
-            <textarea className="fi" placeholder="What's on your mind?"
-              value={f.msg} onChange={e => setF({ ...f, msg: e.target.value })} required />
-          </div>
-          <button type="submit" className={`fsub${sent ? " ok" : ""}`}>
-            <span>{sent ? "✓ Sent! I'll be in touch soon." : "Send Message ⚡"}</span>
-          </button>
-        </form>
-      </Reveal>
+      </div>
 
       <div style={{ textAlign: "center", marginTop: "80px", paddingTop: "40px", borderTop: "var(--ink)" }}>
         <button className="footer-back" onClick={() => goScroll("home")}>↑ Back to Top</button>
@@ -1016,6 +935,7 @@ export default function App() {
   const [navOpen, setNavOpen] = useState(false);
   const [scrollPct, setScrollPct] = useState(0);
   const [activeSection, setActiveSection] = useState("home");
+  const [cursorHover, setCursorHover] = useState(false);
   const scrollRef = useRef(null);
   const lockRef = useRef(false);
 
