@@ -83,7 +83,7 @@ const DATA = {
     ],
     Tools: [
       { n: "Figma",      I: FigmaIco, fg:"#b07cff" },
-      { n: "AI / Claude",I: BotIco,   fg:"#d97757" },
+      { n: "Claude",I: BotIco,   fg:"#d97757" },
     ],
   },
 
@@ -448,14 +448,15 @@ body::before {
 
 /* ── FLOATING NAV ── */
 .fnav { position:fixed; left:16px; top:50%; transform:translateY(-50%); z-index:600;
-  display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px 8px; }
-.fnav:has(.fnav-items.open) { background:rgba(255,255,255,.9); border:1px solid var(--border); border-radius:999px; box-shadow:3px 3px 0 #111110; }
+  display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px 8px;
+  overflow:visible; }
+.fnav:has(.fnav-items.open) { background:rgba(255,255,255,.9); border:1px solid var(--border); border-radius:999px; box-shadow:3px 3px 0 #111110; overflow:visible; }
 .fnav-trigger { width:36px; height:36px; border-radius:50%; border:1px solid var(--border2); background:transparent;
   display:flex; align-items:center; justify-content:center; color:var(--txm); transition:all .2s ease; }
 .fnav-trigger:hover { border-color:var(--ac); color:#000; background:var(--ac); box-shadow:2px 2px 0 #111110; }
-.fnav-items { display:flex; flex-direction:column; align-items:center; gap:8px; overflow:hidden;
+.fnav-items { display:flex; flex-direction:column; align-items:center; gap:8px; overflow:visible;
   max-height:0; opacity:0; transition:max-height .45s cubic-bezier(.16,1,.3,1), opacity .25s ease; pointer-events:none; }
-.fnav-items.open { max-height:400px; opacity:1; pointer-events:auto; }
+.fnav-items.open { max-height:400px; opacity:1; pointer-events:auto; overflow:visible; }
 .fnav-item { display:flex; align-items:center; position:relative; opacity:0; transform:translateX(-8px);
   transition:opacity .25s ease, transform .3s cubic-bezier(.34,1.56,.64,1); }
 .fnav-items.open .fnav-item { opacity:1; transform:translateX(0); }
@@ -476,6 +477,34 @@ body::before {
 .fnav-close { width:36px; height:36px; border-radius:50%; border:1px solid var(--border2); background:transparent;
   display:flex; align-items:center; justify-content:center; color:var(--txm); transition:all .2s ease; }
 .fnav-close:hover { border-color:#ef4444; color:#ef4444; box-shadow:2px 2px 0 #ef4444; }
+/* Layer 1 — pill box background (sits behind everything) */
+.fnav-pill-bg {
+  position:absolute; left:0; top:50%; transform:translateY(-50%);
+  height:36px; width:36px;
+  background:#fff; border:1px solid var(--border2);
+  border-radius:999px;
+  box-shadow:2px 2px 0 #111110;
+  pointer-events:none; z-index:0;
+  transition:width .35s cubic-bezier(.16,1,.3,1);
+}
+.fnav-item:hover .fnav-pill-bg { width:140px; }
+
+/* Layer 2 — label text (sits between pill bg and icon) */
+.fnav-pill-label {
+  position:absolute; left:44px; top:50%; transform:translateY(-50%);
+  font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--txh); white-space:nowrap;
+  pointer-events:none; z-index:1;
+  opacity:0;
+  transition:opacity .2s ease .1s;
+}
+.fnav-item:hover .fnav-pill-label { opacity:1; }
+
+/* Layer 3 — icon button (sits on top, always visible) */
+.fnav-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border2); background:transparent;
+  display:flex; align-items:center; justify-content:center; color:var(--txm); transition:all .2s ease;
+  position:relative; z-index:2; }
+.fnav-btn:hover,.fnav-btn.active { border-color:var(--ac); color:#000; background:var(--ac); box-shadow:2px 2px 0 #111110; }
 
 /* ── RESPONSIVE ── */
 @media(max-width:1200px){ .sp-inner{padding:0 60px 100px 100px} .p1-wrap,.hero2-wrap{padding:0 48px;gap:60px} .stack-title-col{flex:0 0 220px} }
@@ -715,9 +744,9 @@ function CertSlider() {
       // Everywhere else (the red-line margins on the sides) lets the page
       // scroll normally.
       const rect = el.getBoundingClientRect();
-      const zoneHalfWidth = rect.width * 0.22; // 22% of slider width on each side of center = ~44% total hot zone
+      const cardHalfWidth = 220; // half of the cert card's actual pixel width (card is 440px wide)
       const centerX = rect.left + rect.width / 2;
-      const inZone = Math.abs(e.clientX - centerX) <= zoneHalfWidth;
+      const inZone = Math.abs(e.clientX - centerX) <= cardHalfWidth;
       if (!inZone) return;
 
       const dir = e.deltaY > 0 ? 1 : -1;
@@ -886,18 +915,25 @@ function FloatingNav({ onNav, onOpenChange, activeSection }) {
   const toggle = (v) => { setOpen(v); onOpenChange?.(v); };
   return (
     <div className="fnav">
-      {open && <button className="fnav-close" onClick={() => toggle(false)}><XIco s={16}/></button>}
+      {!open && (
+        <button className="fnav-trigger" onClick={() => toggle(true)}>
+          <MenuIco s={16}/>
+        </button>
+      )}
       <div className={`fnav-items${open?" open":""}`}>
+        <button className="fnav-close" onClick={() => toggle(false)}><XIco s={16}/></button>
         {NAV_ITEMS.map(item => (
           <div key={item.id} className="fnav-item">
-            <button className={`fnav-btn${activeSection===item.id?" active":""}`} onClick={() => { onNav(item.id); toggle(false); }}>
+            <div className="fnav-pill-bg" />
+            <div className="fnav-pill-label">{item.lbl}</div>
+            <button
+              className={`fnav-btn${activeSection===item.id?" active":""}`}
+              onClick={() => { onNav(item.id); }}>
               <item.I s={16}/>
             </button>
-            <span className="fnav-lbl">{item.lbl}</span>
           </div>
         ))}
       </div>
-      {!open && <button className="fnav-trigger" onClick={() => toggle(true)}><MenuIco s={16}/></button>}
     </div>
   );
 }
