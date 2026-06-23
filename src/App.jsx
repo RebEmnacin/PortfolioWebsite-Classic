@@ -1053,17 +1053,16 @@ export default function App() {
     });
   }, []);
 
-  const handleCloseProjects = useCallback(() => {
-    const { x, y, r } = folderOrigin.current;
-    if (!document.startViewTransition) { setProjectsOpen(false); return; }
-    const t = document.startViewTransition(() => { flushSync(() => setProjectsOpen(false)); });
-    t.ready.then(() => {
-      document.documentElement.animate(
-        { clipPath: [`circle(${r}px at ${x}px ${y}px)`, `circle(0px at ${x}px ${y}px)`] },
-        { duration: 600, easing: "ease-in-out", pseudoElement: "::view-transition-old(root)" }
-      );
-    });
-  }, []);
+const handleCloseProjects = useCallback(() => {
+  const { x, y, r } = folderOrigin.current;
+  const overlay = document.getElementById("projects-overlay");
+  if (!overlay) { setProjectsOpen(false); return; }
+
+  overlay.animate(
+    { clipPath: [`circle(${r}px at ${x}px ${y}px)`, `circle(0px at ${x}px ${y}px)`] },
+    { duration: 600, easing: "cubic-bezier(.77,0,.175,1)", fill: "forwards" }
+  ).onfinish = () => setProjectsOpen(false);
+}, []);
 
   useEffect(() => {
     if (projectsOpen) {
@@ -1136,29 +1135,30 @@ export default function App() {
 
   return (
     <>
-      <style>{`::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal;}`}</style>
+      <style>{`::view-transition-old(root){animation:none;mix-blend-mode:normal;}::view-transition-new(root){animation:none;mix-blend-mode:normal;}`}</style>
       <style>{CSS}</style>
       <SparkleBackground hide={projectsOpen}/>
 
       {projectsOpen && (
-        <div style={{
+        <div id="projects-overlay" style={{
           position:"fixed", top:0, left:0,
           width:"100vw", height:"100vh",
           zIndex:2147483646,
           background:"#ffcb05",
           overflowY:"auto",
-          padding:"60px 80px 120px",
+          padding:"0",
           boxSizing:"border-box",
-          "--tx":"#ffffff",
-          "--txh":"#ffffff",
-          "--txm":"#ffffff",
-          "--border":"rgba(255,255,255,0.4)",
-          "--border2":"rgba(255,255,255,0.6)",
-          "--acbg":"rgba(255,255,255,0.15)",
-          "--acborder":"rgba(255,255,255,0.8)",
-          color:"#ffffff",
+          color:"#111110",
+          "--ac":"#ffffff",
+          "--txh":"#111110",
+          "--txm":"#111110",
+          "--tx":"#333330",
+          "--border":"rgba(0,0,0,0.2)",
+          "--border2":"rgba(0,0,0,0.35)",
+          "--acbg":"rgba(255,255,255,0.2)",
+          "--acborder":"rgba(0,0,0,0.4)",
         }}>
-          <div style={{ maxWidth:"860px", margin:"0 auto" }}>
+          <div style={{ padding:"60px 80px 120px 120px", boxSizing:"border-box" }}>
             <div className="back-row" style={{ marginBottom:"40px" }}>
               <button className="back-btn" onClick={handleCloseProjects} style={{borderColor:"rgba(255,255,255,0.6)",color:"#ffffff"}}><BackIco s={12}/> Back</button>
             </div>
@@ -1184,9 +1184,6 @@ export default function App() {
               <a href={DATA.github} target="_blank" rel="noreferrer" className="more-circle">
                 <PlusIco s={18}/><span>More on<br/>GitHub</span>
               </a>
-              <div style={{fontFamily:"var(--mono)",fontSize:"9px",color:"var(--tx)",letterSpacing:".08em"}}>
-                // github.com/RebEmnacin
-              </div>
             </div>
           </div>
         </div>
