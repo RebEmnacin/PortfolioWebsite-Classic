@@ -30,25 +30,14 @@ const ZapIco     = ({ s=16 }) => <svg width={s} height={s} viewBox="0 0 24 24" f
 const XIco       = ({ s=20 }) => <Icon size={s} d={<><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></>} />;
 const MenuIco    = ({ s=20 }) => <Icon size={s} d={<><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></>} />;
 const FolderIco  = ({ s=48 }) => <Icon size={s} sw={1.5} d={<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>} />;
-const CoffeeIco  = ({ s=22 }) => <Icon size={s} d={<><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></>} />;
-const SnakeIco   = ({ s=22 }) => <Icon size={s} d={<><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10"/><path d="M8 12s.5-4 4-4 4 4 4 4-1 4-4 4"/><circle cx="15" cy="9" r="1" fill="currentColor"/></>} />;
-const JsIco      = ({ s=22 }) => <Icon size={s} d={<><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M14 7v6a3 3 0 0 1-6 0"/><path d="M10 7v9"/></>} />;
-const TsIco      = ({ s=22 }) => <Icon size={s} d={<><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M9 9h6M12 9v9"/><path d="M15 13a2 2 0 0 1 2 2c0 2-3 1.5-3 1.5"/></>} />;
-const HtmlIco    = ({ s=22 }) => <Icon size={s} d={<><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></>} />;
-const CssIco     = ({ s=22 }) => <Icon size={s} d={<><path d="M4 2l1.5 16 6.5 2 6.5-2L20 2H4z"/><path d="M8 9h8M8.5 13h5l-.5 4-3 1-3-1-.2-2"/></>} />;
 const DbIco      = ({ s=22 }) => <Icon size={s} d={<><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></>} />;
-const ReactIco   = ({ s=22 }) => <Icon size={s} d={<><circle cx="12" cy="12" r="2.5"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(120 12 12)"/></>} />;
-const ApiIco     = ({ s=22 }) => <Icon size={s} d={<><path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/><line x1="8" y1="16" x2="8" y2="21"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="12" x2="12" y2="21"/></>} />;
-const FigmaIco   = ({ s=22 }) => <Icon size={s} d={<><path d="M5 5.5A3.5 3.5 0 0 1 8.5 2H12v7H8.5A3.5 3.5 0 0 1 5 5.5z"/><path d="M12 2h3.5a3.5 3.5 0 1 1 0 7H12V2z"/><path d="M12 12.5a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/><path d="M5 19.5A3.5 3.5 0 0 1 8.5 16H12v3.5a3.5 3.5 0 0 1-7 0z"/><path d="M5 12.5A3.5 3.5 0 0 1 8.5 9H12v7H8.5A3.5 3.5 0 0 1 5 12.5z"/></>} />;
+
 const CloudIco   = ({ s=22 }) => <Icon size={s} d={<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>} />;
 const BotIco     = ({ s=22 }) => <Icon size={s} d={<><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M12 11V3"/><circle cx="12" cy="3" r="1"/><line x1="8" y1="15" x2="8" y2="17"/><line x1="16" y1="15" x2="16" y2="17"/><path d="M7 11V8a5 5 0 0 1 10 0v3"/></>} />;
-const NodeIco    = ({ s=22 }) => <Icon size={s} d={<><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/><line x1="12" y1="22" x2="12" y2="15.5"/><polyline points="22 8.5 12 15.5 2 8.5"/></>} />;
 const BreadIco   = ({ s=24 }) => <Icon size={s} d={<path d="M3 11c0-3.87 4.03-7 9-7s9 3.13 9 7c0 2.21-1.3 4.19-3.36 5.54L17 21H7l-.64-4.46C4.3 15.19 3 13.21 3 11z"/>} />;
 const GlobeIco   = ({ s=24 }) => <Icon size={s} d={<><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></>} />;
 const BarIco     = ({ s=22 }) => <Icon size={s} d={<><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></>} />;
 const PlusIco    = ({ s=20 }) => <Icon size={s} d={<><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></>} />;
-const ChevLIco   = ({ s=20 }) => <Icon size={s} d={<polyline points="15 18 9 12 15 6"/>} />;
-const ChevRIco   = ({ s=20 }) => <Icon size={s} d={<polyline points="9 18 15 12 9 6"/>} />;
 
 /* ─────────────────────────────────────────────────────────────────
    DATA
@@ -65,25 +54,25 @@ const DATA = {
 
   stack: {
     Frontend: [
-      { n: "React",      I: ReactIco, fg:"#61dafb" },
-      { n: "JavaScript", I: JsIco,    fg:"#f7df1e" },
-      { n: "TypeScript", I: TsIco,    fg:"#3178c6" },
-      { n: "HTML",       I: HtmlIco,  fg:"#e34f26" },
-      { n: "CSS",        I: CssIco,   fg:"#5577e0" },
+      { n: "React",      img: "/src/assets/StackIcons/React.png" },
+      { n: "JavaScript", img: "/src/assets/StackIcons/Javascript.png" },
+      { n: "TypeScript", img: "/src/assets/StackIcons/Typescript.png" },
+      { n: "HTML",       img: "/src/assets/StackIcons/HTML.png" },
+      { n: "CSS",        img: "/src/assets/StackIcons/CSS.png" },
     ],
     Backend: [
-      { n: "Node.js",    I: NodeIco,  fg:"#6cc04a" },
-      { n: "Python",     I: SnakeIco, fg:"#4b8bbe" },
-      { n: "Java",       I: CoffeeIco,fg:"#ea4d2e" },
-      { n: "FastAPI",    I: ApiIco,   fg:"#1fc7b8" },
+      { n: "Node.js",    img: "/src/assets/StackIcons/NodeJS.png" },
+      { n: "Python",     img: "/src/assets/StackIcons/Python.png" },
+      { n: "Java",       img: "/src/assets/StackIcons/Java.png" },
     ],
     Database: [
-      { n: "MySQL",      I: DbIco,    fg:"#3a92c0" },
-      { n: "Oracle",     I: CloudIco, fg:"#f80000" },
+      { n: "MySQL",      img: "/src/assets/StackIcons/MySQL.png" },
     ],
     Tools: [
-      { n: "Figma",      I: FigmaIco, fg:"#b07cff" },
-      { n: "Claude",I: BotIco,   fg:"#d97757" },
+      { n: "Figma",      img: "/src/assets/StackIcons/Figma.png" },
+      { n: "Canva",      img: "/src/assets/StackIcons/Canva.png" },
+      { n: "Git",        img: "/src/assets/StackIcons/Git.png" },
+      { n: "Github",     img: "/src/assets/StackIcons/Github.png" },
     ],
   },
 
@@ -416,15 +405,15 @@ body::before {
 .stack-big-title em { font-style:normal; color:var(--ac); }
 .stack-rows-col { flex:1 1 auto; max-width:600px; display:flex; flex-direction:column; align-items:flex-start; padding-left:0; padding-top:40px; }
 .stack-row { display:flex; flex-direction:column; gap:14px; padding:22px 0; transition:opacity .12s linear, transform .12s linear; will-change:opacity, transform; }
-.stack-cat { font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:.22em;
-  text-transform:uppercase; color:var(--ac); }
+.stack-cat { font-family:var(--display); font-size:30px; font-weight:900; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--ac); -webkit-text-stroke:1px #111110; paint-order:stroke fill; }
 .stack-items { display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:flex-start; }
 /* chips: icon + name only, no border/box */
 .stack-chip {
-  display:flex; align-items:center; gap:7px;
+  display:flex; align-items:center; gap:10px;
   background:transparent; border:none; padding:2px 0;
 }
-.stack-sq { width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.stack-sq { width:60px; height:60px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 .stack-name { font-family:var(--display); font-size:22px; color:var(--txm);
   white-space:nowrap; letter-spacing:.03em; transition:color .2s ease; }
 .stack-chip:hover .stack-name { color:var(--txh); }
@@ -432,8 +421,14 @@ body::before {
 /* ══════════════════════════════════════════════════════════
    CONTACT
 ══════════════════════════════════════════════════════════ */
-.contact-cta { display:flex; flex-direction:column; align-items:center; text-align:center;
-  padding:24px 20px 20px; gap:6px; }
+.contact-cta 
+  { 
+    display:flex; 
+    flex-direction:column; 
+    align-items:center; 
+    text-align:center;
+    padding:24px 20px 20px; gap:6px; 
+  }
 .cta-label { font-family:var(--mono); font-size:13px; color:var(--txm); letter-spacing:.06em; }
 .cta-email { font-family:var(--display); font-size:clamp(28px,5.2vw,56px); color:var(--txh);
   letter-spacing:1px; text-transform:lowercase; padding:6px 4px;
@@ -852,15 +847,18 @@ function StackRow({ cat, skills }) {
     <FadeSection className="stack-row">
       <div className="stack-cat">{cat}</div>
       <div className="stack-items">
-        {skills.map((s) => {
-          const I = s.I;
-          return (
-            <div className="stack-chip" key={s.n}>
-              <span className="stack-sq" style={{ color: s.fg }}><I s={26} /></span>
-              <span className="stack-name">{s.n}</span>
-            </div>
-          );
-        })}
+        {skills.map((s) => (
+          <div className="stack-chip" key={s.n}>
+            <span className="stack-sq">
+              <img
+                src={s.img}
+                alt={s.n}
+                style={{ width: 60, height: 60, objectFit: "contain" }}
+              />
+            </span>
+            <span className="stack-name">{s.n}</span>
+          </div>
+        ))}
       </div>
     </FadeSection>
   );
