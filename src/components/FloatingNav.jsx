@@ -1,0 +1,41 @@
+import { useState } from "react";
+import { HomeIco, MonitorIco, StarIco, UserIco, MailIco, MenuIco, XIco } from "./icons/Icons";
+
+/* ─────────────────────────────────────────────────────────────────
+   FLOATING NAV
+───────────────────────────────────────────────────────────────── */
+const NAV_ITEMS = [
+  {id:"home",     I:HomeIco,    lbl:"Home"},
+  {id:"projects", I:MonitorIco, lbl:"Projects"},
+  {id:"certs",    I:StarIco,    lbl:"Certs"},
+  {id:"stack",    I:UserIco,    lbl:"Stack"},
+  {id:"contact",  I:MailIco,    lbl:"Contact"},
+];
+
+export function FloatingNav({ onNav, onOpenChange, activeSection }) {
+  const [open, setOpen] = useState(false);
+  const toggle = (v) => { setOpen(v); onOpenChange?.(v); };
+  return (
+    <div className="fnav">
+      {!open && (
+        <button className="fnav-trigger" onClick={() => toggle(true)}>
+          <MenuIco s={22}/>
+        </button>
+      )}
+      <div className={`fnav-items${open?" open":""}`}>
+        <button className="fnav-close" onClick={() => toggle(false)}><XIco s={22}/></button>
+        {NAV_ITEMS.map(item => (
+          <div key={item.id} className="fnav-item">
+            <div className="fnav-pill-bg" />
+            <div className="fnav-pill-label">{item.lbl}</div>
+            <button
+              className={`fnav-btn${activeSection===item.id?" active":""}`}
+              onClick={() => { onNav(item.id); }}>
+              <item.I s={22}/>
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
