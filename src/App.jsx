@@ -5,6 +5,66 @@ import { flushSync } from "react-dom";
 gsap.registerPlugin(ScrollTrigger);
 
 /* ─────────────────────────────────────────────────────────────────
+   ARROW ANIMATION — looping fade + rightward glide
+───────────────────────────────────────────────────────────────── */
+function ArrowAnimation() {
+  const groupRef = useRef(null);
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+
+  useEffect(() => {
+    const group = groupRef.current;
+    if (!group) return;
+
+    // Set all arrows invisible at start
+    gsap.set([ref1.current, ref2.current, ref3.current], { opacity: 0 });
+    gsap.set(group, { x: 0 });
+
+    const tl = gsap.timeline({ repeat: -1 });
+
+    // Move the whole group across the screen
+    tl.to(group, { x: "100vw", duration: 2.8, ease: "power1.inOut" });
+    tl.set(group, { x: 0 });
+    tl.to(group, {}, "+=0.4"); // pause before next loop
+
+    // Staggered fade-ins on each arrow — all tied to the same timeline start
+    gsap.timeline({ repeat: -1 })
+      .set(ref3.current, { opacity: 0 })
+      .to(ref3.current, { opacity: 0.6, duration: 0.3, ease: "power2.out" }, 0)        // small fades in first
+      .to(ref2.current, { opacity: 0.5, duration: 0.3, ease: "power2.out" }, 0.25)     // medium fades in
+      .to(ref1.current, { opacity: 0.4, duration: 0.3, ease: "power2.out" }, 0.5)      // big fades in last
+      .to([ref3.current, ref2.current, ref1.current], { opacity: 0, duration: 0.4, ease: "power2.in" }, 2.4) // all fade out together
+      .to({}, {}, "+=0.4");                                                             // pause
+
+    return () => gsap.killTweensOf([group, ref1.current, ref2.current, ref3.current]);
+  }, []);
+
+  return (
+    <div ref={groupRef} className="hero-arrow-wrap" style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "0px", lineHeight: 0 }}>
+      {/* Arrow 1 — biggest */}
+      {/* Arrow 1 — biggest */}
+<svg ref={ref1} width="160" height="420" viewBox="0 0 150 376" fill="#888884" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", margin: 0, padding: 0 }}>
+  <path d="M1 1H70L149 188H79L1 1Z" fill="#888884" stroke="none" />
+  <path d="M1 375H70L149 188H79L1 375Z" fill="#888884" stroke="none" />
+</svg>
+
+{/* Arrow 2 — medium */}
+<svg ref={ref2} width="120" height="420" viewBox="0 0 150 376" fill="#888884" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", margin: 0, padding: 0 }}>
+  <path d="M1 1H70L149 188H79L1 1Z" fill="#888884" stroke="none" />
+  <path d="M1 375H70L149 188H79L1 375Z" fill="#888884" stroke="none" />
+</svg>
+
+{/* Arrow 3 — smallest */}
+<svg ref={ref3} width="80" height="420" viewBox="0 0 150 376" fill="#888884" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", margin: 0, padding: 0 }}>
+  <path d="M1 1H70L149 188H79L1 1Z" fill="#888884" stroke="none" />
+  <path d="M1 375H70L149 188H79L1 375Z" fill="#888884" stroke="none" />
+</svg>
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────────
    SVG ICONS
 ───────────────────────────────────────────────────────────────── */
 const Icon = ({ d, size = 20, fill = "none", sw = 1.8 }) => (
@@ -77,10 +137,34 @@ const DATA = {
   },
 
   certs: [
-    { org: "IBM · Cognitive Class", c: "#ffcb05", I: DbIco,    title: "SQL and Relational Databases 101",          url: "https://courses.cognitiveclass.ai/certificates/248159af4c5846d4ab620d5e39948f5e",                                                 img: "https://images.credly.com/images/5c8fca38-b0d2-49e5-9ad2-f3f8e79b327f/twitter_thumb_201604_image.png" },
-    { org: "Oracle Cloud",          c: "#00719a", I: CloudIco, title: "OCI 2025 Certified Foundations Associate",   url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=6941EF3CB5EB7C0833D64EF5BF8A257C21D53C11A362E7DD0DAB73518C59AF58", img: "https://brm-workforce.oracle.com/edu/images/oracle-certification-badge_OCI-foundations.png" },
-    { org: "Oracle Cloud",          c: "#00719a", I: BarIco,   title: "Oracle Data Platform Foundations Associate",  url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=FC6BF38C8A976E45FFE6F233D652B85BF2EF4C7AEBBE068491AA129A001DBC33", img: "https://brm-workforce.oracle.com/edu/images/oracle-certification-badge_OCI-foundations.png" },
-    { org: "Oracle Cloud",          c: "#00719a", I: BotIco,   title: "OCI AI Foundations Associate (2025)",        url: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=71CC11DCFE431802B2DE719C81F52F2AF2478ABAB7563607DBE6DB72E5B607C0", img: "https://brm-workforce.oracle.com/edu/images/oracle-certification-badge_OCI-AI-foundations.png" },
+    { title: "Crash Course on Python",                                            img: "/src/assets/certs/Crash Course on Python.png",                                            url: "PASTE_URL_HERE_1" },
+    { title: "Learn JavaScript",                                                   img: "/src/assets/certs/Learn JavaScript.png",                                                   url: "PASTE_URL_HERE_2" },
+    { title: "Async JavaScript",                                                   img: "/src/assets/certs/Async JavaScript.png",                                                   url: "PASTE_URL_HERE_3" },
+    { title: "Advanced JavaScript 2: Async JS, APIs, Operators, Objects",          img: "/src/assets/certs/Advanced JavaScript 2 Async JS, APIs, Operators, Objects.png",          url: "PASTE_URL_HERE_4" },
+    { title: "Learn HTML and CSS",                                                 img: "/src/assets/certs/Learn HTML and CSS.png",                                                 url: "PASTE_URL_HERE_5" },
+    { title: "Learn CSS Flexbox",                                                  img: "/src/assets/certs/Learn CSS Flexbox.png",                                                  url: "PASTE_URL_HERE_6" },
+    { title: "Learn CSS Grid",                                                     img: "/src/assets/certs/Learn CSS Grid.png",                                                     url: "PASTE_URL_HERE_7" },
+    { title: "Learn CSS Variables",                                                img: "/src/assets/certs/Learn CSS Variables.png",                                                url: "PASTE_URL_HERE_8" },
+    { title: "Learn CSS Animations",                                               img: "/src/assets/certs/Learn CSS Animations.png",                                               url: "PASTE_URL_HERE_9" },
+    { title: "Learn Responsive Web Design",                                        img: "/src/assets/certs/Learn Responsive Web Design.png",                                        url: "PASTE_URL_HERE_10" },
+    { title: "Learn Accessible Web Design",                                        img: "/src/assets/certs/Learn Accessible Web Design.png",                                        url: "PASTE_URL_HERE_11" },
+    { title: "Learn UI Design",                                                    img: "/src/assets/certs/Learn UI Design.png",                                                    url: "PASTE_URL_HERE_12" },
+    { title: "Learn Tailwind CSS",                                                 img: "/src/assets/certs/Learn Tailwind CSS.png",                                                 url: "PASTE_URL_HERE_13" },
+    { title: "Learn React",                                                        img: "/src/assets/certs/Learn React.png",                                                        url: "PASTE_URL_HERE_14" },
+    { title: "Learn Advanced React",                                               img: "/src/assets/certs/Learn Advanced React.png",                                               url: "PASTE_URL_HERE_15" },
+    { title: "Learn Typescript",                                                   img: "/src/assets/certs/Learn Typescript.png",                                                   url: "PASTE_URL_HERE_16" },
+    { title: "Learn NextJS",                                                       img: "/src/assets/certs/Learn NextJS.png",                                                       url: "PASTE_URL_HERE_17" },
+    { title: "Learn NodeJS",                                                       img: "/src/assets/certs/Learn NodeJS.png",                                                       url: "PASTE_URL_HERE_18" },
+    { title: "Learn ExpressJS",                                                    img: "/src/assets/certs/Learn ExpressJS.png",                                                    url: "PASTE_URL_HERE_19" },
+    { title: "Intro to SQL",                                                       img: "/src/assets/certs/Intro to SQL.png",                                                       url: "PASTE_URL_HERE_20" },
+    { title: "SQL and Relational Databases 101",                                   img: "/src/assets/certs/SQL and Relational Databases 101.png",                                   url: "PASTE_URL_HERE_21" },
+    { title: "Command Line (CLI) & Terminal Basics",                               img: "/src/assets/certs/Command Line (CLI) & Terminal Basics.png",                               url: "PASTE_URL_HERE_22" },
+    { title: "Beginner's Guide to Unit Testing",                                   img: "/src/assets/certs/Beginner's Guide to Unit Testing.png",                                   url: "PASTE_URL_HERE_23" },
+    { title: "Foundations of Cybersecurity",                                       img: "/src/assets/certs/Foundations of Cybersecurity.png",                                       url: "PASTE_URL_HERE_24" },
+    { title: "Intro to AI Engineering",                                            img: "/src/assets/certs/Intro to AI Engineering.png",                                            url: "PASTE_URL_HERE_25" },
+    { title: "AI Foundations Associate",                                           img: "/src/assets/certs/AI Foundations Associate.png",                                           url: "PASTE_URL_HERE_26" },
+    { title: "Oracle Cloud Infrastructure 2025 Certified Foundations Associate",   img: "/src/assets/certs/Oracle Cloud Infrastructure 2025 Certified Foundations Associate.png", url: "PASTE_URL_HERE_27" },
+    { title: "Oracle Data Platform 2025 Certified Foundations Associate",          img: "/src/assets/certs/Oracle Data Platform 2025 Certified Foundations Associate.png",          url: "PASTE_URL_HERE_28" },
   ],
 
   projects: [
@@ -162,7 +246,7 @@ body::before {
 ══════════════════════════════════════════════════════════ */
 .stage { position:fixed; inset:0; z-index:2; display:flex;
   transition:transform 1s cubic-bezier(.77,0,.175,1); will-change:transform; overflow:visible; }
-.panel-home { flex:0 0 100vw; width:100vw; height:100vh; overflow:visible; position:relative; }
+.panel-home { flex:0 0 100vw; width:100vw; height:100vh; overflow:hidden; position:relative; }
 .panel-scroll { flex:0 0 100vw; width:100vw; height:100vh; overflow-y:auto; overflow-x:hidden; position:relative; scroll-behavior:smooth; }
 .panel-scroll::-webkit-scrollbar { width:3px; }
 .panel-scroll::-webkit-scrollbar-thumb { background:var(--border2); }
@@ -191,16 +275,50 @@ body::before {
 .enter-btn-wrap { opacity:0; animation:fadeUp .5s var(--ease-out-expo) .48s both; }
 
 /* profile photo */
-.profile-seam { flex:0 0 auto; width:min(420px,34vw); height:min(420px,34vw); z-index:10; pointer-events:none; }
+.profile-seam { flex:0 0 auto; width:min(400px,36vw); height:min(400px,36vw); z-index:10; pointer-events:none; }
 .profile-seam img { width:100%; height:100%; object-fit:cover; border-radius:50%; border:3px solid var(--ac);
   box-shadow:6px 6px 0 #111110; display:block; animation:blurPopFloat 1s cubic-bezier(.16,1,.3,1) both, floatY 6s ease-in-out 1s infinite; }
-@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+/* ── ROLLING PROFILE TRANSITION ── */
+.profile-clone {
+  position: fixed;
+  border-radius: 50%;
+  border: 3px solid var(--ac);
+  box-shadow: 6px 6px 0 #111110;
+  object-fit: cover;
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform, opacity;
+}
+
+@keyframes cloneRollToRight {
+  0%   { transform: translateX(0) rotate(0deg);    opacity: 1; }
+  70%  { opacity: 1; }
+  100% { transform: translateX(100vw) rotate(720deg); opacity: 0; }
+}
+
+@keyframes cloneArriveAndFade {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+  @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
 @keyframes blurPopFloat { 0%{opacity:0;filter:blur(20px)} 60%{filter:blur(0)} 100%{opacity:1;filter:blur(0)} }
 
 /* scroll cue */
 .scroll-cue { display:flex; flex-direction:column; align-items:center; gap:8px;
   position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
   font-family:var(--mono); font-size:8px; letter-spacing:.3em; text-transform:uppercase; color:var(--tx); pointer-events:none; }
+.hero-arrow-wrap {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+}
+@media(max-width:960px){
+  .hero-arrow-wrap { display:none; }
+}
 .scroll-cue-line { width:1px; height:32px; background:linear-gradient(var(--ac),transparent); animation:scrollCue 1.8s ease-in-out infinite; }
 @keyframes scrollCue { 0%,100%{opacity:.2;transform:scaleY(.4)} 50%{opacity:1;transform:scaleY(1)} }
 
@@ -249,7 +367,7 @@ body::before {
 .hero2-photo { flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
 .hero2-photo img { width:min(400px,36vw); height:min(400px,36vw); object-fit:cover; border-radius:50%;
   border:3px solid var(--ac); box-shadow:6px 6px 0 #111110;
-  animation:blurPop .8s cubic-bezier(.16,1,.3,1) both, floatY2 6s ease-in-out .8s infinite; }
+  animation:floatY2 6s ease-in-out infinite; }
 @keyframes floatY2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
 @keyframes blurPop { 0%{opacity:0;filter:blur(24px)} 60%{filter:blur(0)} 100%{opacity:1;filter:blur(0)} }
 .hero2-text { flex:1; max-width:620px; }
@@ -353,29 +471,23 @@ body::before {
 }
 .cert-slide {
   position:absolute; top:50%; left:50%;
-  width:440px; height:560px;
-  margin-top:-280px; margin-left:-220px;
+  width:520px; height:420px;
+  margin-top:-210px; margin-left:-260px;
   border-radius:0; overflow:hidden;
   will-change:transform; transition:none;
   box-shadow:none;
   border:1px solid var(--border);
 }
-.cert-slide-inner { width:100%; height:100%; display:flex; flex-direction:column; background:var(--bg2); }
-.cert-slide-img-wrap { height:55%; background:var(--bg); display:flex; align-items:center;
-  justify-content:center; padding:28px; border-bottom:1px solid var(--border); }
+.cert-slide-inner { width:100%; height:100%; display:flex; flex-direction:column; background:var(--bg2);
+  cursor:pointer; transition:transform .2s ease; }
+.cert-slide-inner:hover { transform:scale(1.01); }
+.cert-slide-img-wrap { flex:1; background:var(--bg); display:flex; align-items:center;
+  justify-content:center; padding:16px; border-bottom:1px solid var(--border); }
 .cert-slide-img { max-width:100%; max-height:100%; object-fit:contain; }
-.cert-slide-body { flex:1; padding:18px 20px; display:flex; flex-direction:column; justify-content:space-between; }
-.cert-slide-org { font-family:var(--mono); font-size:8px; font-weight:700; letter-spacing:.2em;
-  text-transform:uppercase; color:var(--ac); margin-bottom:8px; }
+.cert-slide-body { padding:14px 20px; }
 .cert-slide-title { font-family:var(--display); font-size:15px; text-transform:uppercase;
-  letter-spacing:.04em; color:var(--txh); line-height:1.35; flex:1; }
-.cert-slide-num { font-family:var(--display); font-size:56px; line-height:1; color:rgba(0,0,0,.06);
-  position:absolute; top:8px; right:12px; pointer-events:none; }
-.cert-slide-verify { display:inline-flex; align-items:center; gap:5px; font-family:var(--mono);
-  font-size:8px; font-weight:700; letter-spacing:.1em; color:var(--txm);
-  margin-top:10px; padding-top:10px; border-top:1px solid var(--border);
-  transition:color .2s ease; }
-.cert-slide-verify:hover { color:var(--ac); }
+  letter-spacing:.04em; color:var(--txh); line-height:1.3; }
+
 .cert-slider-controls {
   position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
   display:flex; align-items:center; gap:12px; z-index:10;
@@ -446,7 +558,7 @@ body::before {
   display:flex; flex-direction:column; align-items:center; gap:8px; padding:10px 8px;
   overflow:visible; }
 .fnav:has(.fnav-items.open) { background:rgba(255,255,255,.9); border:1px solid var(--border); border-radius:999px; box-shadow:3px 3px 0 #111110; overflow:visible; }
-.fnav-trigger { width:36px; height:36px; border-radius:50%; border:1px solid var(--border2); background:transparent;
+.fnav-trigger { width:48px; height:48px; border-radius:50%; border:1px solid var(--border2); background:transparent;
   display:flex; align-items:center; justify-content:center; color:var(--txm); transition:all .2s ease; }
 .fnav-trigger:hover { border-color:var(--ac); color:#000; background:var(--ac); box-shadow:2px 2px 0 #111110; }
 .fnav-items { display:flex; flex-direction:column; align-items:center; gap:8px; overflow:visible;
@@ -465,11 +577,11 @@ body::before {
   color:var(--txh); background:#fff; border:1px solid var(--border2); padding:5px 10px; height:28px;
   display:flex; align-items:center; white-space:nowrap; border-radius:4px; box-shadow:2px 2px 0 #111110;
   opacity:0; pointer-events:none; transition:opacity .15s ease, transform .15s ease; }
-.fnav-btn { width:36px; height:36px; border-radius:50%; border:1px solid var(--border2); background:transparent;
+.fnav-btn { width:48px; height:48px; border-radius:50%; border:1px solid var(--border2); background:transparent;
   display:flex; align-items:center; justify-content:center; color:var(--txm); transition:all .2s ease; }
 .fnav-btn:hover,.fnav-btn.active { border-color:var(--ac); color:#000; background:var(--ac); box-shadow:2px 2px 0 #111110; }
 .fnav-item:hover .fnav-lbl { opacity:1; transform:translateY(-50%) translateX(0); }
-.fnav-close { width:36px; height:36px; border-radius:50%; border:1px solid var(--border2); background:transparent;
+.fnav-close { width:48px; height:48px; border-radius:50%; border:1px solid var(--border2); background:transparent;
   display:flex; align-items:center; justify-content:center; color:var(--txm); transition:all .2s ease; }
 .fnav-close:hover { border-color:#ef4444; color:#ef4444; box-shadow:2px 2px 0 #ef4444; }
 /* Layer 1 — pill box background (sits behind everything) */
@@ -739,7 +851,7 @@ function CertSlider() {
       // Everywhere else (the red-line margins on the sides) lets the page
       // scroll normally.
       const rect = el.getBoundingClientRect();
-      const cardHalfWidth = 220; // half of the cert card's actual pixel width (card is 440px wide)
+      const cardHalfWidth = 260; // half of the cert card's actual pixel width (card is 520px wide)
       const centerX = rect.left + rect.width / 2;
       const inZone = Math.abs(e.clientX - centerX) <= cardHalfWidth;
       if (!inZone) return;
@@ -774,23 +886,15 @@ function CertSlider() {
         <div className="cert-slider-stage" ref={stageRef}>
           {DATA.certs.map((c, i) => (
             <div key={i} className="cert-slide">
-              <div className="cert-slide-inner">
-                <span className="cert-slide-num">{String(i + 1).padStart(2, "0")}</span>
+              <a className="cert-slide-inner" href={c.url} target="_blank" rel="noreferrer">
                 <div className="cert-slide-img-wrap">
                   <img className="cert-slide-img" src={c.img} alt={c.title}
                     onError={e => { e.target.style.display = "none"; }} />
                 </div>
                 <div className="cert-slide-body">
-                  <div>
-                    <div className="cert-slide-org">{c.org}</div>
-                    <div className="cert-slide-title">{c.title}</div>
-                  </div>
-                  <a href={c.url} target="_blank" rel="noreferrer" className="cert-slide-verify"
-                    onClick={e => e.stopPropagation()}>
-                    <CheckIco s={10} /> Verify <ExtIco s={9} />
-                  </a>
+                  <div className="cert-slide-title">{c.title}</div>
                 </div>
-              </div>
+              </a>
             </div>
           ))}
         </div>
@@ -800,7 +904,7 @@ function CertSlider() {
           </div>
         </div>
       </div>
-      <div className="cert-hint">hover the cards and scroll to browse</div>
+      <div className="cert-hint">click a card to view the credential</div>
     </>
   );
 }
@@ -918,11 +1022,11 @@ function FloatingNav({ onNav, onOpenChange, activeSection }) {
     <div className="fnav">
       {!open && (
         <button className="fnav-trigger" onClick={() => toggle(true)}>
-          <MenuIco s={16}/>
+          <MenuIco s={22}/>
         </button>
       )}
       <div className={`fnav-items${open?" open":""}`}>
-        <button className="fnav-close" onClick={() => toggle(false)}><XIco s={16}/></button>
+        <button className="fnav-close" onClick={() => toggle(false)}><XIco s={22}/></button>
         {NAV_ITEMS.map(item => (
           <div key={item.id} className="fnav-item">
             <div className="fnav-pill-bg" />
@@ -930,7 +1034,7 @@ function FloatingNav({ onNav, onOpenChange, activeSection }) {
             <button
               className={`fnav-btn${activeSection===item.id?" active":""}`}
               onClick={() => { onNav(item.id); }}>
-              <item.I s={16}/>
+              <item.I s={22}/>
             </button>
           </div>
         ))}
@@ -938,13 +1042,121 @@ function FloatingNav({ onNav, onOpenChange, activeSection }) {
     </div>
   );
 }
+/* ─────────────────────────────────────────────────────────────────
+  Profile Images of each panels
+───────────────────────────────────────────────────────────────── */
+function ProfileImage({ p1Ref, p2Ref, direction, onLanded }) {
+  const overlayRef = useRef(null);
 
+  useEffect(() => {
+    const overlay = overlayRef.current;
+    const p1 = p1Ref.current;
+    if (!overlay || !p1) return;
+    const r1 = p1.getBoundingClientRect();
+    overlay.src = "/src/assets/RebProfile.jpg";
+    overlay.style.cssText = `
+      position: fixed;
+      left: ${r1.left}px;
+      top: ${r1.top}px;
+      width: ${r1.width}px;
+      height: ${r1.height}px;
+      border-radius: 50%;
+      border: 3px solid #ffcb05;
+      box-shadow: 6px 6px 0 #111110;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 99999;
+      display: block;
+    `;
+  }, []);
+
+  useEffect(() => {
+    if (!direction) return;
+    const overlay = overlayRef.current;
+    const p1 = p1Ref.current;
+    const p2 = p2Ref.current;
+    if (!overlay || !p1 || !p2) return;
+
+    const r1 = p1.getBoundingClientRect();
+    const r2 = p2.getBoundingClientRect();
+
+    const fromX = direction === "forward" ? r1.left  : r2.left;
+    const fromY = direction === "forward" ? r1.top   : r2.top;
+    const size  = direction === "forward" ? r1.width : r2.width;
+    const rot   = direction === "forward" ? "720deg" : "-720deg";
+    const src   = direction === "forward"
+      ? "/src/assets/RebProfile.jpg"
+      : "/src/assets/Reb.jpg";
+
+    // destination is known at call time because we offset by vw manually
+    const vw = window.innerWidth;
+    const toX = direction === "forward" ? r2.left - vw : r1.left + vw;
+    const toY = direction === "forward" ? r2.top       : r1.top;
+
+    const dx = toX - fromX;
+    const dy = toY - fromY;
+
+    overlay.src = src;
+    overlay.style.cssText = `
+      position: fixed;
+      left: ${fromX}px;
+      top: ${fromY}px;
+      width: ${size}px;
+      height: ${size}px;
+      border-radius: 50%;
+      border: 3px solid #ffcb05;
+      box-shadow: 6px 6px 0 #111110;
+      object-fit: cover;
+      pointer-events: none;
+      z-index: 99999;
+      display: block;
+    `;
+
+    // starts rolling immediately — no pause
+    // duration matches the panel slide (1000ms) + a bit more so it lands naturally
+    const anim = overlay.animate(
+      [
+        { transform: `translate(0px, 0px) rotate(0deg)` },
+        { transform: `translate(${dx}px, ${dy}px) rotate(${rot})` },
+      ],
+      {
+        duration: 4200,
+        easing: "cubic-bezier(.4, 0, .2, 1)",
+        fill: "forwards",
+      }
+    );
+
+    anim.onfinish = () => {
+      // fade out the overlay
+      overlay.animate(
+        [{ opacity: 1 }, { opacity: 0 }],
+        { duration: 350, easing: "ease-out", fill: "forwards" }
+      ).onfinish = () => {
+        overlay.style.display = "none";
+        onLanded?.(direction);
+      };
+    };
+
+    return () => anim.cancel();
+  }, [direction]);
+
+  return (
+    <img
+      ref={overlayRef}
+      alt=""
+      aria-hidden="true"
+      style={{ display: "none" }}
+    />
+  );
+}
+   
 /* ─────────────────────────────────────────────────────────────────
    INTRO PANEL (landing)
 ───────────────────────────────────────────────────────────────── */
-function IntroPanel({ goScroll }) {
+function IntroPanel({ goScroll, p1ImgRef, p1Visible }) {
   return (
     <div className="p1-wrap">
+      <ArrowAnimation />
       <div className="p1-left">
         <div className="p1-eyebrow">Jolts · Reb Emnacin</div>
         <h1 className="p1-title">
@@ -961,9 +1173,7 @@ function IntroPanel({ goScroll }) {
           <MagBtn onClick={() => goScroll("hero")}>Enter Portfolio</MagBtn>
         </div>
       </div>
-      <div className="profile-seam">
-        <img src="/src/assets/RebProfile.jpg" alt="Reb Emnacin"/>
-      </div>
+      <div className="profile-seam" ref={p1ImgRef} />
       <div className="scroll-cue"><span className="scroll-cue-line"/>Scroll</div>
     </div>
   );
@@ -972,11 +1182,20 @@ function IntroPanel({ goScroll }) {
 /* ─────────────────────────────────────────────────────────────────
    HERO INTRO
 ───────────────────────────────────────────────────────────────── */
-function HeroIntro({ goScroll }) {
+function HeroIntro({ goScroll, p2ImgRef, p2Visible }) {
   return (
     <div className="hero2-wrap" id="sec-hero">
       <div className="hero2-photo">
-        <img src="/src/assets/Reb.jpg" alt="Reb Emnacin"/>
+        <img
+          src="/src/assets/Reb.jpg"
+          alt="Reb Emnacin"
+          ref={p2ImgRef}
+          style={{
+            opacity: p2Visible ? 1 : 0,
+            transform: p2Visible ? "scale(1)" : "scale(0)",
+            transition: p2Visible ? "opacity 0.4s ease, transform 0.4s cubic-bezier(.34,1.56,.64,1)" : "none"
+          }}
+        />
       </div>
       <div className="hero2-text">
         <Reveal><div className="fsd-badge"><ZapIco s={11}/> Full Stack Developer</div></Reveal>
@@ -991,11 +1210,11 @@ function HeroIntro({ goScroll }) {
 /* ─────────────────────────────────────────────────────────────────
    SCROLL PANEL
 ───────────────────────────────────────────────────────────────── */
-function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef }) {
+function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef, p2ImgRef, p2Visible }) {
   return (
     <div className="sp-inner">
       <FadeSection className="section-gap">
-        <HeroIntro goScroll={goScroll}/>
+        <HeroIntro goScroll={goScroll} p2ImgRef={p2ImgRef} p2Visible={p2Visible}/>
       </FadeSection>
 
       <FadeSection className="section-gap">
@@ -1058,8 +1277,13 @@ function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef }) {
 ───────────────────────────────────────────────────────────────── */
 export default function App() {
   const [panel, setPanel] = useState("home");
+const [rollingDir, setRollingDir] = useState(null);
+const [p1Visible,  setP1Visible]  = useState(true);
+const [p2Visible,  setP2Visible]  = useState(false);
   const [projectsOpen, setProjectsOpen] = useState(false);
   const folderBtnRef = useRef(null);
+  const p1ImgRef = useRef(null);
+  const p2ImgRef = useRef(null);
 
   useEffect(() => {
     const t = setTimeout(() => ScrollTrigger.refresh(), 800);
@@ -1069,6 +1293,17 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("home");
   const scrollRef = useRef(null);
   const lockRef   = useRef(false);
+
+  const handleLanded = useCallback((landedDir) => {
+    setRollingDir(null);
+    if (landedDir === "forward") {
+      setP2Visible(true);
+      setP1Visible(false);
+    } else {
+      setP1Visible(true);
+      setP2Visible(false);
+    }
+  }, []);
 
   const folderOrigin = useRef({ x: 0, y: 0, r: 0 });
 
@@ -1114,19 +1349,26 @@ const handleCloseProjects = useCallback(() => {
     };
   }, [projectsOpen]);
 
-  const goScroll = useCallback((sectionId="hero") => {
-    if (sectionId === "home") {
-      setPanel("home"); setActiveSection("home");
-      setTimeout(() => { if (scrollRef.current) scrollRef.current.scrollTop = 0; }, 900);
-      return;
-    }
-    setPanel("scroll");
+  const goScroll = useCallback((sectionId = "hero") => {
+  if (sectionId === "home") {
+    setRollingDir("reverse");
+    setP2Visible(false);
+    setPanel("home");
     setTimeout(() => {
-      const el = document.getElementById(`sec-${sectionId}`);
-      if (el) el.scrollIntoView({ behavior:"smooth" });
-      else if (scrollRef.current) scrollRef.current.scrollTop = 0;
+      if (scrollRef.current) scrollRef.current.scrollTop = 0;
     }, 900);
-  }, []);
+    return;
+  }
+
+  setRollingDir("forward");
+  setP1Visible(false);
+  setPanel("scroll");
+  setTimeout(() => {
+    const el = document.getElementById(`sec-${sectionId}`);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+    else if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, 900);
+}, []);
 
   const handleNav = useCallback((id) => goScroll(id === "home" ? "home" : id), [goScroll]);
 
@@ -1226,6 +1468,12 @@ const handleCloseProjects = useCallback(() => {
       )}
 
       <CustomCursor white={projectsOpen}/>
+      <ProfileImage
+        p1Ref={p1ImgRef}
+        p2Ref={p2ImgRef}
+        direction={rollingDir}
+        onLanded={handleLanded}
+      />
 
       <div className="mini-progress">
         <div className="mini-progress-track">
@@ -1234,8 +1482,8 @@ const handleCloseProjects = useCallback(() => {
       </div>
       <FloatingNav onNav={handleNav} onOpenChange={() => {}} activeSection={activeSection}/>
       <div className="stage" style={{ transform: panel==="scroll" ? "translateX(-100vw)" : "translateX(0)" }}>
-        <div className="panel-home"><IntroPanel goScroll={goScroll}/></div>
-        <div className="panel-scroll" ref={scrollRef}><ScrollPanel goScroll={goScroll} onOpenProjects={handleOpenProjects} folderBtnRef={folderBtnRef}/></div>
+        <div className="panel-home"><IntroPanel goScroll={goScroll} p1ImgRef={p1ImgRef} p1Visible={p1Visible}/></div>
+        <div className="panel-scroll" ref={scrollRef}><ScrollPanel goScroll={goScroll} onOpenProjects={handleOpenProjects} folderBtnRef={folderBtnRef} p2ImgRef={p2ImgRef} p2Visible={p2Visible}/></div>
       </div>
     </>
   );
