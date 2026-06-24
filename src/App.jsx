@@ -48,7 +48,7 @@ const DATA = {
   status: "Open to Opportunities",
   github: "https://github.com/RebEmnacin",
   linkedin: "https://www.linkedin.com/in/reb-emnacin-a9752b404/",
-  telegram: "https://t.me/RebEmnacin",
+  telegram: "https://t.me/Emunashin",
   email: "mailto:rebqemnacin@gmail.com",
   school: "New Era University", degree: "BS Computer Science", year: "2024–present",
 
@@ -237,8 +237,8 @@ body::before {
 .sp-inner { width:100%; padding:0 80px 120px 120px; }
 .section-gap { padding-bottom: 110px; }
 @keyframes fadeUp   { from{opacity:0;transform:translateY(36px)} to{opacity:1;transform:translateY(0)} }
-.reveal { opacity:0; transform:translateY(40px); transition:opacity .3s var(--ease-out-expo), transform .3s var(--ease-out-expo); }
-.reveal.out { opacity:0; transform:translateY(-24px); transition:opacity .5s ease, transform .5s ease; }
+.reveal { opacity:0; transform:translateY(40px); transition:opacity .05s var(--ease-out-expo), transform .05s var(--ease-out-expo); }
+.reveal.out { opacity:0; transform:translateY(-24px); transition:opacity .05s ease, transform .05s ease; }
 .reveal.vis { opacity:1; transform:translateY(0); }
 
 /* ══════════════════════════════════════════════════════════
@@ -845,19 +845,23 @@ function FadeSection({ children, className = "", liftPx = 50 }) {
 function StackRow({ cat, skills }) {
   return (
     <FadeSection className="stack-row">
-      <div className="stack-cat">{cat}</div>
+      <Reveal>
+        <div className="stack-cat">{cat}</div>
+      </Reveal>
       <div className="stack-items">
-        {skills.map((s) => (
-          <div className="stack-chip" key={s.n}>
-            <span className="stack-sq">
-              <img
-                src={s.img}
-                alt={s.n}
-                style={{ width: 60, height: 60, objectFit: "contain" }}
-              />
-            </span>
-            <span className="stack-name">{s.n}</span>
-          </div>
+        {skills.map((s, i) => (
+          <Reveal key={s.n} delay={(i + 1) * 90}>
+            <div className="stack-chip">
+              <span className="stack-sq">
+                <img
+                  src={s.img}
+                  alt={s.n}
+                  style={{ width: 60, height: 60, objectFit: "contain" }}
+                />
+              </span>
+              <span className="stack-name">{s.n}</span>
+            </div>
+          </Reveal>
         ))}
       </div>
     </FadeSection>
@@ -893,7 +897,6 @@ function ProjectsSection({ onOpen, folderBtnRef }) {
         <span className="folder-ico-wrap"><FolderIco s={40}/></span>
         <span className="folder-label">Open Projects</span>
       </button>
-      <span className="folder-hint">// click to view my work</span>
     </div>
   );
 }
@@ -980,18 +983,6 @@ function HeroIntro({ goScroll }) {
         <Reveal delay={60}><div className="status-pill"><span className="sdot"/> {DATA.status}</div></Reveal>
         <Reveal delay={120}><h1 className="hero2-name">Hi, I'm <em>Reb</em></h1></Reveal>
         <Reveal delay={180}><p className="hero-bio">{DATA.bio}</p></Reveal>
-        <Reveal delay={240}>
-          <div className="cta-row">
-            <MagBtn onClick={() => goScroll("projects")}>My Projects</MagBtn>
-            <MagBtn ghost onClick={() => goScroll("contact")}>Contact</MagBtn>
-          </div>
-        </Reveal>
-        <Reveal delay={300}>
-          <div className="social-row">
-            <a href={DATA.github} target="_blank" rel="noreferrer" className="soc-link"><GhIco s={13}/> github.com/RebEmnacin <ExtIco s={9}/></a>
-            <a href={DATA.linkedin} target="_blank" rel="noreferrer" className="soc-link"><LiIco s={13}/> LinkedIn <ExtIco s={9}/></a>
-          </div>
-        </Reveal>
       </div>
     </div>
   );
@@ -1008,13 +999,21 @@ function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef }) {
       </FadeSection>
 
       <FadeSection className="section-gap">
-        <div id="sec-projects"/><div className="eyebrow">Portfolio</div><h2 className="pg-title">Selected <em>Work</em></h2>
-        <ProjectsSection onOpen={onOpenProjects} folderBtnRef={folderBtnRef}/>
+        <div id="sec-projects"/>
+        <Reveal><div className="eyebrow">Portfolio</div></Reveal>
+        <Reveal delay={90}><h2 className="pg-title">Selected <em>Work</em></h2></Reveal>
+        <Reveal delay={180}>
+          <ProjectsSection onOpen={onOpenProjects} folderBtnRef={folderBtnRef}/>
+        </Reveal>
       </FadeSection>
 
       <FadeSection className="section-gap">
-        <div id="sec-certs"/><div className="eyebrow">Credentials</div><h2 className="pg-title">My <em>Certifications</em></h2>
-        <CertSlider/>
+        <div id="sec-certs"/>
+        <Reveal><div className="eyebrow">Credentials</div></Reveal>
+        <Reveal delay={90}><h2 className="pg-title">My <em>Certifications</em></h2></Reveal>
+        <Reveal delay={180}>
+          <CertSlider/>
+        </Reveal>
       </FadeSection>
 
       <div className="section-gap">
@@ -1022,31 +1021,34 @@ function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef }) {
         <StackSection/>
       </div>
 
-      <FadeSection>
+<FadeSection>
         <div id="sec-contact"/>
         <div className="contact-heading-wrap">
-          <div className="eyebrow">Chat me!</div>
-          <h2 className="pg-title">My<em> Contacts</em></h2>
+          <Reveal><div className="eyebrow">Chat me!</div></Reveal>
+          <Reveal delay={90}><h2 className="pg-title">My<em> Contacts</em></h2></Reveal>
         </div>
 
         <div className="contact-cta">
-          <p className="cta-label">nice working with you :D</p>
-          <a href={DATA.email} className="cta-email">{DATA.email.replace("mailto:","")}</a>
-          <p className="cta-credit">Portfolio by Reb Emnacin</p>
-          <div className="cta-social">
-            <a href={DATA.github} target="_blank" rel="noreferrer" className="soc-link"><GhIco s={13}/> GitHub</a>
-            <a href={DATA.linkedin} target="_blank" rel="noreferrer" className="soc-link"><LiIco s={13}/> LinkedIn</a>
-            <a href={DATA.telegram} target="_blank" rel="noreferrer" className="soc-link"><TgIco s={13}/> Telegram</a>
-          </div>
+          <Reveal delay={180}><p className="cta-label">nice working with you :D</p></Reveal>
+          <Reveal delay={240}><a href={DATA.email} className="cta-email">{DATA.email.replace("mailto:","")}</a></Reveal>
+          <Reveal delay={300}><p className="cta-credit">Portfolio by Reb Emnacin</p></Reveal>
+          <Reveal delay={360}>
+            <div className="cta-social">
+              <a href={DATA.github} target="_blank" rel="noreferrer" className="soc-link"><GhIco s={13}/> GitHub</a>
+              <a href={DATA.linkedin} target="_blank" rel="noreferrer" className="soc-link"><LiIco s={13}/> LinkedIn</a>
+              <a href={DATA.telegram} target="_blank" rel="noreferrer" className="soc-link"><TgIco s={13}/> Telegram</a>
+            </div>
+          </Reveal>
         </div>
       </FadeSection>
 
-      <div style={{textAlign:"center",marginTop:"80px",paddingTop:"40px"}}>
-        <button className="footer-back" onClick={() => goScroll("home")}>↑ Back to Top</button>
-        <div style={{fontFamily:"var(--mono)",fontSize:"8px",color:"var(--tx)",marginTop:"20px",letterSpacing:".12em",textTransform:"uppercase"}}>
-          jolts.dev · {new Date().getFullYear()}
+<Reveal>
+        <div style={{textAlign:"center",marginTop:"80px",paddingTop:"40px"}}>
+          <button className="footer-back" onClick={() => goScroll("home")}>↑ Back to Top</button>
+          <div style={{fontFamily:"var(--mono)",fontSize:"8px",color:"var(--tx)",marginTop:"20px",letterSpacing:".12em",textTransform:"uppercase"}}>
+          </div>
         </div>
-      </div>
+      </Reveal>
     </div>
   );
 }
