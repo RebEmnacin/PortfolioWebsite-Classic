@@ -14,14 +14,6 @@ export function ProfileImage({ p1Ref, p2Ref, direction, onLanded }) {
   const [scope, animate] = useAnimate();
 
   useEffect(() => {
-    const overlay = scope.current;
-    if (!overlay) return;
-    overlay.style.display = "none";
-    const p1 = p1Ref.current;
-    if (p1) p1.style.opacity = "1";
-  }, []);
-
-  useEffect(() => {
     if (!direction) return;
     const overlay = scope.current;
     const p1 = p1Ref.current;
@@ -86,7 +78,7 @@ export function ProfileImage({ p1Ref, p2Ref, direction, onLanded }) {
       const rollControls = animate(
         overlay,
         { x: [0, dx], y: [0, dy] },
-        { duration: direction === "forward" ? 0.8 : 1.2, ease: [0.4, 0, 0.2, 1] }
+        { duration: direction === "forward" ? 1.0 : 1.3, ease: [0.4, 0, 0.2, 1] }
       );
 
       rollControls.then(() => {

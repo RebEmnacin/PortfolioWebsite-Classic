@@ -2,9 +2,6 @@ import { Reveal } from "../Reveal";
 import { ZapIco } from "../icons/Icons";
 import { DATA } from "../../data/portfolioData";
 
-/* ─────────────────────────────────────────────────────────────────
-   HERO INTRO
-───────────────────────────────────────────────────────────────── */
 export function HeroIntro({ goScroll, p2ImgRef, p2Visible }) {
   return (
     <div className="hero2-wrap" id="sec-hero">
@@ -15,8 +12,9 @@ export function HeroIntro({ goScroll, p2ImgRef, p2Visible }) {
           ref={p2ImgRef}
           style={{
             opacity: p2Visible ? 1 : 0,
-            transform: p2Visible ? "scale(1)" : "scale(0)",
-            transition: p2Visible ? "opacity 0.4s ease, transform 0.4s cubic-bezier(.34,1.56,.64,1)" : "none"
+transform: "scale(1)",
+transition: "opacity 0.15s ease",
+            transformOrigin: "center center",
           }}
         />
       </div>

@@ -34,7 +34,9 @@ export function IntroPanel({ goScroll, p1ImgRef, p1Visible }) {
             objectFit: "cover",
             borderRadius: "50%",
             opacity: p1Visible ? 1 : 0,
-            transition: "none",
+            transform: p1Visible ? "scale(1)" : "scale(0)",
+            transition: p1Visible ? "opacity 0.18s ease, transform 0.4s cubic-bezier(0.34, 2.0, 0.64, 1)" : "none",
+            transformOrigin: "center center",
           }}
         />
       </div>

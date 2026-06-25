@@ -23,6 +23,7 @@ import { DATA } from "./data/portfolioData";
 export default function App() {
   const [panel, setPanel] = useState("home");
   const [rollingDir, setRollingDir] = useState(null);
+  const [zoomed, setZoomed] = useState(false);
   const [p1Visible,  setP1Visible]  = useState(true);
   const [p2Visible,  setP2Visible]  = useState(false);
   const [projectsOpen, setProjectsOpen] = useState(false);
@@ -108,20 +109,24 @@ export default function App() {
   }, [projectsOpen]);
 
   const goScroll = useCallback((sectionId = "hero") => {
-    if (sectionId === "home") {
-      setRollingDir("reverse");
-      setP2Visible(false);
-      setP1Visible(false);
-      setPanel("home");
-      setTimeout(() => {
-        if (scrollRef.current) scrollRef.current.scrollTop = 0;
-      }, 900);
-      return;
-    }
+if (sectionId === "home") {
+  setRollingDir("reverse");
+  setP2Visible(false);
+  setP1Visible(false);
+  setPanel("home");
+  setZoomed(true);
+  setTimeout(() => setZoomed(false), 850);
+  setTimeout(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, 900);
+  return;
+}
 
     setRollingDir("forward");
     setP1Visible(false);
     setPanel("scroll");
+    setZoomed(true);
+    setTimeout(() => setZoomed(false), 850);
     setTimeout(() => {
       const el = document.getElementById(`sec-${sectionId}`);
       if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -239,9 +244,11 @@ export default function App() {
         </div>
       </div>
       <FloatingNav onNav={handleNav} onOpenChange={() => {}} activeSection={activeSection}/>
-      <div className="stage" style={{ transform: panel==="scroll" ? "translateX(-100vw)" : "translateX(0)" }}>
-        <div className="panel-home"><IntroPanel goScroll={goScroll} p1ImgRef={p1ImgRef} p1Visible={p1Visible}/></div>
-        <div className="panel-scroll" ref={scrollRef}><ScrollPanel goScroll={goScroll} onOpenProjects={handleOpenProjects} folderBtnRef={folderBtnRef} p2ImgRef={p2ImgRef} p2Visible={p2Visible}/></div>
+      <div className="zoom-wrap" style={{ transform: zoomed ? "scale(2.5)" : "scale(1)" }}>
+        <div className="stage" style={{ transform: panel==="scroll" ? "translateX(-100vw)" : "translateX(0)" }}>
+          <div className="panel-home"><IntroPanel goScroll={goScroll} p1ImgRef={p1ImgRef} p1Visible={p1Visible}/></div>
+          <div className="panel-scroll" ref={scrollRef}><ScrollPanel goScroll={goScroll} onOpenProjects={handleOpenProjects} folderBtnRef={folderBtnRef} p2ImgRef={p2ImgRef} p2Visible={p2Visible}/></div>
+        </div>
       </div>
     </>
   );
