@@ -49,8 +49,8 @@ export default function App() {
     } 
     else 
     {
-      setP1Visible(true);
       setP2Visible(false);
+      setP1Visible(true);
     }
   }, []);
 
@@ -111,6 +111,7 @@ export default function App() {
     if (sectionId === "home") {
       setRollingDir("reverse");
       setP2Visible(false);
+      setP1Visible(false);
       setPanel("home");
       setTimeout(() => {
         if (scrollRef.current) scrollRef.current.scrollTop = 0;

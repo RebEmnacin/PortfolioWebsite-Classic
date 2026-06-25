@@ -3,9 +3,6 @@ import { MagBtn } from "../MagBtn";
 import { MailIco, GhIco, LiIco, TgIco } from "../icons/Icons";
 import { DATA } from "../../data/portfolioData";
 
-/* ─────────────────────────────────────────────────────────────────
-   INTRO PANEL (landing)
-───────────────────────────────────────────────────────────────── */
 export function IntroPanel({ goScroll, p1ImgRef, p1Visible }) {
   return (
     <div className="p1-wrap">
@@ -26,7 +23,21 @@ export function IntroPanel({ goScroll, p1ImgRef, p1Visible }) {
           <MagBtn onClick={() => goScroll("hero")}>Enter Portfolio</MagBtn>
         </div>
       </div>
-      <div className="profile-seam" ref={p1ImgRef} />
+      <div className="profile-seam">
+        <img
+          ref={p1ImgRef}
+          src="/src/assets/RebProfile.jpg"
+          alt="Reb Emnacin"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            borderRadius: "50%",
+            opacity: p1Visible ? 1 : 0,
+            transition: "none",
+          }}
+        />
+      </div>
       <div className="scroll-cue"><span className="scroll-cue-line"/>Scroll</div>
     </div>
   );

@@ -1,109 +1,114 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import { useAnimate } from "motion/react";
 
-/* ─────────────────────────────────────────────────────────────────
-   Profile Images of each panels
-   This renders a single <img> overlay that visually "rolls" from
-   the landing-panel photo position to the hero-panel photo position
-   (or back), then fades out and hands off to onLanded.
-───────────────────────────────────────────────────────────────── */
+function safeRect(el) {
+  if (!el) return null;
+  let rect = el.getBoundingClientRect();
+  if (rect.width < 1 && rect.height < 1 && el.parentElement) {
+    rect = el.parentElement.getBoundingClientRect();
+  }
+  return rect;
+}
+
 export function ProfileImage({ p1Ref, p2Ref, direction, onLanded }) {
-  const overlayRef = useRef(null);
+  const [scope, animate] = useAnimate();
 
   useEffect(() => {
-    const overlay = overlayRef.current;
+    const overlay = scope.current;
+    if (!overlay) return;
+    overlay.style.display = "none";
     const p1 = p1Ref.current;
-    if (!overlay || !p1) return;
-    const r1 = p1.getBoundingClientRect();
-    overlay.src = "/src/assets/RebProfile.jpg";
-    overlay.style.cssText = `
-      position: fixed;
-      left: ${r1.left}px;
-      top: ${r1.top}px;
-      width: ${r1.width}px;
-      height: ${r1.height}px;
-      border-radius: 50%;
-      border: 3px solid #ffcb05;
-      box-shadow: 6px 6px 0 #111110;
-      object-fit: cover;
-      pointer-events: none;
-      z-index: 99999;
-      display: block;
-    `;
+    if (p1) p1.style.opacity = "1";
   }, []);
 
   useEffect(() => {
     if (!direction) return;
-    const overlay = overlayRef.current;
+    const overlay = scope.current;
     const p1 = p1Ref.current;
     const p2 = p2Ref.current;
     if (!overlay || !p1 || !p2) return;
 
-    const r1 = p1.getBoundingClientRect();
-    const r2 = p2.getBoundingClientRect();
+    let cancelled = false;
 
-    const fromX = direction === "forward" ? r1.left  : r2.left;
-    const fromY = direction === "forward" ? r1.top   : r2.top;
-    const size  = direction === "forward" ? r1.width : r2.width;
-    const rot   = direction === "forward" ? "720deg" : "-720deg";
-    const src   = direction === "forward"
-      ? "/src/assets/RebProfile.jpg"
-      : "/src/assets/Reb.jpg";
-
-    // destination is known at call time because we offset by vw manually
-    const vw = window.innerWidth;
-    const toX = direction === "forward" ? r2.left - vw : r1.left + vw;
-    const toY = direction === "forward" ? r2.top       : r1.top;
-
-    const dx = toX - fromX;
-    const dy = toY - fromY;
-
-    overlay.src = src;
-    overlay.style.cssText = `
-      position: fixed;
-      left: ${fromX}px;
-      top: ${fromY}px;
-      width: ${size}px;
-      height: ${size}px;
-      border-radius: 50%;
-      border: 3px solid #ffcb05;
-      box-shadow: 6px 6px 0 #111110;
-      object-fit: cover;
-      pointer-events: none;
-      z-index: 99999;
-      display: block;
-    `;
-
-    // starts rolling immediately — no pause
-    // duration matches the panel slide (1000ms) + a bit more so it lands naturally
-    const anim = overlay.animate(
-      [
-        { transform: `translate(0px, 0px) rotate(0deg)` },
-        { transform: `translate(${dx}px, ${dy}px) rotate(${rot})` },
-      ],
-      {
-        duration: 4200,
-        easing: "cubic-bezier(.4, 0, .2, 1)",
-        fill: "forwards",
+    const run = async () => {
+      if (direction === "forward") {
+        if (p1) p1.style.opacity = "0";
       }
-    );
 
-    anim.onfinish = () => {
-      // fade out the overlay
-      overlay.animate(
-        [{ opacity: 1 }, { opacity: 0 }],
-        { duration: 350, easing: "ease-out", fill: "forwards" }
-      ).onfinish = () => {
-        overlay.style.display = "none";
-        onLanded?.(direction);
+      const rawR1 = safeRect(p1);
+      const r1 = {
+        left: direction === "reverse" ? rawR1.left + window.innerWidth : rawR1.left,
+        top: rawR1.top,
+        width: rawR1.width,
+        height: rawR1.height,
       };
+
+      const rawR2 = safeRect(p2);
+      const r2 = {
+        left: direction === "forward" ? rawR2.left - window.innerWidth : rawR2.left,
+        top: rawR2.top,
+        width: rawR2.width,
+        height: rawR2.height,
+      };
+
+      const fromX = direction === "forward" ? r1.left : r2.left;
+      const fromY = direction === "forward" ? r1.top  : r2.top;
+      const size  = direction === "forward" ? r1.width : r2.width;
+      const src   = direction === "forward"
+        ? "/src/assets/RebProfile.jpg"
+        : "/src/assets/Reb.jpg";
+
+      const toX = direction === "forward" ? r2.left : r1.left;
+      const toY = direction === "forward" ? r2.top  : r1.top;
+
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+
+      overlay.src = src;
+      overlay.style.cssText = `
+        position: fixed;
+        left: ${fromX}px;
+        top: ${fromY}px;
+        width: ${size}px;
+        height: ${size}px;
+        border-radius: 50%;
+        border: 3px solid #ffcb05;
+        box-shadow: 6px 6px 0 #111110;
+        object-fit: cover;
+        pointer-events: none;
+        z-index: 99999;
+        display: block;
+        transform: translate(0px, 0px) rotate(0deg);
+      `;
+
+      if (cancelled) return;
+
+      const rollControls = animate(
+        overlay,
+        { x: [0, dx], y: [0, dy] },
+        { duration: direction === "forward" ? 0.8 : 1.2, ease: [0.4, 0, 0.2, 1] }
+      );
+
+      rollControls.then(() => {
+        if (cancelled) return;
+        overlay.style.display = "none";
+        if (direction === "reverse") {
+          if (p1) p1.style.opacity = "1";
+        }
+        onLanded?.(direction);
+      });
     };
 
-    return () => anim.cancel();
+    run();
+
+    return () => {
+      cancelled = true;
+    };
   }, [direction]);
 
   return (
     <img
-      ref={overlayRef}
+      ref={scope}
       alt=""
       aria-hidden="true"
       style={{ display: "none" }}
