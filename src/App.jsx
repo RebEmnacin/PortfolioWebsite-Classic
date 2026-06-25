@@ -244,7 +244,7 @@ if (sectionId === "home") {
         </div>
       </div>
       <FloatingNav onNav={handleNav} onOpenChange={() => {}} activeSection={activeSection}/>
-      <div className="zoom-wrap" style={{ transform: zoomed ? "scale(2.5)" : "scale(1)" }}>
+      <div className="zoom-wrap" style={{ transform: zoomed ? "scale(2.0)" : "scale(1)" }}>
         <div className="stage" style={{ transform: panel==="scroll" ? "translateX(-100vw)" : "translateX(0)" }}>
           <div className="panel-home"><IntroPanel goScroll={goScroll} p1ImgRef={p1ImgRef} p1Visible={p1Visible}/></div>
           <div className="panel-scroll" ref={scrollRef}><ScrollPanel goScroll={goScroll} onOpenProjects={handleOpenProjects} folderBtnRef={folderBtnRef} p2ImgRef={p2ImgRef} p2Visible={p2Visible}/></div>

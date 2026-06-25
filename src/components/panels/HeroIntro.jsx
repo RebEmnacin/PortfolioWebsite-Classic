@@ -12,8 +12,8 @@ export function HeroIntro({ goScroll, p2ImgRef, p2Visible }) {
           ref={p2ImgRef}
           style={{
             opacity: p2Visible ? 1 : 0,
-transform: "scale(1)",
-transition: "opacity 0.15s ease",
+transform: p2Visible ? "scale(1)" : "scale(0)",
+transition: p2Visible ? "opacity 0.08s ease, transform 0.18s cubic-bezier(0.34, 2.0, 0.64, 1)" : "none",
             transformOrigin: "center center",
           }}
         />
