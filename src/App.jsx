@@ -7,6 +7,7 @@ import "./styles/index.css";
 import { SparkleBackground } from "./components/SparkleBackground";
 import { CustomCursor } from "./components/CustomCursor";
 import { ProfileImage } from "./components/ProfileImage";
+import { SparkBurst } from "./components/Sparkburst";
 import { FloatingNav } from "./components/FloatingNav";
 import { IntroPanel } from "./components/panels/IntroPanel";
 import { ScrollPanel } from "./components/panels/ScrollPanel";
@@ -33,13 +34,16 @@ export default function App() {
 
   useEffect(() => 
   {
-    const t = setTimeout(() => ScrollTrigger.refresh(), 800);
+    if (panel !== "scroll") return;
+    const t = setTimeout(() => ScrollTrigger.refresh(), 1000);
     return () => clearTimeout(t);
-  }, []);
+  }, [panel]);
   const [scrollPct, setScrollPct] = useState(0);
   const [activeSection, setActiveSection] = useState("home");
   const scrollRef = useRef(null);
   const lockRef   = useRef(false);
+
+  const sparkRef = useRef(null);
 
   const handleLanded = useCallback((landedDir) => {
     setRollingDir(null);
@@ -47,11 +51,19 @@ export default function App() {
     {
       setP2Visible(true);
       setP1Visible(false);
+      const r = p2ImgRef.current?.getBoundingClientRect();
+      if (r && sparkRef.current) {
+        sparkRef.current.trigger(r.left + r.width / 2, r.top + r.height / 2);
+      }
     } 
     else 
     {
       setP2Visible(false);
       setP1Visible(true);
+      const r = p1ImgRef.current?.getBoundingClientRect();
+      if (r && sparkRef.current) {
+        sparkRef.current.trigger(r.left + r.width / 2, r.top + r.height / 2);
+      }
     }
   }, []);
 
@@ -126,7 +138,7 @@ if (sectionId === "home") {
     setP1Visible(false);
     setPanel("scroll");
     setZoomed(true);
-    setTimeout(() => setZoomed(false), 850);
+    setTimeout(() => setZoomed(false), 300);
     setTimeout(() => {
       const el = document.getElementById(`sec-${sectionId}`);
       if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -237,6 +249,15 @@ if (sectionId === "home") {
         direction={rollingDir}
         onLanded={handleLanded}
       />
+      <SparkBurst
+        ref={sparkRef}
+        sparkColor="#ffcb05"
+        sparkSize={50}
+        sparkRadius={200}
+        sparkCount={12}
+        duration={800}
+        zIndex={5}
+      />
 
       <div className="mini-progress">
         <div className="mini-progress-track">
@@ -244,7 +265,7 @@ if (sectionId === "home") {
         </div>
       </div>
       <FloatingNav onNav={handleNav} onOpenChange={() => {}} activeSection={activeSection}/>
-      <div className="zoom-wrap" style={{ transform: zoomed ? "scale(2.0)" : "scale(1)" }}>
+      <div className="zoom-wrap" style={{ transform: zoomed ? "scale(2.5)" : "scale(1)" }}>
         <div className="stage" style={{ transform: panel==="scroll" ? "translateX(-100vw)" : "translateX(0)" }}>
           <div className="panel-home"><IntroPanel goScroll={goScroll} p1ImgRef={p1ImgRef} p1Visible={p1Visible}/></div>
           <div className="panel-scroll" ref={scrollRef}><ScrollPanel goScroll={goScroll} onOpenProjects={handleOpenProjects} folderBtnRef={folderBtnRef} p2ImgRef={p2ImgRef} p2Visible={p2Visible}/></div>

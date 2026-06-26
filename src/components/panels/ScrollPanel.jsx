@@ -15,9 +15,9 @@ import { DATA } from "../../data/portfolioData";
 export function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef, p2ImgRef, p2Visible }) {
   return (
     <div className="sp-inner">
-      <FadeSection className="section-gap">
+      <div className="section-gap">
         <HeroIntro goScroll={goScroll} p2ImgRef={p2ImgRef} p2Visible={p2Visible}/>
-      </FadeSection>
+      </div>
 
       <FadeSection className="section-gap">
         <div id="sec-projects"/>
