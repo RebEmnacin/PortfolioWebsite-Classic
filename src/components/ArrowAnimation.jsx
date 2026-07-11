@@ -47,9 +47,21 @@ export function ArrowAnimation() {
         gap: "0px", 
         lineHeight: 0 }}>
       {/* Arrow 1 — biggest */}
-      <svg ref={ref1} width="160" height="420" viewBox="0 0 150 376" fill="#888884" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", margin: 0, padding: 0 }}>
-        <path d="M1 1H70L149 188H79L1 1Z" fill="#888884" stroke="none" />
-        <path d="M1 375H70L149 188H79L1 375Z" fill="#888884" stroke="none" />
+      <svg ref={ref1} 
+        width="160" 
+        height="420" 
+        viewBox="0 0 150 376" 
+        fill="#888884" 
+        xmlns="http://www.w3.org/2000/svg" 
+        style={{ display: "block", margin: 0, padding: 0 }}>
+        <path 
+          d="M1 1H70L149 188H79L1 1Z" 
+          fill="#888884" 
+          stroke="none" />
+        <path 
+          d="M1 375H70L149 188H79L1 375Z" 
+          fill="#888884" 
+          stroke="none" />
       </svg>
 
       {/* Arrow 2 — medium */}
