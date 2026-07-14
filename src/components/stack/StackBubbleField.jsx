@@ -28,6 +28,10 @@ const SHAPES = [
   "58% 42% 35% 65% / 55% 45% 55% 45%",               // blob 3
 ];
 
+// The core skills that should always read as "bigger than most",
+// no matter where they land in the layout.
+const EMPHASIS = new Set(["react", "html", "css", "javascript", "typescript"]);
+
 export function StackBubbleField({ items }) {
   const fieldRef = useRef(null);
   const [hovered, setHovered] = useState(null);
@@ -63,21 +67,55 @@ export function StackBubbleField({ items }) {
     const cellH = dims.h / rows;
     const cellMin = Math.min(cellW, cellH);
 
-    // shuffle which icon lands in which cell (seeded, so it's stable
-    // between renders, not reshuffled every time)
-    const cellOrder = items.map((_, i) => i);
-    for (let i = cellOrder.length - 1; i > 0; i--) {
+    // Center of the grid — used to measure "how far from the middle"
+    // each cell is, so we can shrink bubbles the further out they go.
+    const centerCol = (cols - 1) / 2;
+    const centerRow = (rows - 1) / 2;
+    const maxColDist = Math.max(centerCol, cols - 1 - centerCol) || 1;
+    const maxRowDist = Math.max(centerRow, rows - 1 - centerRow) || 1;
+
+    // Pick which grid cells actually get used. IMPORTANT: the grid
+    // (cols × rows) almost always has a couple more cells than we have
+    // icons for. The old bug: it only ever filled cells 0..items.length-1,
+    // so the last 1-2 cells in the grid were ALWAYS empty, in the same
+    // spot every time — that's what made one bubble (GitHub) look
+    // stranded next to a permanent dead patch. Fix: shuffle the FULL
+    // grid, then take just enough cells for our icons — so any leftover
+    // empty cells land in a random spot instead of always the same one.
+    const totalCells = cols * rows;
+    const allCells = Array.from({ length: totalCells }, (_, i) => i);
+    for (let i = allCells.length - 1; i > 0; i--) {
       const j = Math.floor(rand() * (i + 1));
-      [cellOrder[i], cellOrder[j]] = [cellOrder[j], cellOrder[i]];
+      [allCells[i], allCells[j]] = [allCells[j], allCells[i]];
     }
+    const cellOrder = allCells.slice(0, items.length);
 
     return items.map((it, i) => {
-      // bubble fills MOST of its cell — bigger bubbles, tighter gaps
-      const size = cellMin * (0.82 + rand() * 0.14); // 82–96% of the cell
-
       const cell = cellOrder[i];
       const cellRow = Math.floor(cell / cols);
       const cellCol = cell % cols;
+
+      // ring: 0 = dead center, 1 = far corner/edge. Using Manhattan
+      // distance (row-distance + col-distance) instead of straight-line
+      // distance is what makes the falloff shape a DIAMOND instead of
+      // a circle.
+      const ring =
+        (Math.abs(cellRow - centerRow) / maxRowDist +
+          Math.abs(cellCol - centerCol) / maxColDist) /
+        2;
+
+      // bigger near the center, smaller toward the edges, plus a touch
+      // of randomness — kept in a tighter range than before so bubbles
+      // stay close in size, like stones on a path, instead of some
+      // shrinking down to isolated-looking pebbles
+      let sizeFactor = 0.66 + 0.3 * (1 - ring) + (rand() - 0.5) * 0.06;
+
+      // emphasis skills get an extra boost on top of wherever they land
+      const isEmphasis = EMPHASIS.has(String(it.n).toLowerCase());
+      if (isEmphasis) sizeFactor *= 1.2;
+
+      sizeFactor = Math.min(0.98, Math.max(0.6, sizeFactor));
+      const size = cellMin * sizeFactor;
 
       // jitter is capped at exactly the leftover room in the cell, so
       // the bubble can NEVER cross into a neighboring cell — no overlap.
@@ -102,6 +140,7 @@ export function StackBubbleField({ items }) {
         duration,
         delay,
         drift,
+        isEmphasis,
         key: `${it.n}-${i}`,
       };
     });
@@ -119,6 +158,11 @@ export function StackBubbleField({ items }) {
             height: b.size,
             top: b.top,
             left: b.left,
+            // WHY: this z-index lives on the OUTER wrapper (not the inner
+            // bubble). Each bubble sits in its own stacking context, so
+            // bumping z-index on something *inside* it can't lift it above
+            // a neighboring bubble — only raising the wrapper itself can.
+            zIndex: hovered === b.key ? 50 : 1,
           }}
         >
           <div
