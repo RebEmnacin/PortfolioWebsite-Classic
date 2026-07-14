@@ -338,20 +338,58 @@ body::before {
   -webkit-text-stroke:2px #111110; paint-order:stroke fill;
 }
 .stack-big-title em { font-style:normal; color:var(--ac); }
-.stack-rows-col { flex:1 1 auto; max-width:600px; display:flex; flex-direction:column; align-items:flex-start; padding-left:0; padding-top:40px; }
-.stack-row { display:flex; flex-direction:column; gap:14px; padding:22px 0; transition:opacity .12s linear, transform .12s linear; will-change:opacity, transform; }
-.stack-cat { font-family:var(--display); font-size:30px; font-weight:900; letter-spacing:.12em;
-  text-transform:uppercase; color:var(--ac); -webkit-text-stroke:1px #111110; paint-order:stroke fill; }
-.stack-items { display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:flex-start; }
-/* chips: icon + name only, no border/box */
-.stack-chip {
-  display:flex; align-items:center; gap:10px;
-  background:transparent; border:none; padding:2px 0;
+.stack-rows-col { flex:1 1 auto; max-width:640px; padding-left:0; padding-top:40px; }
+
+/* the floating field that holds every icon bubble */
+.stack-bubble-field {
+  position:relative;
+  width:100%;
+  height:420px;
 }
-.stack-sq { width:60px; height:60px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.stack-name { font-family:var(--display); font-size:22px; color:var(--txm);
-  white-space:nowrap; letter-spacing:.03em; transition:color .2s ease; }
-.stack-chip:hover .stack-name { color:var(--txh); }
+
+/* one icon bubble */
+.stack-bubble {
+  position:absolute;
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(155deg, rgba(255,255,255,.08), rgba(255,255,255,.02)),
+             radial-gradient(circle at 35% 30%, var(--bg2), var(--bg));
+  border:1px solid var(--border);
+  box-shadow:0 8px 24px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.06);
+  cursor:default;
+  transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  animation-name:bubble-float;
+  animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;
+  animation-direction:alternate;
+  will-change:transform;
+}
+.stack-bubble:hover {
+  transform:scale(1.12) translateY(0) !important;
+  border-color:var(--ac);
+  box-shadow:0 10px 30px rgba(0,0,0,.34), 0 0 0 3px color-mix(in srgb, var(--ac) 35%, transparent);
+  z-index:5;
+}
+
+/* float animation: drift up/down using the --drift custom property
+   set inline per-bubble so every bubble moves a different amount */
+@keyframes bubble-float {
+  from { transform:translateY(calc(var(--drift, 12px) * -1)); }
+  to   { transform:translateY(var(--drift, 12px)); }
+}
+
+/* name label that appears on hover, floating above the bubble */
+.stack-bubble-label {
+  position:absolute; top:-30px; left:50%; transform:translateX(-50%) translateY(4px);
+  font-family:var(--display); font-size:13px; letter-spacing:.04em; text-transform:uppercase;
+  color:var(--txh); background:var(--bg); border:1px solid var(--border);
+  padding:4px 10px; border-radius:6px; white-space:nowrap;
+  opacity:0; pointer-events:none; transition:opacity .18s ease, transform .18s ease;
+}
+.stack-bubble-label.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .stack-bubble { animation:none; }
+}
 
 /* ══════════════════════════════════════════════════════════
    CONTACT
@@ -449,6 +487,7 @@ body::before {
   .stack-title-col{position:static;padding:32px 0 16px;flex:none}
   .stack-rows-col{padding-left:0;padding-top:0}
   .stack-big-title{font-size:clamp(60px,16vw,96px)}
+  .stack-bubble-field{height:340px}
 }
 @media(max-width:600px){ .sp-inner{padding:0 20px 60px 20px} .p1-wrap{padding:0 20px} .cert-slide{width:280px;height:380px;margin-top:-190px;margin-left:-140px} }
 
