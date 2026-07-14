@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
    Wraps a block and fades/slides it in once it enters the viewport
    (and fades it back out if it scrolls back above the fold).
 ───────────────────────────────────────────────────────────────── */
-export function Reveal({ children, delay=0, className="" }) {
+export function Reveal({ children, delay=0, className="", style={} }) {
   const ref = useRef(null);
   const [state, setState] = useState("hidden");
   useEffect(() => {
@@ -20,7 +20,7 @@ export function Reveal({ children, delay=0, className="" }) {
   return (
     <div ref={ref}
       className={`reveal${state==="vis"?" vis":state==="out"?" out":""} ${className}`}
-      style={{ transitionDelay: state==="vis" ? `${delay}ms` : "0ms" }}>
+      style={{ transitionDelay: state==="vis" ? `${delay}ms` : "0ms", ...style }}>
       {children}
     </div>
   );
