@@ -354,7 +354,7 @@ body::before {
   display:flex; align-items:center; justify-content:center;
   background:linear-gradient(155deg, rgba(255,255,255,.08), rgba(255,255,255,.02)),
              radial-gradient(circle at 35% 30%, var(--bg2), var(--bg));
-  border:1px solid var(--border);
+  border:2px solid var(--border);
   cursor:default;
   transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
   animation-name:bubble-float;

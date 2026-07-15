@@ -18,15 +18,23 @@ function mulberry32(seed) {
   };
 }
 
-/* Different border-radius values = different bubble silhouettes:
-   perfect circle, squircle, and two "blob" shapes. */
-const SHAPES = [
-  "50%",                                             // circle
-  "38% 62% 63% 37% / 41% 44% 56% 59%",               // blob 1
-  "63% 37% 54% 46% / 46% 40% 60% 54%",               // blob 2
-  "34%",                                             // squircle
-  "58% 42% 35% 65% / 55% 45% 55% 45%",               // blob 3
-];
+/* Generates an irregular, fractured-stone silhouette as a CSS
+   clip-path polygon (instead of a smooth rounded blob). Picks N
+   points around a circle, each nudged in angle and pulled in/out
+   in radius, so every bubble gets its own unique "flagstone" shape —
+   like the cracked, angular edges of real cut stone. */
+function randomStonePath(rand, points = 7) {
+  const step = (Math.PI * 2) / points;
+  const pts = [];
+  for (let i = 0; i < points; i++) {
+    const angle = i * step + (rand() - 0.5) * step * 0.5;
+    const radius = 50 * (0.8 + rand() * 0.2); // 80–100% of half the box
+    const x = 50 + radius * Math.cos(angle);
+    const y = 50 + radius * Math.sin(angle);
+    pts.push(`${x.toFixed(1)}% ${y.toFixed(1)}%`);
+  }
+  return `polygon(${pts.join(", ")})`;
+}
 
 // The core skills that should always read as "bigger than most",
 // no matter where they land in the layout.
@@ -111,16 +119,16 @@ export function StackBubbleField({ items }) {
             Math.abs(colIndex - centerCol) / maxColDist) /
           2;
 
-        // bigger near the center, smaller toward the edges, plus a
-        // touch of randomness — kept in a tight range so bubbles stay
-        // close in size, like stones on a path
-        let sizeFactor = 0.66 + 0.3 * (1 - ring) + (rand() - 0.5) * 0.06;
+        // Packed close to the edges of their own cell — like fitted
+        // paving stones — with only a small size dip toward the
+        // outer edges of the field, plus a touch of randomness.
+        let sizeFactor = 0.86 + 0.1 * (1 - ring) + (rand() - 0.5) * 0.04;
 
         // emphasis skills get an extra boost on top of wherever they land
         const isEmphasis = EMPHASIS.has(String(it.n).toLowerCase());
-        if (isEmphasis) sizeFactor *= 1.2;
+        if (isEmphasis) sizeFactor *= 1.08;
 
-        sizeFactor = Math.min(0.98, Math.max(0.6, sizeFactor));
+        sizeFactor = Math.min(0.99, Math.max(0.82, sizeFactor));
         const cellMin = Math.min(cellW, cellH);
         const size = cellMin * sizeFactor;
 
@@ -134,10 +142,10 @@ export function StackBubbleField({ items }) {
         const left = colIndex * cellW + (cellW - size) / 2 + jitterX;
         const top = rowIndex * cellH + (cellH - size) / 2 + jitterY;
 
-        const shape = SHAPES[Math.floor(rand() * SHAPES.length)];
-        const duration = 5 + rand() * 4; // float animation speed: 5–9s
+        const shape = randomStonePath(rand);
+        const duration = 4.5 + rand() * 3; // idle float speed: 4.5–7.5s
         const delay = rand() * -6; // negative delay = starts mid-animation, so bubbles don't sync up
-        const drift = 8 + rand() * 8; // how far it drifts up/down in px
+        const drift = 4 + rand() * 5; // subtle idle drift: 4–9px (kept small since stones sit close together)
 
         result.push({
           ...it,
@@ -179,7 +187,7 @@ export function StackBubbleField({ items }) {
           <div
             className="stack-bubble"
             style={{
-              borderRadius: b.shape,
+              clipPath: b.shape,
               animationDuration: `${b.duration}s`,
               animationDelay: `${b.delay}s`,
               "--drift": `${b.drift}px`,
@@ -190,7 +198,7 @@ export function StackBubbleField({ items }) {
             <img
               src={b.img}
               alt={b.n}
-              style={{ width: "50%", height: "50%", objectFit: "contain" }}
+              style={{ width: "48%", height: "48%", objectFit: "contain" }}
             />
             <span
               className={`stack-bubble-label${hovered === b.key ? " show" : ""}`}
