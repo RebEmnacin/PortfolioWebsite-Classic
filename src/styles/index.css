@@ -347,6 +347,16 @@ body::before {
   height:460px;
 }
 
+/* Slower, smoother intro/out for the bubbles specifically (the shared
+   .reveal class defaults to a snappy 0.05s, which read as instant/jarring
+   for something this size — this scopes a gentler timing to just these). */
+.stack-bubble-reveal {
+  transition:opacity .7s var(--ease-out-expo), transform .7s var(--ease-out-expo);
+}
+.stack-bubble-reveal.out {
+  transition:opacity .5s ease, transform .5s ease;
+}
+
 /* one icon bubble */
 .stack-bubble {
   position:relative;

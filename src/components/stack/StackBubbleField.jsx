@@ -171,6 +171,7 @@ export function StackBubbleField({ items }) {
         <Reveal
           key={b.key}
           delay={(i + 1) * 55}
+          className="stack-bubble-reveal"
           style={{
             position: "absolute",
             width: b.size,
