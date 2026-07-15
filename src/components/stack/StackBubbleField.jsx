@@ -56,94 +56,105 @@ export function StackBubbleField({ items }) {
     if (!dims.w || !dims.h) return [];
     const rand = mulberry32(items.length * 97 + 13);
 
-    // Grid of cells, one per icon, sized in REAL pixels using the
-    // field's measured width/height and its aspect ratio.
-    const cols = Math.max(
+    // WHY ROWS INSTEAD OF A FIXED GRID: a fixed cols × rows grid
+    // (e.g. 5 × 3 = 15 slots) almost never divides evenly into our
+    // icon count (13), so some slots are always left empty — that's
+    // what caused the visible gaps. Instead, we decide how many ROWS
+    // to use, then split the icons across those rows as evenly as
+    // possible (some rows get one extra icon). Every row is sized to
+    // exactly fit however many icons are in it, so there is never a
+    // leftover empty slot anywhere.
+    const rows = Math.max(
       1,
-      Math.round(Math.sqrt(items.length * (dims.w / dims.h)))
+      Math.round(Math.sqrt(items.length * (dims.h / dims.w)))
     );
-    const rows = Math.ceil(items.length / cols);
-    const cellW = dims.w / cols;
-    const cellH = dims.h / rows;
-    const cellMin = Math.min(cellW, cellH);
+    const base = Math.floor(items.length / rows);
+    let extra = items.length % rows; // how many rows get one extra icon
 
-    // Center of the grid — used to measure "how far from the middle"
-    // each cell is, so we can shrink bubbles the further out they go.
-    const centerCol = (cols - 1) / 2;
-    const centerRow = (rows - 1) / 2;
-    const maxColDist = Math.max(centerCol, cols - 1 - centerCol) || 1;
-    const maxRowDist = Math.max(centerRow, rows - 1 - centerRow) || 1;
-
-    // Pick which grid cells actually get used. IMPORTANT: the grid
-    // (cols × rows) almost always has a couple more cells than we have
-    // icons for. The old bug: it only ever filled cells 0..items.length-1,
-    // so the last 1-2 cells in the grid were ALWAYS empty, in the same
-    // spot every time — that's what made one bubble (GitHub) look
-    // stranded next to a permanent dead patch. Fix: shuffle the FULL
-    // grid, then take just enough cells for our icons — so any leftover
-    // empty cells land in a random spot instead of always the same one.
-    const totalCells = cols * rows;
-    const allCells = Array.from({ length: totalCells }, (_, i) => i);
-    for (let i = allCells.length - 1; i > 0; i--) {
+    // shuffle which rows get the "extra" icon, so it's not always the
+    // last row that's longer
+    const rowIndices = Array.from({ length: rows }, (_, i) => i);
+    for (let i = rowIndices.length - 1; i > 0; i--) {
       const j = Math.floor(rand() * (i + 1));
-      [allCells[i], allCells[j]] = [allCells[j], allCells[i]];
+      [rowIndices[i], rowIndices[j]] = [rowIndices[j], rowIndices[i]];
     }
-    const cellOrder = allCells.slice(0, items.length);
+    const rowCounts = new Array(rows).fill(base);
+    for (let i = 0; i < extra; i++) rowCounts[rowIndices[i]] += 1;
 
-    return items.map((it, i) => {
-      const cell = cellOrder[i];
-      const cellRow = Math.floor(cell / cols);
-      const cellCol = cell % cols;
+    // shuffle the icons themselves, then hand them out row by row —
+    // this randomizes which icon ends up in which row/column
+    const shuffled = [...items];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(rand() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
 
-      // ring: 0 = dead center, 1 = far corner/edge. Using Manhattan
-      // distance (row-distance + col-distance) instead of straight-line
-      // distance is what makes the falloff shape a DIAMOND instead of
-      // a circle.
-      const ring =
-        (Math.abs(cellRow - centerRow) / maxRowDist +
-          Math.abs(cellCol - centerCol) / maxColDist) /
-        2;
+    const centerRow = (rows - 1) / 2;
+    const maxRowDist = Math.max(centerRow, rows - 1 - centerRow) || 1;
+    const cellH = dims.h / rows;
 
-      // bigger near the center, smaller toward the edges, plus a touch
-      // of randomness — kept in a tighter range than before so bubbles
-      // stay close in size, like stones on a path, instead of some
-      // shrinking down to isolated-looking pebbles
-      let sizeFactor = 0.66 + 0.3 * (1 - ring) + (rand() - 0.5) * 0.06;
+    const result = [];
+    let cursor = 0;
+    rowCounts.forEach((count, rowIndex) => {
+      const cellW = dims.w / count; // this row's cells exactly fill the width
+      const centerCol = (count - 1) / 2;
+      const maxColDist = Math.max(centerCol, count - 1 - centerCol) || 1;
 
-      // emphasis skills get an extra boost on top of wherever they land
-      const isEmphasis = EMPHASIS.has(String(it.n).toLowerCase());
-      if (isEmphasis) sizeFactor *= 1.2;
+      for (let colIndex = 0; colIndex < count; colIndex++) {
+        const it = shuffled[cursor++];
 
-      sizeFactor = Math.min(0.98, Math.max(0.6, sizeFactor));
-      const size = cellMin * sizeFactor;
+        // ring: 0 = dead center, 1 = far edge. Manhattan distance
+        // (row-distance + col-distance) is what makes the falloff
+        // shape a DIAMOND instead of a circle.
+        const ring =
+          (Math.abs(rowIndex - centerRow) / maxRowDist +
+            Math.abs(colIndex - centerCol) / maxColDist) /
+          2;
 
-      // jitter is capped at exactly the leftover room in the cell, so
-      // the bubble can NEVER cross into a neighboring cell — no overlap.
-      const maxJitterX = Math.max(0, (cellW - size) / 2);
-      const maxJitterY = Math.max(0, (cellH - size) / 2);
-      const jitterX = (rand() - 0.5) * 2 * maxJitterX;
-      const jitterY = (rand() - 0.5) * 2 * maxJitterY;
+        // bigger near the center, smaller toward the edges, plus a
+        // touch of randomness — kept in a tight range so bubbles stay
+        // close in size, like stones on a path
+        let sizeFactor = 0.66 + 0.3 * (1 - ring) + (rand() - 0.5) * 0.06;
 
-      const left = cellCol * cellW + (cellW - size) / 2 + jitterX;
-      const top = cellRow * cellH + (cellH - size) / 2 + jitterY;
+        // emphasis skills get an extra boost on top of wherever they land
+        const isEmphasis = EMPHASIS.has(String(it.n).toLowerCase());
+        if (isEmphasis) sizeFactor *= 1.2;
 
-      const shape = SHAPES[Math.floor(rand() * SHAPES.length)];
-      const duration = 5 + rand() * 4; // float animation speed: 5–9s
-      const delay = rand() * -6; // negative delay = starts mid-animation, so bubbles don't sync up
-      const drift = 8 + rand() * 8; // how far it drifts up/down in px
-      return {
-        ...it,
-        size,
-        top,
-        left,
-        shape,
-        duration,
-        delay,
-        drift,
-        isEmphasis,
-        key: `${it.n}-${i}`,
-      };
+        sizeFactor = Math.min(0.98, Math.max(0.6, sizeFactor));
+        const cellMin = Math.min(cellW, cellH);
+        const size = cellMin * sizeFactor;
+
+        // jitter is capped at exactly the leftover room in the cell, so
+        // the bubble can NEVER cross into a neighboring cell — no overlap.
+        const maxJitterX = Math.max(0, (cellW - size) / 2);
+        const maxJitterY = Math.max(0, (cellH - size) / 2);
+        const jitterX = (rand() - 0.5) * 2 * maxJitterX;
+        const jitterY = (rand() - 0.5) * 2 * maxJitterY;
+
+        const left = colIndex * cellW + (cellW - size) / 2 + jitterX;
+        const top = rowIndex * cellH + (cellH - size) / 2 + jitterY;
+
+        const shape = SHAPES[Math.floor(rand() * SHAPES.length)];
+        const duration = 5 + rand() * 4; // float animation speed: 5–9s
+        const delay = rand() * -6; // negative delay = starts mid-animation, so bubbles don't sync up
+        const drift = 8 + rand() * 8; // how far it drifts up/down in px
+
+        result.push({
+          ...it,
+          size,
+          top,
+          left,
+          shape,
+          duration,
+          delay,
+          drift,
+          isEmphasis,
+          key: `${it.n}-${rowIndex}-${colIndex}`,
+        });
+      }
     });
+
+    return result;
   }, [items, dims.w, dims.h]);
 
   return (
