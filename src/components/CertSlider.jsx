@@ -92,7 +92,7 @@ export function CertSlider() {
       <div className="cert-slider-outer" ref={outerRef}>
         <div className="cert-slider-stage" ref={stageRef}>
           {DATA.certs.map((c, i) => (
-            <div key={i} className="cert-slide">
+            <div key={i} className={`cert-slide${i === active ? " cert-active" : ""}`}>
               <a className="cert-slide-inner" href={c.url} target="_blank" rel="noreferrer">
                 <div className="cert-slide-img-wrap">
                   <img className="cert-slide-img" src={c.img} alt={c.title}
