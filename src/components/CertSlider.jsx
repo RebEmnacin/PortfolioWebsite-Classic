@@ -95,6 +95,7 @@ export function CertSlider() {
             <div key={i} className={`cert-slide${i === active ? " cert-active" : ""}`}>
               <a className="cert-slide-inner" href={c.url} target="_blank" rel="noreferrer">
                 <div className="cert-slide-img-wrap">
+                  <div className="cert-blob" />
                   <img className="cert-slide-img" src={c.img} alt={c.title}
                     onError={e => { e.target.style.display = "none"; }} />
                 </div>
