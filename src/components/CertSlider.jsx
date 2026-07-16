@@ -12,7 +12,36 @@ export function CertSlider() {
   const targetRef   = useRef(0);
   const wheelLock   = useRef(false);
   const rafRef      = useRef(null);
+  const imgRefs     = useRef([]);
   const n = DATA.certs.length;
+
+  // Measure each certification image's REAL rendered size, so the blob
+  // behind it can be sized relative to the actual badge/document —
+  // instead of a guessed fixed px value that might be way too small
+  // (hiding the blob completely) or too big for a given image.
+  const [imgSizes, setImgSizes] = useState({});
+  useEffect(() => {
+    const observers = imgRefs.current.map((img, i) => {
+      if (!img) return null;
+      const measure = () => {
+        if (img.naturalWidth) {
+          setImgSizes(prev => ({ ...prev, [i]: { w: img.clientWidth, h: img.clientHeight } }));
+        }
+      };
+      if (img.complete) measure();
+      img.addEventListener("load", measure);
+      const obs = new ResizeObserver(measure);
+      obs.observe(img);
+      return { obs, img, measure };
+    });
+    return () => {
+      observers.forEach(o => {
+        if (!o) return;
+        o.obs.disconnect();
+        o.img.removeEventListener("load", o.measure);
+      });
+    };
+  }, []);
 
   useEffect(() => {
     let running = true;
@@ -95,8 +124,17 @@ export function CertSlider() {
             <div key={i} className={`cert-slide${i === active ? " cert-active" : ""}`}>
               <a className="cert-slide-inner" href={c.url} target="_blank" rel="noreferrer">
                 <div className="cert-slide-img-wrap">
-                  <div className={`cert-blob cert-blob-${c.shape === "badge" ? "badge" : "cert"}`} />
-                  <img className="cert-slide-img" src={c.img} alt={c.title}
+                  <div
+                    className={`cert-blob cert-blob-${c.shape === "badge" ? "badge" : "cert"}`}
+                    style={
+                      imgSizes[i]
+                        ? { width: imgSizes[i].w * 1.05, height: imgSizes[i].h * 1.05 }
+                        : undefined
+                    }
+                  />
+                  <img
+                    ref={el => (imgRefs.current[i] = el)}
+                    className="cert-slide-img" src={c.img} alt={c.title}
                     onError={e => { e.target.style.display = "none"; }} />
                 </div>
                 <div className="cert-slide-body">
