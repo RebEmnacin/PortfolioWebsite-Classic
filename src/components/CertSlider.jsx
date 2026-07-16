@@ -6,9 +6,9 @@ import { DATA } from "../data/portfolioData";
 // (not fixed px) so the smaller blobs always poke out visibly past the
 // main blob's edge, regardless of how big or small a given image is.
 const BLOB_LAYOUT = [
-  { scale: 1.0,  dxFrac: 0,     dyFrac: 0,     duration: 8.5 },
-  { scale: 0.62, dxFrac: -0.36, dyFrac: -0.30, duration: 10  },
-  { scale: 0.5,  dxFrac: 0.38,  dyFrac: 0.32,  duration: 7   },
+  { scale: 1.0,  dxFrac: 0,     dyFrac: 0,     duration: 8.5, delay: 0    },
+  { scale: 0.62, dxFrac: -0.36, dyFrac: -0.30, duration: 10,  delay: -3.5 },
+  { scale: 0.5,  dxFrac: 0.38,  dyFrac: 0.32,  duration: 7,   delay: -5   },
 ];
 
 /* ─────────────────────────────────────────────────────────────────
@@ -152,6 +152,7 @@ export function CertSlider() {
                                 left: `calc(50% + ${dx}px - ${w / 2}px)`,
                                 top: `calc(50% + ${dy}px - ${h / 2}px)`,
                                 animationDuration: `${b.duration}s`,
+                                animationDelay: `${b.delay}s`,
                               }
                             : undefined
                         }
