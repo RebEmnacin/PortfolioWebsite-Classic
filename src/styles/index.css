@@ -326,7 +326,7 @@ body::before {
 .cert-blob {
   position:absolute;
   top:50%; left:50%;
-  transform:translate(-50%,-50%);
+  width:220px; height:220px; /* fallback only, used briefly before JS measures the real image */
   z-index:-1;
   background:var(--ac);
   opacity:0;
@@ -340,27 +340,25 @@ body::before {
 .cert-active .cert-blob { opacity:1; animation-play-state:running; }
 
 .cert-blob-badge {
-  width:300px; height:300px;
   border-radius:50%;
   animation-name:blob-badge;
   animation-duration:8s;
 }
 @keyframes blob-badge {
-  0%   { border-radius:46% 54% 52% 48% / 50% 48% 52% 50%; transform:translate(-50%,-50%) scale(1) rotate(0deg); }
-  50%  { border-radius:54% 46% 48% 52% / 48% 52% 48% 52%; transform:translate(-48%,-52%) scale(1.04) rotate(4deg); }
-  100% { border-radius:50% 50% 46% 54% / 52% 48% 50% 50%; transform:translate(-52%,-49%) scale(.98) rotate(-3deg); }
+  0%   { border-radius:46% 54% 52% 48% / 50% 48% 52% 50%; transform:scale(1) rotate(0deg); }
+  50%  { border-radius:54% 46% 48% 52% / 48% 52% 48% 52%; transform:scale(1.06) translate(5px,-4px) rotate(5deg); }
+  100% { border-radius:50% 50% 46% 54% / 52% 48% 50% 50%; transform:scale(.95) translate(-4px,4px) rotate(-4deg); }
 }
 
 .cert-blob-cert {
-  width:400px; height:300px;
   border-radius:10%;
   animation-name:blob-cert;
   animation-duration:9s;
 }
 @keyframes blob-cert {
-  0%   { border-radius:8% 10% 9% 11% / 10% 9% 11% 8%; transform:translate(-50%,-50%) scale(1) rotate(0deg); }
-  50%  { border-radius:11% 8% 10% 9% / 8% 11% 9% 10%; transform:translate(-49%,-51%) scale(1.03) rotate(1deg); }
-  100% { border-radius:9% 11% 8% 10% / 11% 8% 10% 9%; transform:translate(-51%,-49%) scale(.97) rotate(-1deg); }
+  0%   { border-radius:8% 10% 9% 11% / 10% 9% 11% 8%; transform:scale(1) rotate(0deg); }
+  50%  { border-radius:11% 8% 10% 9% / 8% 11% 9% 10%; transform:scale(1.04) translate(4px,-3px) rotate(1.5deg); }
+  100% { border-radius:9% 11% 8% 10% / 11% 8% 10% 9%; transform:scale(.96) translate(-4px,3px) rotate(-1.5deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -556,7 +554,7 @@ body::before {
   .stack-big-title{font-size:clamp(60px,16vw,96px)}
   .stack-bubble-field{height:340px}
 }
-@media(max-width:600px){ .sp-inner{padding:0 20px 60px 20px} .p1-wrap{padding:0 20px} .cert-slide{width:280px;height:380px;margin-top:-190px;margin-left:-140px} .cert-blob-badge{width:190px;height:190px} .cert-blob-cert{width:250px;height:190px} }
+@media(max-width:600px){ .sp-inner{padding:0 20px 60px 20px} .p1-wrap{padding:0 20px} .cert-slide{width:280px;height:380px;margin-top:-190px;margin-left:-140px} }
 
 @media (prefers-reduced-motion: reduce) {
   .hero2-photo img {
