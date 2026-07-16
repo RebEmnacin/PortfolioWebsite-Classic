@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { DATA } from "../data/portfolioData";
 
 // A cluster of 3 blobs per card (not one) — each a different size and
-// offset from center, so they overlap into an irregular cluster rather
-// than reading as a single simple circle/rounded-rect.
+// offset from center. Offsets are FRACTIONS of the image's own size
+// (not fixed px) so the smaller blobs always poke out visibly past the
+// main blob's edge, regardless of how big or small a given image is.
 const BLOB_LAYOUT = [
-  { scale: 1.0,  dx: 0,   dy: 0,   duration: 8.5 },
-  { scale: 0.68, dx: -22, dy: -16, duration: 10  },
-  { scale: 0.56, dx: 24,  dy: 18,  duration: 7   },
+  { scale: 1.0,  dxFrac: 0,     dyFrac: 0,     duration: 8.5 },
+  { scale: 0.62, dxFrac: -0.36, dyFrac: -0.30, duration: 10  },
+  { scale: 0.5,  dxFrac: 0.38,  dyFrac: 0.32,  duration: 7   },
 ];
 
 /* ─────────────────────────────────────────────────────────────────
@@ -137,6 +138,8 @@ export function CertSlider() {
                     const sized = imgSizes[i];
                     const w = sized ? sized.w * 1.05 * b.scale : null;
                     const h = sized ? sized.h * 1.05 * b.scale : null;
+                    const dx = sized ? sized.w * b.dxFrac : 0;
+                    const dy = sized ? sized.h * b.dyFrac : 0;
                     return (
                       <div
                         key={j}
@@ -146,8 +149,8 @@ export function CertSlider() {
                             ? {
                                 width: w,
                                 height: h,
-                                left: `calc(50% + ${b.dx}px - ${w / 2}px)`,
-                                top: `calc(50% + ${b.dy}px - ${h / 2}px)`,
+                                left: `calc(50% + ${dx}px - ${w / 2}px)`,
+                                top: `calc(50% + ${dy}px - ${h / 2}px)`,
                                 animationDuration: `${b.duration}s`,
                               }
                             : undefined
