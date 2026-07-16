@@ -326,23 +326,41 @@ body::before {
 .cert-blob {
   position:absolute;
   top:50%; left:50%;
-  width:300px; height:300px;
   transform:translate(-50%,-50%);
   z-index:-1;
   background:var(--ac);
   opacity:0;
-  filter:blur(3px);
   pointer-events:none;
   transition:opacity 1s ease;
-  animation:blob-morph 9s ease-in-out infinite alternate;
+  animation-timing-function:ease-in-out;
+  animation-iteration-count:infinite;
+  animation-direction:alternate;
   animation-play-state:paused;
 }
-.cert-active .cert-blob { opacity:.5; animation-play-state:running; }
+.cert-active .cert-blob { opacity:1; animation-play-state:running; }
 
-@keyframes blob-morph {
-  0%   { border-radius:22% 78% 74% 26% / 40% 30% 70% 60%; transform:translate(-50%,-50%) scale(1) rotate(0deg); }
-  50%  { border-radius:78% 22% 26% 74% / 30% 70% 30% 70%; transform:translate(-46%,-54%) scale(1.08) rotate(8deg); }
-  100% { border-radius:32% 68% 70% 30% / 66% 34% 66% 34%; transform:translate(-54%,-47%) scale(.95) rotate(-7deg); }
+.cert-blob-badge {
+  width:300px; height:300px;
+  border-radius:50%;
+  animation-name:blob-badge;
+  animation-duration:8s;
+}
+@keyframes blob-badge {
+  0%   { border-radius:46% 54% 52% 48% / 50% 48% 52% 50%; transform:translate(-50%,-50%) scale(1) rotate(0deg); }
+  50%  { border-radius:54% 46% 48% 52% / 48% 52% 48% 52%; transform:translate(-48%,-52%) scale(1.04) rotate(4deg); }
+  100% { border-radius:50% 50% 46% 54% / 52% 48% 50% 50%; transform:translate(-52%,-49%) scale(.98) rotate(-3deg); }
+}
+
+.cert-blob-cert {
+  width:400px; height:300px;
+  border-radius:10%;
+  animation-name:blob-cert;
+  animation-duration:9s;
+}
+@keyframes blob-cert {
+  0%   { border-radius:8% 10% 9% 11% / 10% 9% 11% 8%; transform:translate(-50%,-50%) scale(1) rotate(0deg); }
+  50%  { border-radius:11% 8% 10% 9% / 8% 11% 9% 10%; transform:translate(-49%,-51%) scale(1.03) rotate(1deg); }
+  100% { border-radius:9% 11% 8% 10% / 11% 8% 10% 9%; transform:translate(-51%,-49%) scale(.97) rotate(-1deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -538,7 +556,7 @@ body::before {
   .stack-big-title{font-size:clamp(60px,16vw,96px)}
   .stack-bubble-field{height:340px}
 }
-@media(max-width:600px){ .sp-inner{padding:0 20px 60px 20px} .p1-wrap{padding:0 20px} .cert-slide{width:280px;height:380px;margin-top:-190px;margin-left:-140px} .cert-blob{width:190px;height:190px} }
+@media(max-width:600px){ .sp-inner{padding:0 20px 60px 20px} .p1-wrap{padding:0 20px} .cert-slide{width:280px;height:380px;margin-top:-190px;margin-left:-140px} .cert-blob-badge{width:190px;height:190px} .cert-blob-cert{width:250px;height:190px} }
 
 @media (prefers-reduced-motion: reduce) {
   .hero2-photo img {
