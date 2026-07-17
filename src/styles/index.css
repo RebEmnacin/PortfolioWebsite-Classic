@@ -320,41 +320,29 @@ body::before {
 }
 
 /* One organic blob, centered behind the badge/certificate and sized
-   to it — with a "pulsating echo" of its own exact shape (the ::before
-   below) expanding outward and fading, like Magic UI's PulsatingButton,
-   just blob-shaped instead of a plain rounded rectangle. Visible only
-   while this card is active, easing in/out with it. */
+   to it, with a direct "breathing" pulse — growing and shrinking on a
+   loop. Animating the blob's own transform directly (instead of a
+   pseudo-element echo) means there's nothing else that has to line up
+   correctly for the motion to show up. Visible only while this card
+   is active, easing in/out with it. */
 .cert-blob {
   position:absolute;
   top:50%; left:50%;
-  transform:translate(-50%,-50%);
   width:220px; height:220px; /* fallback only, used briefly before JS measures the real image */
   z-index:-1;
   background:var(--ac);
   opacity:0;
   pointer-events:none;
   transition:opacity 1s ease;
+  transform:translate(-50%,-50%) scale(1);
 }
-.cert-active .cert-blob { opacity:1; }
-
-/* The pulsating echo: an exact copy of the blob's own shape (border-
-   radius:inherit copies whatever the parent's border-radius is, so it
-   always matches perfectly) that scales up and fades out on a loop. */
-.cert-blob::before {
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  background:var(--ac);
-  opacity:0;
-}
-.cert-active .cert-blob::before {
-  animation:blob-pulse 2.4s ease-out infinite;
+.cert-active .cert-blob {
+  opacity:1;
+  animation:blob-pulse 2.2s ease-in-out infinite;
 }
 @keyframes blob-pulse {
-  0%   { transform:scale(1);    opacity:.55; }
-  70%  { transform:scale(1.4);  opacity:0;   }
-  100% { transform:scale(1.4);  opacity:0;   }
+  0%, 100% { transform:translate(-50%,-50%) scale(1); }
+  50%      { transform:translate(-50%,-50%) scale(1.15); }
 }
 
 .cert-blob-badge {
@@ -367,7 +355,7 @@ body::before {
 
 @media (prefers-reduced-motion: reduce) {
   .cert-active .cert-slide-img { animation:none; }
-  .cert-active .cert-blob::before { animation:none !important; }
+  .cert-active .cert-blob { animation:none !important; }
 }
 
 .cert-slider-controls {
