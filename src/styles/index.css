@@ -319,52 +319,55 @@ body::before {
   to   { transform:translateY(-16px); }
 }
 
-/* One large organic blob, centered behind the badge and bigger than
-   it — extending out past its edges on every side (like a splat),
-   not several small blurred squares tucked in the corners. Visible
-   only while this card is active, easing in/out with it. */
+/* One organic blob, centered behind the badge/certificate and sized
+   to it — with a "pulsating echo" of its own exact shape (the ::before
+   below) expanding outward and fading, like Magic UI's PulsatingButton,
+   just blob-shaped instead of a plain rounded rectangle. Visible only
+   while this card is active, easing in/out with it. */
 .cert-blob {
   position:absolute;
   top:50%; left:50%;
+  transform:translate(-50%,-50%);
   width:220px; height:220px; /* fallback only, used briefly before JS measures the real image */
   z-index:-1;
   background:var(--ac);
   opacity:0;
   pointer-events:none;
   transition:opacity 1s ease;
-  animation-timing-function:ease-in-out;
-  animation-iteration-count:infinite;
-  animation-direction:alternate;
 }
 .cert-active .cert-blob { opacity:1; }
 
-.cert-blob-badge {
-  border-radius:50%;
-  animation-name:blob-badge;
-  animation-duration:8s;
+/* The pulsating echo: an exact copy of the blob's own shape (border-
+   radius:inherit copies whatever the parent's border-radius is, so it
+   always matches perfectly) that scales up and fades out on a loop. */
+.cert-blob::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:var(--ac);
+  opacity:0;
 }
-@keyframes blob-badge {
-  0%   { border-radius:44% 56% 58% 42% / 52% 44% 56% 48%; transform:scale(1) translate(0,0) rotate(0deg); }
-  33%  { border-radius:60% 40% 42% 58% / 40% 62% 38% 60%; transform:scale(1.14) translate(18px,-16px) rotate(10deg); }
-  66%  { border-radius:38% 62% 60% 40% / 62% 38% 60% 40%; transform:scale(.88) translate(-16px,14px) rotate(-9deg); }
-  100% { border-radius:50% 50% 44% 56% / 55% 45% 52% 48%; transform:scale(1.05) translate(10px,10px) rotate(6deg); }
+.cert-active .cert-blob::before {
+  animation:blob-pulse 2.4s ease-out infinite;
+}
+@keyframes blob-pulse {
+  0%   { transform:scale(1);    opacity:.55; }
+  70%  { transform:scale(1.4);  opacity:0;   }
+  100% { transform:scale(1.4);  opacity:0;   }
+}
+
+.cert-blob-badge {
+  border-radius:44% 56% 58% 42% / 52% 44% 56% 48%;
 }
 
 .cert-blob-cert {
-  border-radius:10%;
-  animation-name:blob-cert;
-  animation-duration:9s;
-}
-@keyframes blob-cert {
-  0%   { border-radius:8% 12% 10% 14% / 12% 8% 14% 10%; transform:scale(1) translate(0,0) rotate(0deg); }
-  33%  { border-radius:14% 8% 12% 10% / 8% 14% 9% 15%; transform:scale(1.08) translate(14px,-10px) rotate(3deg); }
-  66%  { border-radius:9% 14% 8% 13% / 15% 9% 12% 8%; transform:scale(.92) translate(-13px,9px) rotate(-2.5deg); }
-  100% { border-radius:11% 9% 13% 8% / 10% 13% 8% 12%; transform:scale(1.04) translate(8px,7px) rotate(1.5deg); }
+  border-radius:9% 11% 8% 12% / 10% 9% 12% 8%;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cert-active .cert-slide-img { animation:none; }
-  .cert-blob { animation:none !important; }
+  .cert-active .cert-blob::before { animation:none !important; }
 }
 
 .cert-slider-controls {

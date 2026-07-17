@@ -1,16 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { DATA } from "../data/portfolioData";
 
-// A cluster of 3 blobs per card (not one) — each a different size and
-// offset from center. Offsets are FRACTIONS of the image's own size
-// (not fixed px) so the smaller blobs always poke out visibly past the
-// main blob's edge, regardless of how big or small a given image is.
-const BLOB_LAYOUT = [
-  { scale: 1.0,  dxFrac: 0,     dyFrac: 0,     duration: 8.5, delay: 0    },
-  { scale: 0.62, dxFrac: -0.36, dyFrac: -0.30, duration: 10,  delay: -3.5 },
-  { scale: 0.5,  dxFrac: 0.38,  dyFrac: 0.32,  duration: 7,   delay: -5   },
-];
-
 /* ─────────────────────────────────────────────────────────────────
    CERT SLIDER — 3D drag, no black bg
 ───────────────────────────────────────────────────────────────── */
@@ -134,31 +124,17 @@ export function CertSlider() {
             <div key={i} className={`cert-slide${i === active ? " cert-active" : ""}`}>
               <a className="cert-slide-inner" href={c.url} target="_blank" rel="noreferrer">
                 <div className="cert-slide-img-wrap">
-                  {BLOB_LAYOUT.map((b, j) => {
+                  {(() => {
                     const sized = imgSizes[i];
-                    const w = sized ? sized.w * 1.05 * b.scale : null;
-                    const h = sized ? sized.h * 1.05 * b.scale : null;
-                    const dx = sized ? sized.w * b.dxFrac : 0;
-                    const dy = sized ? sized.h * b.dyFrac : 0;
+                    const w = sized ? sized.w * 1.15 : null;
+                    const h = sized ? sized.h * 1.15 : null;
                     return (
                       <div
-                        key={j}
                         className={`cert-blob cert-blob-${c.shape === "badge" ? "badge" : "cert"}`}
-                        style={
-                          sized
-                            ? {
-                                width: w,
-                                height: h,
-                                left: `calc(50% + ${dx}px - ${w / 2}px)`,
-                                top: `calc(50% + ${dy}px - ${h / 2}px)`,
-                                animationDuration: `${b.duration}s`,
-                                animationDelay: `${b.delay}s`,
-                              }
-                            : undefined
-                        }
+                        style={sized ? { width: w, height: h } : undefined}
                       />
                     );
-                  })}
+                  })()}
                   <img
                     ref={el => (imgRefs.current[i] = el)}
                     className="cert-slide-img" src={c.img} alt={c.title}
