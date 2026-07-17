@@ -335,9 +335,8 @@ body::before {
   animation-timing-function:ease-in-out;
   animation-iteration-count:infinite;
   animation-direction:alternate;
-  animation-play-state:paused;
 }
-.cert-active .cert-blob { opacity:1; animation-play-state:running; }
+.cert-active .cert-blob { opacity:1; }
 
 .cert-blob-badge {
   border-radius:50%;
