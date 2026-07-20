@@ -130,7 +130,7 @@ export function CertSlider() {
                     const h = sized ? sized.h * 1.15 : null;
                     return (
                       <div
-                        className={`cert-blob cert-blob-${c.shape === "badge" ? "badge" : "cert"}`}
+                        className={`cert-blob cert-blob-${c.shape === "badge" ? "badge" : "cert"}${i === active ? " cert-blob-active" : ""}`}
                         style={sized ? { width: w, height: h } : undefined}
                       />
                     );

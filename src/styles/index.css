@@ -336,7 +336,7 @@ body::before {
   transition:opacity 1s ease;
   transform:translate(-50%,-50%) scale(1);
 }
-.cert-active .cert-blob {
+.cert-blob-active {
   opacity:1;
   animation:blob-pulse 2.2s ease-in-out infinite;
 }
@@ -355,7 +355,7 @@ body::before {
 
 @media (prefers-reduced-motion: reduce) {
   .cert-active .cert-slide-img { animation:none; }
-  .cert-active .cert-blob { animation:none !important; }
+  .cert-blob-active { animation:none !important; }
 }
 
 .cert-slider-controls {
