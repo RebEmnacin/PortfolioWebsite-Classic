@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Reveal } from "../Reveal";
+import { StackIcon } from "../icons/StackIcons";
+import { hasStackIcon } from "../icons/stackIconPaths";
 
 /* ─────────────────────────────────────────────────────────────────
    Tiny seeded random number generator.
@@ -196,11 +198,16 @@ export function StackBubbleField({ items }) {
             onMouseEnter={() => setHovered(b.key)}
             onMouseLeave={() => setHovered(null)}
           >
-            <img
-              src={b.img}
-              alt={b.n}
-              style={{ width: "48%", height: "48%", objectFit: "contain" }}
-            />
+            {hasStackIcon(b.n) ? (
+              <StackIcon name={b.n} style={{ width: "48%", height: "48%" }} />
+            ) : (
+              // fallback: items without an SVG (e.g. Canva) still use their image
+              <img
+                src={b.img}
+                alt={b.n}
+                style={{ width: "48%", height: "48%", objectFit: "contain" }}
+              />
+            )}
             <span
               className={`stack-bubble-label${hovered === b.key ? " show" : ""}`}
             >
