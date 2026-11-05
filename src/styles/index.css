@@ -235,7 +235,8 @@ body::before {
 /* ══════════════════════════════════════════════════════════
    PROJECTS
 ══════════════════════════════════════════════════════════ */
-.folder-stage { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:200px; gap:16px; }
+.folder-stage { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:200px; gap:16px;
+  margin-top:150px; /* pushes the folder down so it sits midway between the title and the next section */ }
 .folder-btn { width:130px; height:110px; border:none; background:transparent; display:flex;
   flex-direction:column; align-items:center; gap:12px; color:var(--ac); transition:opacity .3s, transform .3s; }
 .folder-btn:hover { transform:translateY(-6px) scale(1.05); }
