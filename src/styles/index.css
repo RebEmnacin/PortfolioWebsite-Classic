@@ -176,7 +176,7 @@ body::before {
    SCROLL PANEL
 ══════════════════════════════════════════════════════════ */
 .sp-inner { width:100%; padding:0 80px 120px 120px; }
-.section-gap { padding-bottom: 110px; }
+.section-gap { padding-bottom: 240px; }
 @keyframes fadeUp   { from{opacity:0;transform:translateY(36px)} to{opacity:1;transform:translateY(0)} }
 .reveal { opacity:0; transform:translateY(40px); transition:opacity .05s var(--ease-out-expo), transform .05s var(--ease-out-expo); }
 .reveal.out { opacity:0; transform:translateY(-24px); transition:opacity .05s ease, transform .05s ease; }
