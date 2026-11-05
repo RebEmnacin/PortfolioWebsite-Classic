@@ -9,6 +9,7 @@ import { CustomCursor } from "./components/CustomCursor";
 import { ProfileImage } from "./components/ProfileImage";
 import { SparkBurst } from "./components/Sparkburst";
 import { FloatingNav } from "./components/FloatingNav";
+import { ThemeToggle } from "./components/ThemeToggle";
 import { IntroPanel } from "./components/panels/IntroPanel";
 import { ScrollPanel } from "./components/panels/ScrollPanel";
 import { ArrowIco, BackIco, PlusIco } from "./components/icons/Icons";
@@ -44,6 +45,17 @@ export default function App() {
   const lockRef   = useRef(false);
 
   const sparkRef = useRef(null);
+
+  // Light / dark theme. Saved so it survives a refresh; the attribute on
+  // <html> is what the CSS reads (see the DARK MODE block in index.css).
+  const [dark, setDark] = useState(() => {
+    try { return localStorage.getItem("theme") === "dark"; } catch { return false; }
+  });
+  useEffect(() => {
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch { /* ignore */ }
+  }, [dark]);
+  const toggleTheme = useCallback(() => setDark(d => !d), []);
 
   const handleLanded = useCallback((landedDir) => {
     setRollingDir(null);
@@ -190,30 +202,30 @@ if (sectionId === "home") {
   return (
     <>
       <style>{`::view-transition-old(root){animation:none;mix-blend-mode:normal;}::view-transition-new(root){animation:none;mix-blend-mode:normal;}`}</style>
-      <SparkleBackground hide={projectsOpen}/>
+      <SparkleBackground hide={projectsOpen} dark={dark}/>
 
       {projectsOpen && (
         <div id="projects-overlay" style={{
           position:"fixed", top:0, left:0,
           width:"100vw", height:"100vh",
           zIndex:2147483646,
-          background:"#ffcb05",
+          background: dark ? "#0d1117" : "#ffcb05",
           overflowY:"auto",
           padding:"0",
           boxSizing:"border-box",
-          color:"#111110",
-          "--ac":"#ffffff",
-          "--txh":"#111110",
-          "--txm":"#111110",
-          "--tx":"#333330",
-          "--border":"rgba(0,0,0,0.2)",
-          "--border2":"rgba(0,0,0,0.35)",
-          "--acbg":"rgba(255,255,255,0.2)",
-          "--acborder":"rgba(0,0,0,0.4)",
+          color: dark ? "#e6edf3" : "#111110",
+          "--ac": dark ? "#56b6c2" : "#ffffff",
+          "--txh": dark ? "#e6edf3" : "#111110",
+          "--txm": dark ? "#adbac7" : "#111110",
+          "--tx": dark ? "#8b949e" : "#333330",
+          "--border": dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.2)",
+          "--border2": dark ? "rgba(255,255,255,0.3)" : "rgba(0,0,0,0.35)",
+          "--acbg": dark ? "rgba(86,182,194,0.15)" : "rgba(255,255,255,0.2)",
+          "--acborder": dark ? "rgba(86,182,194,0.5)" : "rgba(0,0,0,0.4)",
         }}>
           <div style={{ padding:"60px 80px 120px 120px", boxSizing:"border-box" }}>
             <div className="back-row" style={{ marginBottom:"40px" }}>
-              <button className="back-btn" onClick={handleCloseProjects} style={{borderColor:"rgba(255,255,255,0.6)",color:"#ffffff"}}><BackIco s={12}/> Back</button>
+              <button className="back-btn" onClick={handleCloseProjects} style={{borderColor: dark ? "rgba(86,182,194,0.7)" : "rgba(255,255,255,0.6)", color: dark ? "#56b6c2" : "#ffffff"}}><BackIco s={12}/> Back</button>
             </div>
             <div className="eyebrow">Portfolio</div>
             <h2 className="pg-title">Selected <em>Work</em></h2>
@@ -242,7 +254,8 @@ if (sectionId === "home") {
         </div>
       )}
 
-      <CustomCursor white={projectsOpen}/>
+      <ThemeToggle dark={dark} onToggle={toggleTheme}/>
+      <CustomCursor white={projectsOpen && !dark} dark={dark}/>
       <ProfileImage
         p1Ref={p1ImgRef}
         p2Ref={p2ImgRef}
@@ -251,7 +264,7 @@ if (sectionId === "home") {
       />
       <SparkBurst
         ref={sparkRef}
-        sparkColor="#ffcb05"
+        sparkColor={dark ? "#56b6c2" : "#ffcb05"}
         sparkSize={50}
         sparkRadius={200}
         sparkCount={12}
