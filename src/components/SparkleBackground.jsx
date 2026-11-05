@@ -5,8 +5,12 @@ import { useEffect, useRef } from "react";
    Mimics @tsparticles sparkle: small dots that twinkle opacity,
    move slowly, straight lines, high density
 ───────────────────────────────────────────────────────────────── */
-export function SparkleBackground({ hide = false }) {
+export function SparkleBackground({ hide = false, dark = false }) {
   const canvasRef = useRef(null);
+  // Dot colour: dark ink on the light theme, white on the dark theme.
+  // Kept in a ref so switching theme doesn't restart the particles.
+  const colorRef = useRef(dark ? "#ffffff" : "#111110");
+  useEffect(() => { colorRef.current = dark ? "#ffffff" : "#111110"; }, [dark]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -67,7 +71,7 @@ export function SparkleBackground({ hide = false }) {
 
         // draw crisp dot
         ctx.globalAlpha = p.op;
-        ctx.fillStyle = "#111110";
+        ctx.fillStyle = colorRef.current;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
