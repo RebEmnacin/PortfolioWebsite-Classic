@@ -16,27 +16,30 @@ export const DATA = {
   email: "mailto:rebqemnacin@gmail.com",
   school: "New Era University", degree: "BS Computer Science", year: "2024–present",
 
+  // Stack icons are now inline SVGs (see components/icons/StackIcons.jsx), matched
+  // by the "n" name. The old PNG paths are kept below as comments. Canva has no
+  // SVG yet, so it still uses its image.
   stack: {
     Frontend: [
-      { n: "React",      img: "/assets/StackIcons/React.png" },
-      { n: "JavaScript", img: "/assets/StackIcons/Javascript.png" },
-      { n: "TypeScript", img: "/assets/StackIcons/Typescript.png" },
-      { n: "HTML",       img: "/assets/StackIcons/HTML.png" },
-      { n: "CSS",        img: "/assets/StackIcons/CSS.png" },
+      { n: "React",      /* img: "/assets/StackIcons/React.png" */ },
+      { n: "JavaScript", /* img: "/assets/StackIcons/Javascript.png" */ },
+      { n: "TypeScript", /* img: "/assets/StackIcons/Typescript.png" */ },
+      { n: "HTML",       /* img: "/assets/StackIcons/HTML.png" */ },
+      { n: "CSS",        /* img: "/assets/StackIcons/CSS.png" */ },
     ],
     Backend: [
-      { n: "Node.js",    img: "/assets/StackIcons/NodeJS.png" },
-      { n: "Python",     img: "/assets/StackIcons/Python.png" },
-      { n: "Java",       img: "/assets/StackIcons/Java.png" },
+      { n: "Node.js",    /* img: "/assets/StackIcons/NodeJS.png" */ },
+      { n: "Python",     /* img: "/assets/StackIcons/Python.png" */ },
+      { n: "Java",       /* img: "/assets/StackIcons/Java.png" */ },
     ],
     Database: [
-      { n: "MySQL",      img: "/assets/StackIcons/MySQL.png" },
+      { n: "MySQL",      /* img: "/assets/StackIcons/MySQL.png" */ },
     ],
     Tools: [
-      { n: "Figma",      img: "/assets/StackIcons/Figma.png" },
+      { n: "Figma",      /* img: "/assets/StackIcons/Figma.png" */ },
       { n: "Canva",      img: "/assets/StackIcons/Canva.png" },
-      { n: "Git",        img: "/assets/StackIcons/Git.png" },
-      { n: "Github",     img: "/assets/StackIcons/Github.png" },
+      { n: "Git",        /* img: "/assets/StackIcons/Git.png" */ },
+      { n: "Github",     /* img: "/assets/StackIcons/Github.png" */ },
     ],
   },
 
