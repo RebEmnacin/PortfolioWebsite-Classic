@@ -64,7 +64,7 @@ export function ProfileImage({ p1Ref, p2Ref, direction, onLanded }) {
         width: ${size}px;
         height: ${size}px;
         border-radius: 50%;
-        border: 3px solid #ffcb05;
+        border: 3px solid var(--ac);
         box-shadow: 6px 6px 0 var(--outline);
         object-fit: cover;
         pointer-events: none;
