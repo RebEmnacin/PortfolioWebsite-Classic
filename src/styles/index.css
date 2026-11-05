@@ -438,6 +438,9 @@ body::before {
   to   { transform:translateY(var(--drift, 12px)); }
 }
 
+/* inline SVG stack icons — the blue from your profile SVGs */
+.stack-icon { display:block; color:#56b6c2; flex-shrink:0; }
+
 /* name label that appears on hover, floating above the bubble */
 .stack-bubble-label {
   position:absolute; top:-30px; left:50%; transform:translateX(-50%) translateY(4px);
@@ -598,3 +601,4 @@ html[data-theme="dark"] .pcard-arr { background:#56b6c2; color:#0d1117; }
 html[data-theme="dark"] .pcard-info h3 { color:#e6edf3; }
 html[data-theme="dark"] .pcard-info p { color:#adbac7; }
 html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; }
+
