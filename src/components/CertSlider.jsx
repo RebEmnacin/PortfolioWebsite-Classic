@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { DATA } from "../data/portfolioData";
 
 /* ─────────────────────────────────────────────────────────────────
-   CERT SLIDER — 3D drag, no black bg
+   CERT SLIDER — flat 2D carousel, rounded cards
 ───────────────────────────────────────────────────────────────── */
 export function CertSlider() {
   const [active, setActive] = useState(0);
@@ -59,16 +59,16 @@ export function CertSlider() {
     const stage = stageRef.current; if (!stage) return;
     const slides = stage.querySelectorAll(".cert-slide");
     slides.forEach((el, i) => {
+      // Flat 2D carousel: every card keeps the same size and sits in one
+      // straight horizontal line. Only the x-position (and a light fade
+      // for the cards that aren't in focus) changes as you move.
       const diff = i - prog;
-      const tx = diff * 52;
-      const tz = -Math.abs(diff) * 160;
-      const ry = diff * -20;
-      const sc = 1 - Math.abs(diff) * 0.13;
-      const op = Math.max(0, 1 - Math.abs(diff) * 0.38);
-      const zi = Math.round(100 - Math.abs(diff) * 12);
-      el.style.transform = `translate3d(${tx}%,0,${tz}px) rotateY(${ry}deg) scale(${sc})`;
+      const tx = diff * 108; // % of card width -> small gap between cards
+      const op = Math.max(0, 1 - Math.abs(diff) * 0.5);
+      el.style.transform = `translate3d(${tx}%,0,0)`;
       el.style.opacity = op;
-      el.style.zIndex = zi;
+      el.style.zIndex = Math.round(100 - Math.abs(diff) * 10);
+      el.style.pointerEvents = op < 0.05 ? "none" : "auto";
     });
     const rounded = Math.round(Math.max(0, Math.min(n - 1, prog)));
     setActive(rounded);
