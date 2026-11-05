@@ -222,13 +222,13 @@ if (sectionId === "home") {
                 const PI = p.I;
                 return (
                   <a key={i} href={p.url} target="_blank" rel="noreferrer" className="pcard">
-                    <div className="pcard-left">
+                    <div className="pcard-top">
+                      <span className="pcard-icon"><PI s={22}/></span>
                       <span className="pcard-num">_{String(i+1).padStart(2,"0")}.</span>
-                      <span className="pcard-icon"><PI s={20}/></span>
-                      <div className="pcard-info"><h3>{p.n}</h3><p>{p.d}</p></div>
+                      <span className="pcard-arr"><ArrowIco s={18}/></span>
                     </div>
+                    <div className="pcard-info"><h3>{p.n}</h3><p>{p.d}</p></div>
                     <div className="ptags">{p.tags.map(t => <span key={t} className="ptag">{t}</span>)}</div>
-                    <span className="pcard-arr"><ArrowIco s={16}/></span>
                   </a>
                 );
               })}
