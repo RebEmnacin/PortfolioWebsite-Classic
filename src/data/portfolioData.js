@@ -1,4 +1,4 @@
-import { BreadIco, GlobeIco } from "../components/icons/Icons";
+import { BreadIco, BarIco, UserIco } from "../components/icons/Icons";
 
 /* ─────────────────────────────────────────────────────────────────
    DATA
@@ -51,7 +51,8 @@ export const DATA = {
   ],
 
   projects: [
-    { I: BreadIco, n: "breadcrumber",     d: "AI-powered roadmap builder for creatives. ADHD-friendly project manager that breaks goals into bite-sized, achievable steps.", tags: ["React","FastAPI","Gemini AI","Python"], url: "https://github.com/RebEmnacin/breadcrumber-app" },
-    { I: GlobeIco, n: "Portfolio Website", d: "This very portfolio — built with pure HTML/CSS/JS then re-imagined in React.",                                               tags: ["HTML","CSS","JS","React"],              url: "https://github.com/RebEmnacin" },
+    { I: BarIco,   n: "CashWell",         d: "Personal finance tracker that shows you where your money goes. Log income and expenses, set monthly budgets per category, and watch the dashboard update as you go.", tags: ["React","TypeScript","FastAPI","PostgreSQL"], url: "https://github.com/RebEmnacin/CashWell" },
+    { I: UserIco,  n: "HireRise",         d: "HR and recruitment website that helps companies hire well. Browse and filter open roles, apply with one click, and get in touch through a validated contact form.",      tags: ["Vue 3","Vite","JavaScript","CSS"],           url: "https://github.com/RebEmnacin/HireRise" },
+    { I: BreadIco, n: "breadcrumber",     d: "AI-powered roadmap builder for creatives. ADHD-friendly project manager that breaks goals into bite-sized, achievable steps.",                                          tags: ["React","FastAPI","Gemini AI","Python"],      url: "https://github.com/RebEmnacin/breadcrumber-app" },
   ],
 };
