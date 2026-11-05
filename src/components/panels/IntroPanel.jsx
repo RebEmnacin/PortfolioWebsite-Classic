@@ -26,7 +26,7 @@ export function IntroPanel({ goScroll, p1ImgRef, p1Visible }) {
       <div className="profile-seam">
         <img
           ref={p1ImgRef}
-          src="/src/assets/RebProfile.jpg"
+          src="/assets/RebProfile.jpg"
           alt="Reb Emnacin"
           style={{
             width: "100%",

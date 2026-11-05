@@ -47,8 +47,8 @@ export function ProfileImage({ p1Ref, p2Ref, direction, onLanded }) {
       const fromY = direction === "forward" ? r1.top  : r2.top;
       const size  = direction === "forward" ? r1.width : r2.width;
       const src   = direction === "forward"
-        ? "/src/assets/RebProfile.jpg"
-        : "/src/assets/Reb.jpg";
+        ? "/assets/RebProfile.jpg"
+        : "/assets/Reb.jpg";
 
       const toX = direction === "forward" ? r2.left : r1.left;
       const toY = direction === "forward" ? r2.top  : r1.top;

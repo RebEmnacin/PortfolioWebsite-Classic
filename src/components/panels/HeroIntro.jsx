@@ -7,7 +7,7 @@ export function HeroIntro({ goScroll, p2ImgRef, p2Visible }) {
     <div className="hero2-wrap" id="sec-hero">
       <div className="hero2-photo">
         <img
-          src="/src/assets/Reb.jpg"
+          src="/assets/Reb.jpg"
           alt="Reb Emnacin"
           ref={p2ImgRef}
           style={{
