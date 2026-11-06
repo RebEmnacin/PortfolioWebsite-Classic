@@ -40,7 +40,7 @@ export function IntroPanel({ goScroll, p1ImgRef, p1Visible }) {
           }}
         />
       </div>
-      <div className="scroll-cue"><span className="scroll-cue-line"/>Scroll</div>
+      <div className="scroll-cue"><span className="scroll-cue-line"/><span className="only-mouse">Scroll</span><span className="only-touch">Swipe up</span></div>
     </div>
   );
 }
