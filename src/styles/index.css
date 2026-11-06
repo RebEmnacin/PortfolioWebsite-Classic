@@ -669,7 +669,16 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
   .footer-back { min-height:44px; font-size:10px; padding:10px 22px; }
 
   /* floating bits */
-  .theme-toggle { top:calc(12px + env(safe-area-inset-top)); right:12px; width:40px; height:40px; }
+  /* theme button styled like the nav (1px border + hard black shadow) and kept on the nav's centre line:
+     closed nav -> 48px circle beside the 48px menu button; open nav -> 42px circle centred on the taller pill.
+     --pill-h is the open pill's height (changes with the button size below). */
+  :root { --pill-h:62px; }
+  .theme-toggle { top:calc(8px + env(safe-area-inset-top)); right:12px; width:48px; height:48px;
+    border:1px solid var(--border2); background:var(--bg); box-shadow:3px 3px 0 var(--outline);
+    transition:top .35s cubic-bezier(.16,1,.3,1), width .35s cubic-bezier(.16,1,.3,1), height .35s cubic-bezier(.16,1,.3,1),
+               background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
+  body:has(.fnav-items.open) .theme-toggle { width:42px; height:42px;
+    top:calc(8px + env(safe-area-inset-top) + (var(--pill-h) - 42px) / 2); }
   .mini-progress { right:5px; }
   .mini-progress-track { width:4px; height:120px; }
 
@@ -698,12 +707,15 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
 
 /* very narrow phones (≤ 340px): smaller nav buttons so the open bar stays clear of the theme button */
 @media (max-width:355px){
+  :root { --pill-h:58px; }
+  body:has(.fnav-items.open) .theme-toggle { width:38px; height:38px; top:calc(8px + env(safe-area-inset-top) + (var(--pill-h) - 38px) / 2); }
   .fnav-items { gap:4px; }
   .fnav-btn, .fnav-close { width:34px; height:34px; flex:0 0 34px; }
 }
 
 /* roomier phones (≥ 380px wide): full 40px buttons and a wider gap */
 @media (min-width:380px) and (max-width:960px){
+  :root { --pill-h:64px; }
   .fnav-items { gap:8px; }
   .fnav-btn, .fnav-close { width:40px; height:40px; flex:0 0 40px; }
 }
