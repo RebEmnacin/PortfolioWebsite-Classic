@@ -9,6 +9,7 @@ export function CustomCursor({ white = false, dark = false }) {
   const target = useRef({ x:-100, y:-100 });
   const raf = useRef(null);
   useEffect(() => {
+    if (window.matchMedia("(hover: none)").matches) return; // touch screen: no cursor needed
     const onMove = (e) => { target.current = { x:e.clientX, y:e.clientY }; if (ref.current) ref.current.style.opacity = "1"; };
     const tick = () => {
       pos.current.x += (target.current.x - pos.current.x) * 0.18;
