@@ -19,7 +19,8 @@ export function SparkleBackground({ hide = false, dark = false }) {
     let raf, running = true;
     let w = 0, h = 0, dpr = 1;
 
-    const COUNT = 320;
+    // fewer dots on phones = smoother scrolling + less battery
+    let COUNT = 320;
     // Each particle: x, y, vx, vy, size, opacity, opacityDir, opacitySpeed
     const ps = [];
 
@@ -38,6 +39,7 @@ export function SparkleBackground({ hide = false, dark = false }) {
 
     const resize = () => {
       dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const widthChanged = window.innerWidth !== w;  // phone address bars only change the HEIGHT
       w = window.innerWidth;
       h = window.innerHeight;
       canvas.width  = Math.round(w * dpr);
@@ -45,6 +47,8 @@ export function SparkleBackground({ hide = false, dark = false }) {
       canvas.style.width  = w + "px";
       canvas.style.height = h + "px";
       ctx.scale(dpr, dpr);
+      if (!widthChanged && ps.length) return;        // keep the same dots, don't restart them
+      COUNT = w < 768 ? 150 : 320;
       ps.length = 0;
       for (let i = 0; i < COUNT; i++) ps.push(mkParticle());
     };

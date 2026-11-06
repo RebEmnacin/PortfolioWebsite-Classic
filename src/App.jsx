@@ -36,7 +36,8 @@ export default function App() {
   useEffect(() => 
   {
     if (panel !== "scroll") return;
-    const t = setTimeout(() => ScrollTrigger.refresh(), 1000);
+    // must finish BEFORE the 900ms scrollIntoView in goScroll(), or the refresh cancels that smooth scroll halfway
+    const t = setTimeout(() => ScrollTrigger.refresh(), 500);
     return () => clearTimeout(t);
   }, [panel]);
   const [scrollPct, setScrollPct] = useState(0);
@@ -153,7 +154,9 @@ if (sectionId === "home") {
     setTimeout(() => setZoomed(false), 300);
     setTimeout(() => {
       const el = document.getElementById(`sec-${sectionId}`);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      // block: "start" = section top at the top of the screen,
+      //        "center" = section in the middle of the screen
+      if (el) el.scrollIntoView({ behavior: "smooth", block: sectionId === "stack" ? "center" : "start" });
       else if (scrollRef.current) scrollRef.current.scrollTop = 0;
     }, 900);
   }, []);
@@ -180,6 +183,37 @@ if (sectionId === "home") {
     return () => window.removeEventListener("wheel", onWheel);
   }, [panel, goScroll]);
 
+  // PHONE VERSION of the mouse-wheel logic above:
+  // swipe UP on the landing page = enter the portfolio,
+  // swipe DOWN while already at the very top of the long page = back to landing.
+  useEffect(() => {
+    let startX = 0, startY = 0, startedAtTop = false;
+    const onStart = (e) => {
+      const t = e.touches[0];
+      startX = t.clientX; startY = t.clientY;
+      startedAtTop = (scrollRef.current?.scrollTop ?? 0) <= 0;
+    };
+    const onEnd = (e) => {
+      if (projectsOpen || lockRef.current) return;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - startX, dy = t.clientY - startY;
+      if (Math.abs(dy) < 80 || Math.abs(dy) < Math.abs(dx) * 1.5) return; // too short, or mostly sideways
+      if (panel === "home" && dy < 0) {
+        lockRef.current = true; setTimeout(() => { lockRef.current = false; }, 1100);
+        goScroll("hero");
+      } else if (panel === "scroll" && dy > 100 && startedAtTop) {
+        lockRef.current = true; setTimeout(() => { lockRef.current = false; }, 1100);
+        goScroll("home");
+      }
+    };
+    window.addEventListener("touchstart", onStart, { passive:true });
+    window.addEventListener("touchend", onEnd, { passive:true });
+    return () => {
+      window.removeEventListener("touchstart", onStart);
+      window.removeEventListener("touchend", onEnd);
+    };
+  }, [panel, projectsOpen, goScroll]);
+
   useEffect(() => {
     const sp = scrollRef.current;
     const update = () => {
@@ -189,9 +223,13 @@ if (sectionId === "home") {
       setScrollPct(max > 0 ? Math.min(100, (sp.scrollTop / max) * 100) : 0);
       const secs = ["hero","projects","certs","stack","contact"];
       const idMap = { hero:"home", projects:"projects", certs:"certs", stack:"stack", contact:"contact" };
+      // A section counts as "active" once its top passes this line. It's
+      // taller than 160px now because the Stack sits centered on screen
+      // (its top ends up ~1/5 of the way down), not at the very top.
+      const line = Math.max(160, window.innerHeight * 0.4);
       for (let i = secs.length - 1; i >= 0; i--) {
         const el = document.getElementById(`sec-${secs[i]}`);
-        if (el && el.getBoundingClientRect().top <= 160) { setActiveSection(idMap[secs[i]]); break; }
+        if (el && el.getBoundingClientRect().top <= line) { setActiveSection(idMap[secs[i]]); break; }
       }
     };
     update();
@@ -205,9 +243,8 @@ if (sectionId === "home") {
       <SparkleBackground hide={projectsOpen} dark={dark}/>
 
       {projectsOpen && (
-        <div id="projects-overlay" style={{
+        <div id="projects-overlay" className="projects-overlay" style={{
           position:"fixed", top:0, left:0,
-          width:"100vw", height:"100vh",
           zIndex:2147483646,
           background: dark ? "#0d1117" : "#ffcb05",
           overflowY:"auto",
@@ -223,7 +260,7 @@ if (sectionId === "home") {
           "--acbg": dark ? "rgba(86,182,194,0.15)" : "rgba(255,255,255,0.2)",
           "--acborder": dark ? "rgba(86,182,194,0.5)" : "rgba(0,0,0,0.4)",
         }}>
-          <div style={{ padding:"60px 80px 120px 120px", boxSizing:"border-box" }}>
+          <div className="projects-overlay-inner">
             <div className="back-row" style={{ marginBottom:"40px" }}>
               <button className="back-btn" onClick={handleCloseProjects} style={{borderColor: dark ? "rgba(86,182,194,0.7)" : "rgba(255,255,255,0.6)", color: dark ? "#56b6c2" : "#ffffff"}}><BackIco s={12}/> Back</button>
             </div>

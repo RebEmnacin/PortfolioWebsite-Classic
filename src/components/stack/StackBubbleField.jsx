@@ -20,22 +20,42 @@ function mulberry32(seed) {
   };
 }
 
-/* Generates an irregular, fractured-stone silhouette as a CSS
-   clip-path polygon (instead of a smooth rounded blob). Picks N
-   points around a circle, each nudged in angle and pulled in/out
-   in radius, so every bubble gets its own unique "flagstone" shape —
-   like the cracked, angular edges of real cut stone. */
-function randomStonePath(rand, points = 7) {
+/* Generates an irregular, organic "river stone" silhouette as a CSS
+   clip-path path(). Same idea as before — N points around a circle, each
+   nudged in angle and pulled in/out in radius — but instead of joining the
+   points with straight lines (sharp corners), a smooth curve is drawn
+   THROUGH them. Points pulled outward become round bulges, points pulled
+   inward become soft dents, and there are no sharp corners anywhere.
+
+   path() needs real pixel coordinates (not %), so we pass in the bubble's
+   size. The curve is built with the Catmull-Rom -> cubic Bezier trick:
+   for each pair of neighbouring points, the two "C" control points are
+   placed using the points on either side, which keeps the join smooth. */
+function randomBlobPath(rand, size, points = 7) {
+  const half = size / 2;
   const step = (Math.PI * 2) / points;
   const pts = [];
   for (let i = 0; i < points; i++) {
-    const angle = i * step + (rand() - 0.5) * step * 0.5;
-    const radius = 50 * (0.8 + rand() * 0.2); // 80–100% of half the box
-    const x = 50 + radius * Math.cos(angle);
-    const y = 50 + radius * Math.sin(angle);
-    pts.push(`${x.toFixed(1)}% ${y.toFixed(1)}%`);
+    const angle = i * step + (rand() - 0.5) * step * 0.3; // small nudge keeps the points evenly spread = rounder curves
+    // 74–96% of half the box: kept under 100% so the smooth curve never
+    // pokes past the box edge (which would flatten it)
+    const radius = half * (0.74 + rand() * 0.22);
+    pts.push([half + radius * Math.cos(angle), half + radius * Math.sin(angle)]);
   }
-  return `polygon(${pts.join(", ")})`;
+  const f = (n) => n.toFixed(1);
+  let d = `M ${f(pts[0][0])} ${f(pts[0][1])}`;
+  for (let i = 0; i < points; i++) {
+    const p0 = pts[(i - 1 + points) % points];
+    const p1 = pts[i];
+    const p2 = pts[(i + 1) % points];
+    const p3 = pts[(i + 2) % points];
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6;
+    const c1y = p1[1] + (p2[1] - p0[1]) / 6;
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6;
+    const c2y = p2[1] - (p3[1] - p1[1]) / 6;
+    d += ` C ${f(c1x)} ${f(c1y)}, ${f(c2x)} ${f(c2y)}, ${f(p2[0])} ${f(p2[1])}`;
+  }
+  return `path("${d} Z")`;
 }
 
 // The core skills that should always read as "bigger than most",
@@ -144,7 +164,7 @@ export function StackBubbleField({ items }) {
         const left = colIndex * cellW + (cellW - size) / 2 + jitterX;
         const top = rowIndex * cellH + (cellH - size) / 2 + jitterY;
 
-        const shape = randomStonePath(rand);
+        const shape = randomBlobPath(rand, size);
         const duration = 4.5 + rand() * 3; // idle float speed: 4.5–7.5s
         const delay = rand() * -6; // negative delay = starts mid-animation, so bubbles don't sync up
         const drift = 4 + rand() * 5; // subtle idle drift: 4–9px (kept small since stones sit close together)
@@ -172,7 +192,7 @@ export function StackBubbleField({ items }) {
       {bubbles.map((b, i) => (
         <Reveal
           key={b.key}
-          delay={(i + 1) * 55}
+          delay={(i + 1) * 120} /* ms between each bubble popping in */
           className="stack-bubble-reveal"
           style={{
             position: "absolute",

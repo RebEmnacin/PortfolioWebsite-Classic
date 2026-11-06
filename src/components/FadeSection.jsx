@@ -26,42 +26,13 @@ export function FadeSection({ children, className = "", liftPx = 50 }) {
       scrub: true,           // tie progress directly to scroll position (no easing lag)
       onUpdate: (self) => {
         const p = self.progress; // 0 → 1 across the whole scroll range above
-        let fade;
-        if (window.matchMedia("(max-width: 960px)").matches) {
-          // PHONE / TABLET: sections are tall, so a triangle curve left most
-          // of the screen half-faded. Instead stay fully visible and only
-          // fade during the last EDGE_PX of scroll as the section enters
-          // from the bottom or leaves through the top.
-          const EDGE_PX = 140;
-          const total = self.end - self.start;
-          const fromEdge = Math.min(p, 1 - p) * total;
-          fade = Math.min(1, Math.max(0, fromEdge / EDGE_PX));
-          gsap.set(el, { opacity: fade, y: 0 });
-        } else {
-          // DESKTOP: triangle curve — 0 at start, 1 at the exact midpoint
-          // (p=0.5), back to 0 at end.
-          fade = Math.max(0, 1 - Math.abs(p - 0.5) * 2);
-          gsap.set(el, { opacity: fade, y: (0.5 - p) * liftPx });
-        }
+        // Triangle curve: 0 at start, 1 at the exact midpoint (p=0.5), back to 0 at end
+        const fade = Math.max(0, 1 - Math.abs(p - 0.5) * 2);
+        gsap.set(el, { opacity: fade, y: (0.5 - p) * liftPx });
       },
     });
 
-    // Heights change after first paint (images, fonts, the stack grid
-    // measuring itself), which leaves the start/end positions above stale —
-    // that's what made sections fade wrongly after loading on a phone.
-    // Re-measure whenever this block or the page finishes resizing/loading.
-    const refresh = () => ScrollTrigger.refresh();
-    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(refresh) : null;
-    ro?.observe(el);
-    window.addEventListener("load", refresh);
-    window.addEventListener("orientationchange", refresh);
-
-    return () => {
-      st.kill(); // cleanup when the component unmounts
-      ro?.disconnect();
-      window.removeEventListener("load", refresh);
-      window.removeEventListener("orientationchange", refresh);
-    };
+    return () => st.kill(); // cleanup when the component unmounts
   }, [liftPx]);
 
   return (
