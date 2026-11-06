@@ -36,7 +36,8 @@ export default function App() {
   useEffect(() => 
   {
     if (panel !== "scroll") return;
-    const t = setTimeout(() => ScrollTrigger.refresh(), 1000);
+    // must finish BEFORE the 900ms scrollIntoView in goScroll(), or the refresh cancels that smooth scroll halfway
+    const t = setTimeout(() => ScrollTrigger.refresh(), 500);
     return () => clearTimeout(t);
   }, [panel]);
   const [scrollPct, setScrollPct] = useState(0);

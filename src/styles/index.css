@@ -629,7 +629,7 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
   .scroll-cue { bottom:14px; font-size:9px; }
 
   /* ── long page ── */
-  .sp-inner { padding:0 22px calc(112px + env(safe-area-inset-bottom)); }
+  .sp-inner { padding:0 22px calc(64px + env(safe-area-inset-bottom)); }
   .section-gap { padding-bottom:120px; }
   #sec-projects, #sec-certs, #sec-contact { scroll-margin-top:72px; }   /* keeps titles clear of the theme button */
 
@@ -673,21 +673,21 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
   .mini-progress { right:5px; }
   .mini-progress-track { width:4px; height:120px; }
 
-  /* nav: bottom-left dock that opens sideways (was a left-side column covering the content) */
-  .fnav { left:14px; top:auto; bottom:calc(14px + env(safe-area-inset-bottom)); transform:none;
+  /* nav: top-left bar that opens sideways, level with the theme button (was a left-side column covering the content) */
+  .fnav { left:12px; top:calc(8px + env(safe-area-inset-top)); bottom:auto; transform:none;
     flex-direction:row; gap:0; padding:0; border-radius:999px; }
   .fnav:has(.fnav-items.open) { padding:6px 8px; }
   .fnav-trigger { width:48px; height:48px; background:var(--bg); box-shadow:3px 3px 0 var(--outline); }
   .fnav-items { flex-direction:row; gap:6px; max-height:none; max-width:0; overflow:hidden;
     transition:max-width .45s cubic-bezier(.16,1,.3,1), opacity .25s ease; }
   .fnav-items.open { max-width:340px; overflow:hidden; }
-  .fnav-item { transform:translateY(8px); }
+  .fnav-item { transform:translateY(-8px); }
   .fnav-items.open .fnav-item { transform:translateY(0); }
   .fnav-btn, .fnav-close { width:40px; height:40px; flex:0 0 40px; }
   .fnav-pill-bg, .fnav-pill-label, .fnav-lbl { display:none; }   /* hover labels make no sense on touch */
 
   /* projects overlay */
-  .projects-overlay-inner { padding:76px 22px calc(96px + env(safe-area-inset-bottom)); }
+  .projects-overlay-inner { padding:76px 22px calc(64px + env(safe-area-inset-bottom)); }
   .back-btn { min-height:40px; }
   .proj-grid { gap:16px; }
   .pcard { aspect-ratio:auto; align-items:stretch; padding:22px; border-radius:20px; gap:18px; }
@@ -695,9 +695,15 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
   .proj-footer { margin-top:20px; }
 }
 
+/* very narrow phones (≤ 340px): smaller nav buttons so the open bar stays clear of the theme button */
+@media (max-width:340px){
+  .fnav-items { gap:4px; }
+  .fnav-btn, .fnav-close { width:34px; height:34px; flex:0 0 34px; }
+}
+
 /* short phones (e.g. 360x640): tighten the landing page so the photo isn't cut off */
 @media (max-width:960px) and (min-height:521px) and (max-height:700px){
-  .p1-wrap { padding:56px 24px 60px; gap:14px; }
+  .p1-wrap { padding:64px 24px 56px; gap:14px; }
   .p1-eyebrow { margin-bottom:12px; }
   .p1-title { font-size:clamp(40px,min(19vw,9svh),92px); margin-bottom:14px; }
   .p1-pills { margin-bottom:16px; }
