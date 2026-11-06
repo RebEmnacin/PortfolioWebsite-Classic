@@ -19,11 +19,12 @@ export function FloatingNav({ onNav, onOpenChange, activeSection }) {
   const toggle = (v) => { setOpen(v); onOpenChange?.(v); };
   return (
     <div className="fnav">
-      {!open && (
-        <button className="fnav-trigger" onClick={() => toggle(true)}>
-          <MenuIco s={22}/>
-        </button>
-      )}
+      {/* Always rendered (never unmounted) so on phones the pill can collapse INTO this
+          same button. On desktop the CSS hides it while the nav is open, as before. */}
+      <button className="fnav-trigger" onClick={() => toggle(!open)}
+        aria-label={open ? "Hide navigation" : "Show navigation"} aria-expanded={open}>
+        <MenuIco s={22}/>
+      </button>
       <div className={`fnav-items${open?" open":""}`}>
         <button className="fnav-close" onClick={() => toggle(false)} aria-label="Hide navigation"><MenuIco s={22}/></button>
         {NAV_ITEMS.map(item => (
