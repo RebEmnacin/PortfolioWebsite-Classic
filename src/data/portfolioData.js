@@ -9,7 +9,6 @@ import { BreadIco, BarIco, UserIco } from "../components/icons/Icons";
 export const DATA = {
   name: "Reb Emnacin", aka: "Jolts",
   bio: "CS student at New Era University. Builder of things that spark ideas — small tools, dashboards, and apps that don't exist yet but probably should.",
-  status: "Open to Opportunities",
   github: "https://github.com/RebEmnacin",
   linkedin: "https://www.linkedin.com/in/reb-emnacin-a9752b404/",
   telegram: "https://t.me/Emunashin",
