@@ -8,7 +8,7 @@ export function IntroPanel({ goScroll, p1ImgRef, p1Visible }) {
     <div className="p1-wrap">
       <ArrowAnimation />
       <div className="p1-left">
-        <div className="p1-eyebrow">Jolts · Reb Emnacin</div>
+        <div className="p1-eyebrow">JReb Emnacin</div>
         <h1 className="p1-title">
           <span className="p1-line1">Full Stack</span>
           <span className="p1-line2">Developer</span>
