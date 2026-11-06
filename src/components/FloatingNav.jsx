@@ -30,7 +30,11 @@ export function FloatingNav({ onNav, onOpenChange, activeSection }) {
             <div className="fnav-pill-label">{item.lbl}</div>
             <button
               className={`fnav-btn${activeSection===item.id?" active":""}`}
-              onClick={() => { onNav(item.id); }}>
+              onClick={() => {
+                onNav(item.id);
+                // on phones the menu would stay open over the page, so close it
+                if (window.matchMedia("(max-width: 960px)").matches) toggle(false);
+              }}>
               <item.I s={22}/>
             </button>
           </div>
