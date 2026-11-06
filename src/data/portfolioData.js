@@ -17,8 +17,7 @@ export const DATA = {
   school: "New Era University", degree: "BS Computer Science", year: "2024–present",
 
   // Stack icons are now inline SVGs (see components/icons/StackIcons.jsx), matched
-  // by the "n" name. The old PNG paths are kept below as comments. Canva has no
-  // SVG yet, so it still uses its image.
+  // by the "n" name. The old PNG paths are kept below as comments.
   stack: {
     Frontend: [
       { n: "React",      /* img: "/assets/StackIcons/React.png" */ },
@@ -37,7 +36,7 @@ export const DATA = {
     ],
     Tools: [
       { n: "Figma",      /* img: "/assets/StackIcons/Figma.png" */ },
-      { n: "Canva",      img: "/assets/StackIcons/Canva.png" },
+      { n: "Canva",      /* img: "/assets/StackIcons/Canva.png" */ },
       { n: "Git",        /* img: "/assets/StackIcons/Git.png" */ },
       { n: "Github",     /* img: "/assets/StackIcons/Github.png" */ },
     ],
