@@ -38,8 +38,11 @@ export function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef, p2ImgRef, 
       </FadeSection>
 
       <div className="section-gap">
-        <div id="sec-stack"/>
-        <StackSection/>
+        {/* the id wraps the whole stack (not an empty marker) so the nav can
+            scroll to the stack's CENTER instead of its top edge */}
+        <div id="sec-stack">
+          <StackSection/>
+        </div>
       </div>
 
       <FadeSection>

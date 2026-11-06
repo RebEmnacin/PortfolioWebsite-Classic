@@ -153,7 +153,9 @@ if (sectionId === "home") {
     setTimeout(() => setZoomed(false), 300);
     setTimeout(() => {
       const el = document.getElementById(`sec-${sectionId}`);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      // block: "start" = section top at the top of the screen,
+      //        "center" = section in the middle of the screen
+      if (el) el.scrollIntoView({ behavior: "smooth", block: sectionId === "stack" ? "center" : "start" });
       else if (scrollRef.current) scrollRef.current.scrollTop = 0;
     }, 900);
   }, []);
@@ -189,9 +191,13 @@ if (sectionId === "home") {
       setScrollPct(max > 0 ? Math.min(100, (sp.scrollTop / max) * 100) : 0);
       const secs = ["hero","projects","certs","stack","contact"];
       const idMap = { hero:"home", projects:"projects", certs:"certs", stack:"stack", contact:"contact" };
+      // A section counts as "active" once its top passes this line. It's
+      // taller than 160px now because the Stack sits centered on screen
+      // (its top ends up ~1/5 of the way down), not at the very top.
+      const line = Math.max(160, window.innerHeight * 0.4);
       for (let i = secs.length - 1; i >= 0; i--) {
         const el = document.getElementById(`sec-${secs[i]}`);
-        if (el && el.getBoundingClientRect().top <= 160) { setActiveSection(idMap[secs[i]]); break; }
+        if (el && el.getBoundingClientRect().top <= line) { setActiveSection(idMap[secs[i]]); break; }
       }
     };
     update();
