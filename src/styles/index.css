@@ -417,6 +417,27 @@ body::before {
    yellow in light mode, teal in dark mode (see the DARK MODE block) */
 .stack-icon { display:block; color:var(--ac); flex-shrink:0; }
 
+/* LIGHT MODE ONLY: black icon with a thin yellow outline on the outside.
+   - color            -> the black fill (icons use fill="currentColor")
+   - stroke           -> the yellow outline
+   - paint-order      -> draws the stroke FIRST, then the fill on top, so only
+                         the outer half of the stroke shows. That's why
+                         stroke-width is 2x the outline you actually see
+                         (3px here = a ~1.5px outline).
+   - vector-effect    -> keeps the outline the same px thickness no matter
+                         how big the bubble/icon is (needs to be on the <path>)
+   - overflow:visible -> icons like TS/JS/HTML touch the edge of their 24x24
+                         box, so without this the outline would get clipped. */
+html:not([data-theme="dark"]) .stack-icon {
+  color:var(--txh);
+  stroke:var(--ac);
+  stroke-width:3px;
+  stroke-linejoin:round;
+  paint-order:stroke fill;
+  overflow:visible;
+}
+html:not([data-theme="dark"]) .stack-icon path { vector-effect:non-scaling-stroke; }
+
 /* name label that appears on hover, floating above the bubble */
 .stack-bubble-label {
   position:absolute; top:-30px; left:50%; transform:translateX(-50%) translateY(4px);
