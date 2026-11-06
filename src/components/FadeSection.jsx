@@ -26,21 +26,18 @@ export function FadeSection({ children, className = "", liftPx = 50 }) {
       scrub: true,           // tie progress directly to scroll position (no easing lag)
       onUpdate: (self) => {
         const p = self.progress; // 0 → 1 across the whole scroll range above
-        if (window.matchMedia("(max-width: 960px)").matches) {
-          // PHONE / TABLET: sections are tall, so the triangle curve left most
-          // of the screen half-faded. Stay fully visible and only fade during
-          // the last EDGE_PX of scroll as the section enters from the bottom
-          // or leaves through the top.
-          const EDGE_PX = 140;
-          const total = self.end - self.start;
-          const fromEdge = Math.min(p, 1 - p) * total;
-          gsap.set(el, { opacity: Math.min(1, Math.max(0, fromEdge / EDGE_PX)), y: 0 });
-        } else {
-          // DESKTOP (unchanged): triangle curve — 0 at start, 1 at the exact
-          // midpoint (p=0.5), back to 0 at end
-          const fade = Math.max(0, 1 - Math.abs(p - 0.5) * 2);
-          gsap.set(el, { opacity: fade, y: (0.5 - p) * liftPx });
-        }
+        // Stay FULLY visible while the section is on screen and only fade
+        // during the last EDGE_PX of scroll as it enters from the bottom or
+        // leaves through the top. (The old triangle curve only reached full
+        // opacity at the exact midpoint, so sections looked washed out.)
+        const EDGE_PX = 160;
+        const total = self.end - self.start;
+        const fromEdge = Math.min(p, 1 - p) * total;
+        const fade = Math.min(1, Math.max(0, fromEdge / EDGE_PX));
+        // gentle lift only while fading: slides up into place on the way in,
+        // keeps drifting up on the way out. No offset while fully visible.
+        const y = (p < 0.5 ? 1 : -1) * (1 - fade) * liftPx;
+        gsap.set(el, { opacity: fade, y });
       },
     });
 
