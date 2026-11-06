@@ -12,7 +12,16 @@ export function CertSlider() {
   const targetRef   = useRef(0);
   const wheelLock   = useRef(false);
   const rafRef      = useRef(null);
+  const swipedRef   = useRef(false);   // true right after a swipe, so the tap that follows doesn't open a link
   const n = DATA.certs.length;
+
+  // Move the carousel so card number `i` ends up in the middle (takes the shortest way around the loop)
+  const goTo = (i) => {
+    const cur = Math.round(targetRef.current);
+    let d = (((i - cur) % n) + n) % n;
+    if (d > n / 2) d -= n;
+    targetRef.current = cur + d;
+  };
 
   // `prog` is the carousel position and is allowed to keep growing (7, 8, 9...)
   // or going negative — the cards wrap around, so there is no first/last card.
@@ -86,13 +95,39 @@ export function CertSlider() {
     return () => el.removeEventListener("wheel", onWheel);
   }, [n]);
 
+  // TOUCH: swipe left/right = next/previous card (phones have no mouse wheel)
+  useEffect(() => {
+    const el = outerRef.current;
+    if (!el) return;
+    let startX = 0, startY = 0;
+    const onStart = (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; };
+    const onEnd = (e) => {
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;   // too short, or it was a vertical scroll
+      swipedRef.current = true;
+      setTimeout(() => { swipedRef.current = false; }, 350);
+      targetRef.current = Math.round(targetRef.current) + (dx < 0 ? 1 : -1);
+    };
+    el.addEventListener("touchstart", onStart, { passive: true });
+    el.addEventListener("touchend", onEnd, { passive: true });
+    return () => {
+      el.removeEventListener("touchstart", onStart);
+      el.removeEventListener("touchend", onEnd);
+    };
+  }, []);
+
   return (
     <>
       <div className="cert-slider-outer" ref={outerRef}>
         <div className="cert-slider-stage" ref={stageRef}>
           {DATA.certs.map((c, i) => (
             <div key={i} className={`cert-slide${i === active ? " cert-active" : ""}`}>
-              <a className="cert-slide-inner" href={c.url} target="_blank" rel="noreferrer">
+              <a className="cert-slide-inner" href={c.url} target="_blank" rel="noreferrer"
+                 onClick={(e) => {
+                   if (swipedRef.current) { e.preventDefault(); return; }   // it was a swipe, not a tap
+                   if (i !== active) { e.preventDefault(); goTo(i); }       // tapping a side card brings it to the front
+                 }}>
                 <div className="cert-slide-img-wrap">
                   <img
                     className="cert-slide-img" src={c.img} alt={c.title}
@@ -111,7 +146,10 @@ export function CertSlider() {
           </div>
         </div>
       </div>
-      <div className="cert-hint">click a card to view the credential</div>
+      <div className="cert-hint">
+        <span className="only-mouse">click a card to view the credential</span>
+        <span className="only-touch">swipe to browse, tap to open</span>
+      </div>
     </>
   );
 }
