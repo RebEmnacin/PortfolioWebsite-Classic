@@ -324,42 +324,8 @@ body::before {
   to   { transform:translateY(-16px); }
 }
 
-/* One organic blob, centered behind the badge/certificate and sized
-   to it, with a direct "breathing" pulse — growing and shrinking on a
-   loop. Animating the blob's own transform directly (instead of a
-   pseudo-element echo) means there's nothing else that has to line up
-   correctly for the motion to show up. Visible only while this card
-   is active, easing in/out with it. */
-.cert-blob {
-  position:absolute;
-  top:50%; left:50%;
-  width:220px; height:220px; /* fallback only, used briefly before JS measures the real image */
-  z-index:-1;
-  background:var(--ac);
-  opacity:0;
-  pointer-events:none;
-  transition:opacity 1s ease;
-  transform:translate(-50%,-50%) scale(1);
-}
-.cert-blob-active {
-  opacity:1;
-  animation:blob-pulse 2.2s ease-in-out infinite;
-}
-@keyframes blob-pulse {
-  0%, 100% { transform:translate(-50%,-50%) scale(1); }
-  50%      { transform:translate(-50%,-50%) scale(1.04); }
-}
-
-/* Highlight frame behind every certificate: a clean rounded rectangle
-   (no sharp corners, no organic blob shape). */
-.cert-blob-badge,
-.cert-blob-cert {
-  border-radius:30px;
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cert-active .cert-slide-img { animation:none; }
-  .cert-blob-active { animation:none !important; }
 }
 
 .cert-slider-controls {
