@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { HomeIco, MonitorIco, StarIco, UserIco, MailIco, MenuIco, XIco } from "./icons/Icons";
+import { HomeIco, MonitorIco, StarIco, UserIco, MailIco, MenuIco } from "./icons/Icons";
 
 /* ─────────────────────────────────────────────────────────────────
    FLOATING NAV
@@ -13,7 +13,9 @@ const NAV_ITEMS = [
 ];
 
 export function FloatingNav({ onNav, onOpenChange, activeSection }) {
-  const [open, setOpen] = useState(false);
+  // Starts OPEN, so the nav bar is visible on every load / refresh.
+  // The hamburger button hides it, and the hamburger shows it again.
+  const [open, setOpen] = useState(true);
   const toggle = (v) => { setOpen(v); onOpenChange?.(v); };
   return (
     <div className="fnav">
@@ -23,7 +25,7 @@ export function FloatingNav({ onNav, onOpenChange, activeSection }) {
         </button>
       )}
       <div className={`fnav-items${open?" open":""}`}>
-        <button className="fnav-close" onClick={() => toggle(false)}><XIco s={22}/></button>
+        <button className="fnav-close" onClick={() => toggle(false)} aria-label="Hide navigation"><MenuIco s={22}/></button>
         {NAV_ITEMS.map(item => (
           <div key={item.id} className="fnav-item">
             <div className="fnav-pill-bg" />
