@@ -240,8 +240,9 @@ body::before {
 .folder-btn:hover { transform:translateY(-6px) scale(1.05); }
 .folder-btn.pop-out { opacity:0; transform:scale(.4) rotate(12deg); }
 .folder-ico-wrap { width:100px; height:84px; border:2px solid var(--ac); background:var(--acbg); border-radius:20px;
-  display:flex; align-items:center; justify-content:center; box-shadow:4px 4px 0 var(--ac); animation:folderPulse 2.8s ease-in-out infinite; }
-@keyframes folderPulse { 0%,100%{box-shadow:4px 4px 0 var(--ac)} 50%{box-shadow:6px 6px 0 var(--ac);transform:translate(-1px,-1px)} }
+  display:flex; align-items:center; justify-content:center; --folder-sh:#000; box-shadow:4px 4px 0 var(--folder-sh); animation:folderPulse 2.8s ease-in-out infinite; }
+html[data-theme="dark"] .folder-ico-wrap { --folder-sh:#fff; }   /* the 3D edge: black in light mode, white in dark mode */
+@keyframes folderPulse { 0%,100%{box-shadow:4px 4px 0 var(--folder-sh)} 50%{box-shadow:6px 6px 0 var(--folder-sh);transform:translate(-1px,-1px)} }
 .folder-label { font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--txh); }
 .folder-hint  { font-family:var(--mono); font-size:9px; color:var(--tx); }
 .proj-pop { animation:popIn .45s var(--ease-out-expo) both; }
