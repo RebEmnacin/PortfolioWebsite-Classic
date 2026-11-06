@@ -656,9 +656,13 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
 
   /* stack: the field needs a real width + a taller box so the bubbles are big enough to read */
   .stack-section-wrap { flex-direction:column; align-items:stretch; gap:8px; max-width:none; }
-  .stack-title-col { flex:none; padding:0; }
+  .stack-title-col { flex:none; padding:0; align-self:flex-start; }   /* left-aligned like the other titles (desktop centers it) */
   .stack-rows-col { flex:none; width:100%; max-width:none; }
-  .stack-big-title { font-size:clamp(56px,17vw,96px); }
+  /* "MY STACK" on ONE line, same size/outline as "Selected Work" and "My Certifications"
+     (the <br> in the markup only breaks the line on desktop) */
+  .stack-big-title { font-size:clamp(38px,10.5vw,64px); line-height:.95; -webkit-text-stroke:1.5px var(--outline); }
+  .stack-big-title br { display:none; }
+  .stack-big-title em { margin-left:.25em; }
   .stack-bubble-field { height:clamp(380px,118vw,520px); }
 
   /* contact */
