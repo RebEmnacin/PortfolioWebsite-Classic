@@ -192,7 +192,7 @@ export function StackBubbleField({ items }) {
       {bubbles.map((b, i) => (
         <Reveal
           key={b.key}
-          delay={(i + 1) * 55}
+          delay={(i + 1) * 120} /* ms between each bubble popping in */
           className="stack-bubble-reveal"
           style={{
             position: "absolute",

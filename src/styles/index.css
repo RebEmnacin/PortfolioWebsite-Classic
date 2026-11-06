@@ -364,13 +364,22 @@ body::before {
   height:460px;
 }
 
-/* Slower, smoother intro/out for the bubbles specifically (the shared
-   .reveal class defaults to a snappy 0.05s, which read as instant/jarring
-   for something this size — this scopes a gentler timing to just these). */
+/* "Fade pop, but slow" intro for the bubbles specifically (the shared
+   .reveal class slides things up 40px in 0.05s — this scopes a different
+   animation to just these): each bubble fades in while it grows from small
+   to full size, with a slight overshoot (cubic-bezier above 1) so it
+   "pops" and settles. Make it slower/faster by changing the two seconds
+   values below (and the stagger delay in StackBubbleField.jsx). */
 .stack-bubble-reveal {
-  transition:opacity .7s var(--ease-out-expo), transform .7s var(--ease-out-expo);
+  transform:scale(.3);
+  transition:opacity 1.3s ease-out, transform 1.6s cubic-bezier(.34,1.56,.64,1);
 }
+.stack-bubble-reveal.vis {
+  transform:scale(1);
+}
+/* leaving the screen: quick and quiet, shrink away */
 .stack-bubble-reveal.out {
+  transform:scale(.3);
   transition:opacity .5s ease, transform .5s ease;
 }
 
