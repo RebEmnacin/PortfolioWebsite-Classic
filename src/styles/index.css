@@ -242,7 +242,7 @@ body::before {
   flex-direction:column; align-items:center; gap:12px; color:var(--ac); transition:opacity .3s, transform .3s; }
 .folder-btn:hover { transform:translateY(-6px) scale(1.05); }
 .folder-btn.pop-out { opacity:0; transform:scale(.4) rotate(12deg); }
-.folder-ico-wrap { width:100px; height:84px; border:2px solid var(--ac); background:var(--acbg);
+.folder-ico-wrap { width:100px; height:84px; border:2px solid var(--ac); background:var(--acbg); border-radius:20px;
   display:flex; align-items:center; justify-content:center; box-shadow:4px 4px 0 var(--ac); animation:folderPulse 2.8s ease-in-out infinite; }
 @keyframes folderPulse { 0%,100%{box-shadow:4px 4px 0 var(--ac)} 50%{box-shadow:6px 6px 0 var(--ac);transform:translate(-1px,-1px)} }
 .folder-label { font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--txh); }
