@@ -1,60 +1,77 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-gsap.registerPlugin(ScrollTrigger);
 
 /* ─────────────────────────────────────────────────────────────────
-   GSAP SCROLL FADE — wraps any block of content. As you scroll,
-   it fades in approaching the center of the screen, then fades
-   back out as it moves past — like cards being layered/replaced.
+   SCROLL FADE — wraps any block of content. It is fully visible while
+   it is on screen and only fades (with a small slide) during the last
+   EDGE_PX of scroll as it enters from the bottom or leaves through
+   the top.
+
+   WHY it reads live positions instead of using ScrollTrigger:
+   the panels live inside a wrapper that zooms (scale 2.5) and slides
+   sideways. ScrollTrigger measures start/end ONCE, so anything measured
+   during those transforms (or before images/fonts load) was wrong, and
+   sections stayed faded after load. Here every update measures the
+   section against the scroller's own box right now, and divides out the
+   zoom scale, so the result is always correct.
 ───────────────────────────────────────────────────────────────── */
+const EDGE_PX = 160;
+
 export function FadeSection({ children, className = "", liftPx = 50 }) {
   const ref = useRef(null);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // .panel-scroll is OUR custom scrollable div (not the window) —
-    // ScrollTrigger needs to be told that explicitly via `scroller`.
-    const scroller = el.closest(".panel-scroll") || window;
+    // .panel-scroll is OUR custom scrollable div (not the window)
+    const scroller = el.closest(".panel-scroll");
+    const target = scroller || window;
+    let raf = 0;
 
-    const st = ScrollTrigger.create({
-      trigger: el,
-      scroller,
-      start: "top bottom",   // begin tracking once el enters from the bottom
-      end: "bottom top",     // stop tracking once el fully exits the top
-      scrub: true,           // tie progress directly to scroll position (no easing lag)
-      onUpdate: (self) => {
-        const p = self.progress; // 0 → 1 across the whole scroll range above
-        // Stay FULLY visible while the section is on screen and only fade
-        // during the last EDGE_PX of scroll as it enters from the bottom or
-        // leaves through the top. (The old triangle curve only reached full
-        // opacity at the exact midpoint, so sections looked washed out.)
-        const EDGE_PX = 160;
-        const total = self.end - self.start;
-        const fromEdge = Math.min(p, 1 - p) * total;
-        const fade = Math.min(1, Math.max(0, fromEdge / EDGE_PX));
-        // gentle lift only while fading: slides up into place on the way in,
-        // keeps drifting up on the way out. No offset while fully visible.
-        const y = (p < 0.5 ? 1 : -1) * (1 - fade) * liftPx;
-        gsap.set(el, { opacity: fade, y });
-      },
-    });
+    const update = () => {
+      raf = 0;
+      const sr = scroller
+        ? scroller.getBoundingClientRect()
+        : { top: 0, bottom: window.innerHeight, height: window.innerHeight };
+      const viewH = scroller ? scroller.clientHeight : window.innerHeight;
+      const scale = viewH ? sr.height / viewH || 1 : 1; // zoom-wrap scale
 
-    // Heights change after first paint (images, fonts), which leaves the
-    // start/end positions stale. Re-measure when this block resizes, when the
-    // page finishes loading, and on rotate.
-    const refresh = () => ScrollTrigger.refresh();
-    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(refresh) : null;
+      // our own slide offset is part of getBoundingClientRect — take it
+      // back out so the section's real layout position is measured
+      const curY = Number(gsap.getProperty(el, "y")) || 0;
+      const r = el.getBoundingClientRect();
+      const top = r.top - curY * scale;
+      const bottom = r.bottom - curY * scale;
+
+      const entered = (sr.bottom - top) / scale; // px the top edge has come up from the bottom
+      const remaining = (bottom - sr.top) / scale; // px left before the bottom edge leaves the top
+      const fade = Math.min(1, Math.max(0, Math.min(entered, remaining) / EDGE_PX));
+      // slide up into place on the way in, keep drifting up on the way out
+      const y = (entered < remaining ? 1 : -1) * (1 - fade) * liftPx;
+      gsap.set(el, { opacity: fade, y });
+    };
+
+    const schedule = () => { if (!raf) raf = requestAnimationFrame(update); };
+
+    update();
+    target.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    window.addEventListener("load", schedule);
+    window.addEventListener("orientationchange", schedule);
+    // panel slide / zoom finishing, and images or fonts changing heights
+    document.addEventListener("transitionend", schedule, true);
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(schedule) : null;
     ro?.observe(el);
-    window.addEventListener("load", refresh);
-    window.addEventListener("orientationchange", refresh);
+    if (scroller) ro?.observe(scroller);
 
     return () => {
-      st.kill(); // cleanup when the component unmounts
+      if (raf) cancelAnimationFrame(raf);
+      target.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("load", schedule);
+      window.removeEventListener("orientationchange", schedule);
+      document.removeEventListener("transitionend", schedule, true);
       ro?.disconnect();
-      window.removeEventListener("load", refresh);
-      window.removeEventListener("orientationchange", refresh);
     };
   }, [liftPx]);
 
