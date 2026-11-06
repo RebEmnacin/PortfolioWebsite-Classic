@@ -418,9 +418,9 @@ body::before {
    yellow in light mode, teal in dark mode (see the DARK MODE block) */
 .stack-icon { display:block; color:var(--ac); flex-shrink:0; }
 
-/* LIGHT MODE ONLY: black icon with a thin yellow outline on the outside.
-   - color            -> the black fill (icons use fill="currentColor")
-   - stroke           -> the yellow outline
+/* LIGHT MODE ONLY: yellow icon with a thin black outline on the outside.
+   - color            -> the yellow fill (icons use fill="currentColor")
+   - stroke           -> the black outline
    - paint-order      -> draws the stroke FIRST, then the fill on top, so only
                          the outer half of the stroke shows. That's why
                          stroke-width is 2x the outline you actually see
@@ -430,8 +430,8 @@ body::before {
    - overflow:visible -> icons like TS/JS/HTML touch the edge of their 24x24
                          box, so without this the outline would get clipped. */
 html:not([data-theme="dark"]) .stack-icon {
-  color:var(--txh);
-  stroke:var(--ac);
+  color:var(--ac);
+  stroke:var(--outline);
   stroke-width:3px;
   stroke-linejoin:round;
   paint-order:stroke fill;
