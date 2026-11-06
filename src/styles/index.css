@@ -480,6 +480,7 @@ html:not([data-theme="dark"]) .stack-icon path { vector-effect:non-scaling-strok
 .fnav-trigger { width:48px; height:48px; border-radius:50%; border:1px solid var(--border2); background:transparent;
   display:flex; align-items:center; justify-content:center; color:var(--txm); transition:all .2s ease; }
 .fnav-trigger:hover { border-color:var(--ac); color:#000; background:var(--ac); box-shadow:2px 2px 0 var(--outline); }
+.fnav:has(.fnav-items.open) .fnav-trigger { display:none; }   /* desktop: the in-bar close button is used while open (phones override this below) */
 .fnav-items { display:flex; flex-direction:column; align-items:center; gap:8px; overflow:visible;
   max-height:0; opacity:0; transition:max-height .45s cubic-bezier(.16,1,.3,1), opacity .25s ease; pointer-events:none; }
 .fnav-items.open { max-height:400px; opacity:1; pointer-events:auto; overflow:visible; }
@@ -675,7 +676,7 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
   :root { --pill-h:62px; }
   .theme-toggle { top:calc(8px + env(safe-area-inset-top)); right:12px; width:48px; height:48px;
     border:1px solid var(--border2); background:var(--bg); box-shadow:3px 3px 0 var(--outline);
-    transition:top .35s cubic-bezier(.16,1,.3,1), width .35s cubic-bezier(.16,1,.3,1), height .35s cubic-bezier(.16,1,.3,1),
+    transition:top .45s cubic-bezier(.16,1,.3,1), width .45s cubic-bezier(.16,1,.3,1), height .45s cubic-bezier(.16,1,.3,1),
                background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease; }
   body:has(.fnav-items.open) .theme-toggle { width:42px; height:42px;
     top:calc(8px + env(safe-area-inset-top) + (var(--pill-h) - 42px) / 2); }
@@ -683,17 +684,28 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
   .mini-progress-track { width:4px; height:120px; }
 
   /* nav: top-left bar that opens sideways, level with the theme button (was a left-side column covering the content) */
+  /* ONE continuous open/close: the same hamburger button stays put and the pill grows out of / shrinks
+     back into it. Everything that makes the pill look like a pill (padding, border, background, shadow,
+     the width of the button row) is transitioned together with the same easing. */
+  :root { --nb:38px; --ng:6px; --ease-nav:cubic-bezier(.16,1,.3,1); }   /* --nb = button size, --ng = gap (changed per phone size below) */
   .fnav { left:12px; top:calc(8px + env(safe-area-inset-top)); bottom:auto; transform:none;
-    flex-direction:row; gap:0; padding:0; border-radius:999px; }
-  .fnav:has(.fnav-items.open) { padding:8px 10px; }   /* more air around the buttons inside the pill */
-  .fnav-trigger { width:48px; height:48px; background:var(--bg); box-shadow:3px 3px 0 var(--outline); }
-  .fnav-items { flex-direction:row; gap:6px; max-height:none; max-width:0; overflow:hidden;
-    transition:max-width .45s cubic-bezier(.16,1,.3,1), opacity .25s ease; }
-  /* the small padding gives the active button's hard shadow room — overflow:hidden (needed for the slide-open) was cutting it off */
-  .fnav-items.open { max-width:340px; overflow:hidden; padding:2px 4px 4px 2px; }
-  .fnav-item { transform:translateY(-8px); }
-  .fnav-items.open .fnav-item { transform:translateY(0); }
-  .fnav-btn, .fnav-close { width:38px; height:38px; flex:0 0 38px; }   /* 38px so the roomier pill still clears the theme button on ~360px phones */
+    flex-direction:row; align-items:center; gap:0; padding:0; border-radius:999px;
+    border:0 solid var(--border); background-color:transparent; box-shadow:0 0 0 0 var(--outline);
+    transition:padding .45s var(--ease-nav), border-width .3s ease, background-color .3s ease, box-shadow .45s var(--ease-nav); }
+  .fnav:has(.fnav-items.open) { padding:8px 10px; border-width:1px; background-color:rgba(255,255,255,.9); box-shadow:3px 3px 0 0 var(--outline); }   /* air around the buttons inside the pill */
+  /* the hamburger: 48px yellow-hover circle when closed, a normal 38px pill button when open */
+  .fnav-close { display:none; }   /* phones use the persistent hamburger below instead of a second close button */
+  .fnav:has(.fnav-items.open) .fnav-trigger { display:flex; width:var(--nb); height:var(--nb); background:transparent; box-shadow:0 0 0 0 var(--outline); }
+  .fnav-trigger { flex:none; width:48px; height:48px; background:var(--bg); box-shadow:3px 3px 0 0 var(--outline);
+    transition:width .45s var(--ease-nav), height .45s var(--ease-nav), background-color .3s ease, box-shadow .45s var(--ease-nav), border-color .2s ease, color .2s ease; }
+  /* the button row grows/shrinks by real width (no dead zone like max-width had) and its items slide in from / back into the hamburger */
+  .fnav-items { flex-direction:row; gap:var(--ng); max-height:none; overflow:hidden; box-sizing:border-box;
+    width:0; padding:0; transition:width .45s var(--ease-nav), padding .45s var(--ease-nav), opacity .2s ease; }
+  /* the padding gives the active button's hard shadow room — overflow:hidden (needed for the slide) would cut it off */
+  .fnav-items.open { width:calc(5 * var(--nb) + 4 * var(--ng) + 12px); padding:3px 4px 3px 8px; overflow:hidden; }
+  .fnav-item { flex:none; transform:translateX(-14px) scale(.6); transition:opacity .2s ease, transform .35s var(--ease-nav); }
+  .fnav-items.open .fnav-item { transform:translateX(0) scale(1); }
+  .fnav-btn { width:var(--nb); height:var(--nb); flex:0 0 var(--nb); }   /* 38px so the roomier pill still clears the theme button on ~360px phones */
   .fnav-pill-bg, .fnav-pill-label, .fnav-lbl { display:none; }   /* hover labels make no sense on touch */
 
   /* projects overlay */
@@ -707,7 +719,7 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
 
 /* very narrow phones (≤ 340px): smaller nav buttons so the open bar stays clear of the theme button */
 @media (max-width:355px){
-  :root { --pill-h:58px; }
+  :root { --pill-h:58px; --nb:34px; --ng:4px; }
   body:has(.fnav-items.open) .theme-toggle { width:38px; height:38px; top:calc(8px + env(safe-area-inset-top) + (var(--pill-h) - 38px) / 2); }
   .fnav-items { gap:4px; }
   .fnav-btn, .fnav-close { width:34px; height:34px; flex:0 0 34px; }
@@ -715,7 +727,7 @@ html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; 
 
 /* roomier phones (≥ 380px wide): full 40px buttons and a wider gap */
 @media (min-width:380px) and (max-width:960px){
-  :root { --pill-h:64px; }
+  :root { --pill-h:64px; --nb:40px; --ng:8px; }
   .fnav-items { gap:8px; }
   .fnav-btn, .fnav-close { width:40px; height:40px; flex:0 0 40px; }
 }
