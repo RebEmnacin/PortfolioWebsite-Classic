@@ -272,7 +272,9 @@ if (sectionId === "home") {
                 return (
                   <a key={i} href={p.url} target="_blank" rel="noreferrer" className="pcard">
                     <div className="pcard-top">
-                      <span className="pcard-icon"><PI s={22}/></span>
+                      <span className={`pcard-icon${p.logo ? " has-logo" : ""}`}>
+  {p.logo ? <img src={p.logo} alt={`${p.n} logo`} /> : <PI s={22}/>}
+</span>
                       <span className="pcard-num">_{String(i+1).padStart(2,"0")}.</span>
                       <span className="pcard-arr"><ArrowIco s={18}/></span>
                     </div>

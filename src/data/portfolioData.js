@@ -52,8 +52,8 @@ export const DATA = {
   ],
 
   projects: [
-    { I: BarIco,   n: "CashWell",         d: "Personal finance tracker that shows you where your money goes. Log income and expenses, set monthly budgets per category, and watch the dashboard update as you go.", tags: ["React","TypeScript","FastAPI","PostgreSQL"], url: "https://github.com/RebEmnacin/CashWell" },
-    { I: UserIco,  n: "HireRise",         d: "HR management website built for a company’s HR team. Track employee status, workload, and attendance, and keep every record organized in one dashboard.",      tags: ["Vue 3","Vite","JavaScript","CSS"],           url: "https://github.com/RebEmnacin/HireRise" },
-    { I: BreadIco, n: "breadcrumber",     d: "AI-powered roadmap builder for creatives. ADHD-friendly project manager that breaks goals into bite-sized, achievable steps.",                                          tags: ["React","FastAPI","Gemini AI","Python"],      url: "https://github.com/RebEmnacin/breadcrumber-app" },
+    { I: BarIco,   n: "CashWell",     logo: "/assets/projects/cashwell.png",         d: "Personal finance tracker that shows you where your money goes. Log income and expenses, set monthly budgets per category, and watch the dashboard update as you go.", tags: ["React","TypeScript","FastAPI","PostgreSQL"], url: "https://github.com/RebEmnacin/CashWell" },
+    { I: UserIco,  n: "HireRise",     logo: "/assets/projects/hirerise.png",         d: "HR management website built for a company’s HR team. Track employee status, workload, and attendance, and keep every record organized in one dashboard.",      tags: ["Vue 3","Vite","JavaScript","CSS"],           url: "https://github.com/RebEmnacin/HireRise" },
+    { I: BreadIco, n: "breadcrumber", logo: "/assets/projects/breadcrumber.png",     d: "AI-powered roadmap builder for creatives. ADHD-friendly project manager that breaks goals into bite-sized, achievable steps.",                                          tags: ["React","FastAPI","Gemini AI","Python"],      url: "https://github.com/RebEmnacin/breadcrumber-app" },
   ],
 };

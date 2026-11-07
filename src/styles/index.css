@@ -265,7 +265,10 @@ html[data-theme="dark"] .folder-ico-wrap { --folder-sh:#fff; }   /* the 3D edge:
 .pcard-top { display:flex; align-items:center; gap:14px; }
 .pcard-icon { display:flex; align-items:center; justify-content:center; width:46px; height:46px;
   border-radius:14px; background:#ffcb05; color:#111110; flex-shrink:0; }
-.pcard-num { font-family:var(--mono); font-size:11px; color:#111110; opacity:.45; letter-spacing:.1em; }
+.pcard-icon.has-logo { background:transparent; overflow:hidden; }
+.pcard-icon.has-logo img { width:100%; height:100%; object-fit:contain; }
+html[data-theme="dark"] .pcard-icon.has-logo { background:transparent; }
+  .pcard-num { font-family:var(--mono); font-size:11px; color:#111110; opacity:.45; letter-spacing:.1em; }
 .pcard-arr { margin-left:auto; display:flex; align-items:center; justify-content:center;
   width:38px; height:38px; border-radius:50%; background:#111110; color:#fff; flex-shrink:0;
   transition:transform .3s var(--ease-bounce), background .2s; }
