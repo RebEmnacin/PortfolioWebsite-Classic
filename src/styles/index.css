@@ -392,7 +392,7 @@ html[data-theme="dark"] .folder-ico-wrap { --folder-sh:#fff; }   /* the 3D edge:
              radial-gradient(circle at 35% 30%, var(--bg2), var(--bg));
   border:2px solid var(--border);
   cursor:default;
-  transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  transition:scale .6s cubic-bezier(.22,1,.36,1), border-color .4s ease, box-shadow .4s ease;
   animation-name:bubble-float;
   animation-timing-function:ease-in-out;
   animation-iteration-count:infinite;
@@ -400,7 +400,7 @@ html[data-theme="dark"] .folder-ico-wrap { --folder-sh:#fff; }   /* the 3D edge:
   will-change:transform;
 }
 .stack-bubble:hover {
-  transform:scale(1.12) translateY(0) !important;
+  scale:1.12;
   border-color:var(--ac);
   box-shadow:0 10px 30px rgba(0,0,0,.34), 0 0 0 3px color-mix(in srgb, var(--ac) 35%, transparent);
   z-index:5;
