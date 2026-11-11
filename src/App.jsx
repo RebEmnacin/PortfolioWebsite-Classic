@@ -262,7 +262,7 @@ if (sectionId === "home") {
         }}>
           <div className="projects-overlay-inner">
             <div className="back-row" style={{ marginBottom:"40px" }}>
-              <button className="back-btn" onClick={handleCloseProjects} style={{borderColor: dark ? "rgba(86,182,194,0.7)" : "rgba(255,255,255,0.6)", color: dark ? "#56b6c2" : "#ffffff"}}><BackIco s={12}/> Back</button>
+              <button className="back-btn" onClick={handleCloseProjects}><BackIco s={12}/> Back</button>
             </div>
             <div className="eyebrow">Portfolio</div>
             <h2 className="pg-title">Selected <em>Work</em></h2>
