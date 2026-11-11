@@ -793,3 +793,9 @@ html[data-theme="dark"] .stack-icon path { vector-effect:non-scaling-stroke; }
   .pcard:hover { transform:none; box-shadow:0 10px 28px rgba(0,0,0,.10); }
   .pcard:hover .pcard-arr { transform:none; }
 }
+
+/* theme toggle: turn off the browser's default cross-fade so only the circle reveal shows */
+::view-transition-old(root),
+::view-transition-new(root) { animation:none; mix-blend-mode:normal; }
+::view-transition-old(root) { z-index:1; }
+::view-transition-new(root) { z-index:2; }

@@ -56,7 +56,32 @@ export default function App() {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     try { localStorage.setItem("theme", dark ? "dark" : "light"); } catch { /* ignore */ }
   }, [dark]);
-  const toggleTheme = useCallback(() => setDark(d => !d), []);
+  const toggleTheme = useCallback((e) => {
+    const next = !dark;
+    const btn = e && e.currentTarget;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // no support (or reduced motion): just switch, no animation
+    if (!document.startViewTransition || !btn || reduce) { setDark(next); return; }
+
+    // center of the button = where the circle grows from
+    const r = btn.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    // radius big enough to reach the farthest screen corner
+    const maxR = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+
+    const t = document.startViewTransition(() => {
+      document.documentElement.dataset.theme = next ? "dark" : "light";
+      flushSync(() => setDark(next));
+    });
+    t.ready.then(() => {
+      document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxR}px at ${x}px ${y}px)`] },
+        { duration: 800, easing: "cubic-bezier(.22,1,.36,1)", pseudoElement: "::view-transition-new(root)" }
+      );
+    });
+  }, [dark]);
 
   const handleLanded = useCallback((landedDir) => {
     setRollingDir(null);
