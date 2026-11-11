@@ -250,8 +250,8 @@ html[data-theme="dark"] .folder-ico-wrap { --folder-sh:#fff; }   /* the 3D edge:
 .back-row { display:flex; align-items:center; gap:10px; margin-bottom:32px; }
 .back-btn { display:inline-flex; align-items:center; gap:7px; border:1px solid var(--border2); color:var(--txm);
   font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.06em;
-  padding:7px 14px; border-radius:0; background:transparent; transition:all .2s ease; }
-.back-btn:hover { border-color:var(--ac); color:var(--ac); box-shadow:2px 2px 0 var(--ac); transform:translate(-1px,-1px); }
+  padding:7px 18px; border-radius:999px; background:transparent; transition:all .2s ease; }
+.back-btn:hover { border-color:var(--ac); color:var(--ac); box-shadow:0 0 0 3px color-mix(in srgb, var(--ac) 30%, transparent); transform:translateY(-1px); }
 .proj-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
 @media(max-width:1100px){ .proj-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:700px){ .proj-grid{ grid-template-columns:minmax(0,1fr); } }
