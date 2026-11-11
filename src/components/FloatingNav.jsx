@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { HomeIco, MonitorIco, StarIco, UserIco, MailIco, MenuIco } from "./icons/Icons";
+import { HomeIco, HammerIco, RibbonIco, ToolsIco, PlaneIco, MenuIco } from "./icons/Icons";
 
 /* ─────────────────────────────────────────────────────────────────
    FLOATING NAV
 ───────────────────────────────────────────────────────────────── */
 const NAV_ITEMS = [
   {id:"home",     I:HomeIco,    lbl:"Home"},
-  {id:"projects", I:MonitorIco, lbl:"Projects"},
-  {id:"certs",    I:StarIco,    lbl:"Certs"},
-  {id:"stack",    I:UserIco,    lbl:"Stack"},
-  {id:"contact",  I:MailIco,    lbl:"Contact"},
+  {id:"projects", I:HammerIco,  lbl:"Projects"},
+  {id:"certs",    I:RibbonIco,  lbl:"Certs"},
+  {id:"stack",    I:ToolsIco,   lbl:"Stack"},
+  {id:"contact",  I:PlaneIco,   lbl:"Contact"},
 ];
 
 export function FloatingNav({ onNav, onOpenChange, activeSection }) {
