@@ -53,27 +53,27 @@ export function ArrowAnimation() {
         viewBox="0 0 150 376" 
         fill="#888884" 
         xmlns="http://www.w3.org/2000/svg" 
-        style={{ display: "block", margin: 0, padding: 0 }}>
+        style={{ display: "block", margin: 0, padding: 0, overflow: "visible" }}>
         <path 
           d="M1 1H70L149 188H79L1 1Z" 
           fill="#888884" 
-          stroke="none" />
+          stroke="#888884" strokeWidth="16" strokeLinejoin="round" strokeLinecap="round" />
         <path 
           d="M1 375H70L149 188H79L1 375Z" 
           fill="#888884" 
-          stroke="none" />
+          stroke="#888884" strokeWidth="16" strokeLinejoin="round" strokeLinecap="round" />
       </svg>
 
       {/* Arrow 2 — medium */}
-      <svg ref={ref2} width="120" height="420" viewBox="0 0 150 376" fill="#888884" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", margin: 0, padding: 0 }}>
-        <path d="M1 1H70L149 188H79L1 1Z" fill="#888884" stroke="none" />
-        <path d="M1 375H70L149 188H79L1 375Z" fill="#888884" stroke="none" />
+      <svg ref={ref2} width="120" height="420" viewBox="0 0 150 376" fill="#888884" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", margin: 0, padding: 0, overflow: "visible" }}>
+        <path d="M1 1H70L149 188H79L1 1Z" fill="#888884" stroke="#888884" strokeWidth="16" strokeLinejoin="round" strokeLinecap="round" />
+        <path d="M1 375H70L149 188H79L1 375Z" fill="#888884" stroke="#888884" strokeWidth="16" strokeLinejoin="round" strokeLinecap="round" />
       </svg>
 
       {/* Arrow 3 — smallest */}
-      <svg ref={ref3} width="80" height="420" viewBox="0 0 150 376" fill="#888884" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", margin: 0, padding: 0 }}>
-        <path d="M1 1H70L149 188H79L1 1Z" fill="#888884" stroke="none" />
-        <path d="M1 375H70L149 188H79L1 375Z" fill="#888884" stroke="none" />
+      <svg ref={ref3} width="80" height="420" viewBox="0 0 150 376" fill="#888884" xmlns="http://www.w3.org/2000/svg" style={{ display: "block", margin: 0, padding: 0, overflow: "visible" }}>
+        <path d="M1 1H70L149 188H79L1 1Z" fill="#888884" stroke="#888884" strokeWidth="16" strokeLinejoin="round" strokeLinecap="round" />
+        <path d="M1 375H70L149 188H79L1 375Z" fill="#888884" stroke="#888884" strokeWidth="16" strokeLinejoin="round" strokeLinecap="round" />
       </svg>
     </div>
   );
