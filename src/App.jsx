@@ -59,10 +59,10 @@ export default function App() {
   const toggleTheme = useCallback((e) => {
     const next = !dark;
     const btn = e && e.currentTarget;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    // no support (or reduced motion): just switch, no animation
-    if (!document.startViewTransition || !btn || reduce) { setDark(next); return; }
+
+    // browser has no View Transitions: just switch, no animation
+    if (!document.startViewTransition || !btn) { setDark(next); return; }
 
     // center of the button = where the circle grows from
     const r = btn.getBoundingClientRect();
