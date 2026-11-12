@@ -248,13 +248,13 @@ html[data-theme="dark"] .folder-ico-wrap { --folder-sh:#fff; }   /* the 3D edge:
 .proj-pop { animation:popIn .45s var(--ease-out-expo) both; }
 @keyframes popIn { from{opacity:0;transform:scale(.92) translateY(18px)} to{opacity:1;transform:scale(1) translateY(0)} }
 .back-row { display:flex; align-items:center; gap:10px; margin-bottom:32px; }
-.back-btn { display:inline-flex; align-items:center; gap:7px; border:2px solid #111110; color:#111110;
+.back-btn { display:inline-flex; align-items:center; gap:7px; border:1px solid #111110; color:#111110;
   font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.06em;
-  padding:7px 18px; border-radius:999px; background:#fff; box-shadow:0 0 0 #111110;   /* no thick edge at rest; it only appears on hover */
+  padding:8px 19px; border-radius:999px; background:#fff; box-shadow:0 0 0 #111110;   /* no thick edge at rest; it only appears on hover */
   transition:all .25s ease; }
-.back-btn:hover { background:#ffcb05; border-color:#111110; color:#111110; box-shadow:5px 5px 0 #111110; transform:translate(-2px,-2px); }
+.back-btn:hover { background:#ffcb05; border-color:#111110; color:#111110; box-shadow:3px 3px 0 #111110; transform:translate(-2px,-2px); }
 html[data-theme="dark"] .back-btn { border-color:#56b6c2; box-shadow:0 0 0 #56b6c2; }
-html[data-theme="dark"] .back-btn:hover { background:#56b6c2; color:#0d1117; box-shadow:5px 5px 0 #e6edf3; }
+html[data-theme="dark"] .back-btn:hover { background:#56b6c2; color:#0d1117; box-shadow:3px 3px 0 #e6edf3; }
 .proj-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; }
 @media(max-width:1100px){ .proj-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:700px){ .proj-grid{ grid-template-columns:minmax(0,1fr); } }
@@ -450,24 +450,6 @@ html:not([data-theme="dark"]) .stack-icon path { vector-effect:non-scaling-strok
   opacity:0; pointer-events:none; transition:opacity .18s ease, transform .18s ease;
 }
 .stack-bubble-label.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
-/* name tag that follows the cursor after hovering an icon for 5 seconds.
-   .stack-tip is moved by JS (position only); .stack-tip-inner does the
-   pop-in, using the same soft ease as the My Stack bubbles. */
-.stack-tip { position:fixed; top:0; left:0; z-index:2147483647; pointer-events:none; will-change:transform; }
-.stack-tip-inner {
-  display:inline-block; white-space:nowrap; transform-origin:0 0;
-  font-family:var(--display); font-size:15px; letter-spacing:.06em; text-transform:uppercase;
-  color:#000; background:var(--ac); border:2px solid var(--outline); border-radius:999px;
-  padding:5px 14px; box-shadow:3px 3px 0 var(--photo-sh, var(--outline));
-  opacity:0; transform:scale(.4) translateY(8px);
-  transition:opacity .25s ease, transform .25s ease;
-}
-html[data-theme="dark"] .stack-tip-inner { color:#0d1117; border-color:#fff; }
-.stack-tip-inner.show {
-  opacity:1; transform:scale(1) translateY(0);
-  transition:opacity .35s ease, transform .6s cubic-bezier(.34,1.56,.64,1);   /* soft overshoot pop */
-}
 
 
 /* ══════════════════════════════════════════════════════════
