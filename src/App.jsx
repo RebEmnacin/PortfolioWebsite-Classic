@@ -289,7 +289,7 @@ if (sectionId === "home") {
             <div className="back-row" style={{ marginBottom:"40px" }}>
               <button className="back-btn" onClick={handleCloseProjects}><BackIco s={12}/> Back</button>
             </div>
-            <div className="eyebrow">Portfolio</div>
+            
             <h2 className="pg-title">Selected <em>Work</em></h2>
             <div className="proj-grid">
               {DATA.projects.map((p, i) => {

@@ -21,7 +21,7 @@ export function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef, p2ImgRef, 
 
       <FadeSection className="section-gap">
         <div id="sec-projects"/>
-        <Reveal><div className="eyebrow">Portfolio</div></Reveal>
+        
         <Reveal delay={90}><h2 className="pg-title">Selected <em>Work</em></h2></Reveal>
         <Reveal delay={180}>
           <ProjectsSection onOpen={onOpenProjects} folderBtnRef={folderBtnRef}/>
@@ -30,7 +30,7 @@ export function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef, p2ImgRef, 
 
       <FadeSection className="section-gap">
         <div id="sec-certs"/>
-        <Reveal><div className="eyebrow">Credentials</div></Reveal>
+        
         <Reveal delay={90}><h2 className="pg-title">My <em>Certifications</em></h2></Reveal>
         <Reveal delay={180}>
           <CertSlider/>
@@ -48,7 +48,7 @@ export function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef, p2ImgRef, 
       <FadeSection>
         <div id="sec-contact"/>
         <div className="contact-heading-wrap">
-          <Reveal><div className="eyebrow">Chat me!</div></Reveal>
+          
           <Reveal delay={90}><h2 className="pg-title">My<em> Contacts</em></h2></Reveal>
         </div>
 
