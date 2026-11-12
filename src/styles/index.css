@@ -451,6 +451,24 @@ html:not([data-theme="dark"]) .stack-icon path { vector-effect:non-scaling-strok
 }
 .stack-bubble-label.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
+/* name tag that follows the cursor after hovering an icon for 5 seconds.
+   .stack-tip is moved by JS (position only); .stack-tip-inner does the
+   pop-in, using the same soft ease as the My Stack bubbles. */
+.stack-tip { position:fixed; top:0; left:0; z-index:2147483647; pointer-events:none; will-change:transform; }
+.stack-tip-inner {
+  display:inline-block; white-space:nowrap; transform-origin:0 0;
+  font-family:var(--display); font-size:15px; letter-spacing:.06em; text-transform:uppercase;
+  color:#000; background:var(--ac); border:2px solid var(--outline); border-radius:999px;
+  padding:5px 14px; box-shadow:3px 3px 0 var(--photo-sh, var(--outline));
+  opacity:0; transform:scale(.4) translateY(8px);
+  transition:opacity .25s ease, transform .25s ease;
+}
+html[data-theme="dark"] .stack-tip-inner { color:#0d1117; border-color:#fff; }
+.stack-tip-inner.show {
+  opacity:1; transform:scale(1) translateY(0);
+  transition:opacity .35s ease, transform .6s cubic-bezier(.34,1.56,.64,1);   /* soft overshoot pop */
+}
+
 
 /* ══════════════════════════════════════════════════════════
    CONTACT
