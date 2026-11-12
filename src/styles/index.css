@@ -893,5 +893,8 @@ html[data-theme="dark"] .stack-icon path { vector-effect:non-scaling-stroke; }
 
 /* Sidebar navigation: no "pop in" inside the section you jump to.
    App.jsx adds .nav-jumping to <html> for ~3s after a sidebar button is pressed. */
+/* sidebar circle transition: jump instantly underneath it (App.jsx handleNav adds .nav-instant) */
+html.nav-instant .stage,
+html.nav-instant .zoom-wrap { transition:none !important; }
 html.nav-jumping .reveal,
 html.nav-jumping .reveal.out { opacity:1 !important; transform:none !important; transition:none !important; }
