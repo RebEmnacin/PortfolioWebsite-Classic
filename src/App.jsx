@@ -158,6 +158,26 @@ export default function App() {
     };
   }, [projectsOpen]);
 
+  // Scrolls the long page to a section. smooth=false jumps there instantly.
+  const scrollToSection = useCallback((sectionId, smooth = true) => {
+    const el = document.getElementById(`sec-${sectionId}`);
+    const sc = scrollRef.current;
+    if (el && sc) {
+      // WHY not el.scrollIntoView(): each FadeSection slides ~50px down while it fades in, and
+      // scrollIntoView lined up that SHIFTED spot, so the title ended up 50px too high once the
+      // section settled. Here we measure the section's real layout position instead.
+      const sr = sc.getBoundingClientRect();
+      const scale = sc.clientHeight ? sr.height / sc.clientHeight : 1;     // zoom-wrap scale
+      const tf = getComputedStyle(el.parentElement).transform;
+      const lift = tf && tf !== "none" ? new DOMMatrixReadOnly(tf).m42 : 0; // the 50px slide
+      const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 48;  // gap above the title (phones use 72 from the CSS)
+      const top = (el.getBoundingClientRect().top - sr.top) / scale - lift + sc.scrollTop - margin;
+      // "center" for the stack, "start" (top of screen) for everything else
+      const offset = sectionId === "stack" ? (sc.clientHeight - el.offsetHeight) / 2 : 0;
+      sc.scrollTo({ top: top - offset, behavior: smooth ? "smooth" : "instant" });
+    } else if (sc) sc.scrollTop = 0;
+  }, []);
+
   // Which panel we're on right now (a ref, so goScroll can check it without re-creating itself).
   const panelRef = useRef("home");
   useEffect(() => { panelRef.current = panel; }, [panel]);
@@ -191,35 +211,51 @@ if (sectionId === "home") {
         setTimeout(() => setZoomed(false), 300);
       }
     }
-    setTimeout(() => {
-      const el = document.getElementById(`sec-${sectionId}`);
-      const sc = scrollRef.current;
-      if (el && sc) {
-        // WHY not el.scrollIntoView(): each FadeSection slides ~50px down while it fades in, and
-        // scrollIntoView lined up that SHIFTED spot, so the title ended up 50px too high once the
-        // section settled. Here we measure the section's real layout position instead.
-        const sr = sc.getBoundingClientRect();
-        const scale = sc.clientHeight ? sr.height / sc.clientHeight : 1;     // zoom-wrap scale
-        const tf = getComputedStyle(el.parentElement).transform;
-        const lift = tf && tf !== "none" ? new DOMMatrixReadOnly(tf).m42 : 0; // the 50px slide
-        const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 48;  // gap above the title (phones use 72 from the CSS)
-        const top = (el.getBoundingClientRect().top - sr.top) / scale - lift + sc.scrollTop - margin;
-        // "center" for the stack, "start" (top of screen) for everything else
-        const offset = sectionId === "stack" ? (sc.clientHeight - el.offsetHeight) / 2 : 0;
-        sc.scrollTo({ top: top - offset, behavior: "smooth" });
-      } else if (sc) sc.scrollTop = 0;
-    }, alreadyThere ? 0 : 900);
-  }, []);
+    setTimeout(() => scrollToSection(sectionId, true), alreadyThere ? 0 : 900);
+  }, [scrollToSection]);
 
   // Sidebar buttons: while we jump to a section, switch OFF the "pop in" animations
   // inside it (see "html.nav-jumping" in index.css). The class is removed after the scroll ends.
   const navJumpTimer = useRef(null);
-  const handleNav = useCallback((id) => {
-    document.documentElement.classList.add("nav-jumping");
+  const handleNav = useCallback((id, btn) => {
+    const root = document.documentElement;
+    root.classList.add("nav-jumping");
     clearTimeout(navJumpTimer.current);
-    navJumpTimer.current = setTimeout(() => document.documentElement.classList.remove("nav-jumping"), 3000);
-    goScroll(id === "home" ? "home" : id, { zoom: false });
-  }, [goScroll]);
+    navJumpTimer.current = setTimeout(() => root.classList.remove("nav-jumping"), 3000);
+
+    // browser has no View Transitions (or no button given): old behaviour, panel slides over
+    if (!document.startViewTransition || !btn) {
+      goScroll(id === "home" ? "home" : id, { zoom: false });
+      return;
+    }
+
+    // Same circular reveal as the theme toggle and the Open Projects folder:
+    // the new view grows out of the sidebar button you pressed. Underneath, the page
+    // jumps straight to the section (no slide, no zoom) — the circle is the animation.
+    const r = btn.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    const maxR = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+
+    root.classList.add("nav-instant");   // turns the slide/zoom transitions off while we jump
+    const t = document.startViewTransition(() => {
+      flushSync(() => {
+        setRollingDir(null);
+        setZoomed(false);
+        if (id === "home") { setPanel("home"); setP1Visible(true); setP2Visible(false); }
+        else { setPanel("scroll"); setP1Visible(false); setP2Visible(true); }
+      });
+      if (id === "home") scrollRef.current?.scrollTo({ top: 0, behavior: "instant" });
+      else scrollToSection(id, false);
+    });
+    t.ready.then(() => {
+      root.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxR}px at ${x}px ${y}px)`] },
+        { duration: 800, easing: "cubic-bezier(.22,1,.36,1)", pseudoElement: "::view-transition-new(root)" }
+      );
+    });
+    t.finished.finally(() => root.classList.remove("nav-instant"));
+  }, [goScroll, scrollToSection]);
 
   useEffect(() => {
     const onWheel = (e) => {
