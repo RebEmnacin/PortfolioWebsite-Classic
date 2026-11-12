@@ -5,21 +5,18 @@ import { useEffect, useRef } from "react";
 ───────────────────────────────────────────────────────────────── */
 export function CustomCursor({ white = false, dark = false }) {
   const ref = useRef(null);
-  const pos = useRef({ x:-100, y:-100 });
-  const target = useRef({ x:-100, y:-100 });
-  const raf = useRef(null);
   useEffect(() => {
     if (window.matchMedia("(hover: none)").matches) return; // touch screen: no cursor needed
-    const onMove = (e) => { target.current = { x:e.clientX, y:e.clientY }; if (ref.current) ref.current.style.opacity = "1"; };
-    const tick = () => {
-      pos.current.x += (target.current.x - pos.current.x) * 0.18;
-      pos.current.y += (target.current.y - pos.current.y) * 0.18;
-      if (ref.current) ref.current.style.transform = `translate(${pos.current.x}px,${pos.current.y}px)`;
-      raf.current = requestAnimationFrame(tick);
+    // Move the arrow straight to the mouse position on every mouse event
+    // (no easing/lerp, no requestAnimationFrame loop) so it never lags behind.
+    const onMove = (e) => {
+      const el = ref.current;
+      if (!el) return;
+      el.style.transform = `translate3d(${e.clientX}px,${e.clientY}px,0)`;
+      el.style.opacity = "1";
     };
-    window.addEventListener("mousemove", onMove);
-    raf.current = requestAnimationFrame(tick);
-    return () => { window.removeEventListener("mousemove", onMove); cancelAnimationFrame(raf.current); };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
   }, []);
   return (
     <svg ref={ref} className="cursor-arrow" width="27" height="30" viewBox="0 0 27 30" fill="none" strokeWidth="2">
