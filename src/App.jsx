@@ -319,7 +319,6 @@ if (sectionId === "home") {
                       <span className={`pcard-icon${p.logo ? " has-logo" : ""}`} style={p.logoBg ? { background: p.logoBg } : undefined}>
                         {p.logo ? <img src={p.logo} alt={`${p.n} logo`} /> : <PI s={22}/>}
                       </span>
-                      <span className="pcard-num">_{String(i+1).padStart(2,"0")}.</span>
                       <span className="pcard-arr"><ArrowIco s={18}/></span>
                     </div>
                     <div className="pcard-info"><h3>{p.n}</h3><p>{p.d}</p></div>
