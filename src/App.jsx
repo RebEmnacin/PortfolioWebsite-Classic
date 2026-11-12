@@ -162,7 +162,7 @@ export default function App() {
   const panelRef = useRef("home");
   useEffect(() => { panelRef.current = panel; }, [panel]);
 
-  const goScroll = useCallback((sectionId = "hero") => {
+  const goScroll = useCallback((sectionId = "hero", { zoom = true } = {}) => {
 if (sectionId === "home") {
   setRollingDir("reverse");
   setP2Visible(false);
@@ -184,8 +184,12 @@ if (sectionId === "home") {
       setRollingDir("forward");
       setP1Visible(false);
       setPanel("scroll");
-      setZoomed(true);
-      setTimeout(() => setZoomed(false), 300);
+      // The zoom is only for the "enter the portfolio" gesture (button / scroll / swipe).
+      // Sidebar buttons pass { zoom:false }: the panel just slides over.
+      if (zoom) {
+        setZoomed(true);
+        setTimeout(() => setZoomed(false), 300);
+      }
     }
     setTimeout(() => {
       const el = document.getElementById(`sec-${sectionId}`);
@@ -214,7 +218,7 @@ if (sectionId === "home") {
     document.documentElement.classList.add("nav-jumping");
     clearTimeout(navJumpTimer.current);
     navJumpTimer.current = setTimeout(() => document.documentElement.classList.remove("nav-jumping"), 3000);
-    goScroll(id === "home" ? "home" : id);
+    goScroll(id === "home" ? "home" : id, { zoom: false });
   }, [goScroll]);
 
   useEffect(() => {
