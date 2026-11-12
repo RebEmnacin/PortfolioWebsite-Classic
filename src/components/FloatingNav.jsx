@@ -33,8 +33,8 @@ export function FloatingNav({ onNav, onOpenChange, activeSection }) {
             <div className="fnav-pill-label">{item.lbl}</div>
             <button
               className={`fnav-btn${activeSection===item.id?" active":""}`}
-              onClick={() => {
-                onNav(item.id);
+              onClick={(e) => {
+                onNav(item.id, e.currentTarget);   // the button is where the circle grows from
                 // on phones the menu would stay open over the page, so close it
                 if (window.matchMedia("(max-width: 960px)").matches) toggle(false);
               }}>
