@@ -872,3 +872,8 @@ html[data-theme="dark"] .stack-icon path { vector-effect:non-scaling-stroke; }
   .fnav-item:hover .fnav-pill-label { opacity:1; transform:translateY(-50%) translateX(0);
     transition:opacity .3s ease .15s, transform .45s cubic-bezier(.22,1,.36,1) .15s; }
 }
+
+/* Sidebar navigation: no "pop in" inside the section you jump to.
+   App.jsx adds .nav-jumping to <html> for ~3s after a sidebar button is pressed. */
+html.nav-jumping .reveal,
+html.nav-jumping .reveal.out { opacity:1 !important; transform:none !important; transition:none !important; }
