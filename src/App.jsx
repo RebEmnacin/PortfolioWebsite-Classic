@@ -179,10 +179,21 @@ if (sectionId === "home") {
     setTimeout(() => setZoomed(false), 300);
     setTimeout(() => {
       const el = document.getElementById(`sec-${sectionId}`);
-      // block: "start" = section top at the top of the screen,
-      //        "center" = section in the middle of the screen
-      if (el) el.scrollIntoView({ behavior: "smooth", block: sectionId === "stack" ? "center" : "start" });
-      else if (scrollRef.current) scrollRef.current.scrollTop = 0;
+      const sc = scrollRef.current;
+      if (el && sc) {
+        // WHY not el.scrollIntoView(): each FadeSection slides ~50px down while it fades in, and
+        // scrollIntoView lined up that SHIFTED spot, so the title ended up 50px too high once the
+        // section settled. Here we measure the section's real layout position instead.
+        const sr = sc.getBoundingClientRect();
+        const scale = sc.clientHeight ? sr.height / sc.clientHeight : 1;     // zoom-wrap scale
+        const tf = getComputedStyle(el.parentElement).transform;
+        const lift = tf && tf !== "none" ? new DOMMatrixReadOnly(tf).m42 : 0; // the 50px slide
+        const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 48;  // gap above the title (phones use 72 from the CSS)
+        const top = (el.getBoundingClientRect().top - sr.top) / scale - lift + sc.scrollTop - margin;
+        // "center" for the stack, "start" (top of screen) for everything else
+        const offset = sectionId === "stack" ? (sc.clientHeight - el.offsetHeight) / 2 : 0;
+        sc.scrollTo({ top: top - offset, behavior: "smooth" });
+      } else if (sc) sc.scrollTop = 0;
     }, 900);
   }, []);
 
