@@ -799,3 +799,55 @@ html[data-theme="dark"] .stack-icon path { vector-effect:non-scaling-stroke; }
 ::view-transition-new(root) { animation:none; mix-blend-mode:normal; }
 ::view-transition-old(root) { z-index:1; }
 ::view-transition-new(root) { z-index:2; }
+
+/* ══════════════════════════════════════════════════════════
+   FLOATING NAV (desktop only) — smooth open / close
+   The hamburger stays put. The pill grows/shrinks behind it while the
+   icons fade + slide in one after another (and out in reverse).
+══════════════════════════════════════════════════════════ */
+@media (min-width:961px){
+  .fnav,
+  .fnav:has(.fnav-items.open),
+  html[data-theme="dark"] .fnav:has(.fnav-items.open) {
+    background:none; border:none; box-shadow:none; border-radius:0;
+  }
+  .fnav { top:calc(50% - 144px); transform:none; pointer-events:none; }
+  .fnav-trigger, .fnav-items.open { pointer-events:auto; }
+  .fnav:has(.fnav-items.open) .fnav-trigger { display:flex; }
+  .fnav-close { display:none; }
+  .fnav:has(.fnav-items.open) .fnav-trigger:hover {
+    border-color:#ef4444; color:#ef4444; background:transparent; box-shadow:2px 2px 0 #ef4444;
+  }
+
+  .fnav::before {
+    content:""; position:absolute; top:0; left:0; right:0; height:68px; z-index:-1;
+    border-radius:999px; background:rgba(255,255,255,.9); border:1px solid var(--border);
+    box-shadow:3px 3px 0 var(--outline); opacity:0;
+    transition:height .6s cubic-bezier(.65,0,.35,1) .2s, opacity .3s ease .6s;
+  }
+  .fnav:has(.fnav-items.open)::before {
+    height:100%; opacity:1;
+    transition:height .8s cubic-bezier(.22,1,.36,1), opacity .25s ease;
+  }
+  html[data-theme="dark"] .fnav::before { background:rgba(13,17,23,.92); }
+
+  .fnav-items { max-height:none; opacity:1; overflow:visible; visibility:hidden; pointer-events:none;
+    transition:visibility 0s linear .9s; }
+  .fnav-items.open { visibility:visible; transition-delay:0s; }
+
+  .fnav-item { opacity:0; transform:translateY(-14px) scale(.8);
+    transition:opacity .22s ease, transform .3s cubic-bezier(.4,0,.2,1); }
+  .fnav-item:nth-of-type(1) { transition-delay:.12s; }
+  .fnav-item:nth-of-type(2) { transition-delay:.09s; }
+  .fnav-item:nth-of-type(3) { transition-delay:.06s; }
+  .fnav-item:nth-of-type(4) { transition-delay:.03s; }
+  .fnav-item:nth-of-type(5) { transition-delay:0s; }
+
+  .fnav-items.open .fnav-item { opacity:1; transform:none;
+    transition:opacity .5s ease, transform .7s cubic-bezier(.22,1,.36,1); }
+  .fnav-items.open .fnav-item:nth-of-type(1) { transition-delay:.15s; }
+  .fnav-items.open .fnav-item:nth-of-type(2) { transition-delay:.23s; }
+  .fnav-items.open .fnav-item:nth-of-type(3) { transition-delay:.31s; }
+  .fnav-items.open .fnav-item:nth-of-type(4) { transition-delay:.39s; }
+  .fnav-items.open .fnav-item:nth-of-type(5) { transition-delay:.47s; }
+}
