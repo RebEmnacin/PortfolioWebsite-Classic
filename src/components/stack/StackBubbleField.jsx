@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Reveal } from "../Reveal";
 import { StackIcon } from "../icons/StackIcons";
 import { hasStackIcon } from "../icons/stackIconPaths";
@@ -65,6 +66,44 @@ const EMPHASIS = new Set(["react", "html", "css", "javascript", "typescript"]);
 export function StackBubbleField({ items }) {
   const fieldRef = useRef(null);
   const [hovered, setHovered] = useState(null);
+
+  // ── "hover for 5 seconds" name tag that follows the cursor ──
+  // tip.name = which stack item it's for, tip.show = visible or fading out.
+  // The cursor position lives in a ref and is written straight to the DOM,
+  // so following the mouse never triggers a React re-render.
+  const HOVER_MS = 5000;               // how long to hover before the tag appears
+  const [tip, setTip] = useState({ name: "", show: false });
+  const tipRef = useRef(null);
+  const timerRef = useRef(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+
+  const placeTip = useCallback(() => {
+    const el = tipRef.current;
+    if (!el) return;
+    // a little to the right of and below the arrow
+    el.style.transform = `translate3d(${mouseRef.current.x + 20}px, ${mouseRef.current.y + 22}px, 0)`;
+  }, []);
+
+  const startHover = (key, name, e) => {
+    setHovered(key);
+    mouseRef.current = { x: e.clientX, y: e.clientY };
+    clearTimeout(timerRef.current);
+    if (window.matchMedia("(hover: none)").matches) return; // touch screens: no hover tag
+    timerRef.current = setTimeout(() => {
+      setTip({ name, show: true });
+      requestAnimationFrame(placeTip);
+    }, HOVER_MS);
+  };
+  const moveHover = (e) => {
+    mouseRef.current = { x: e.clientX, y: e.clientY };
+    placeTip();
+  };
+  const endHover = () => {
+    setHovered(null);
+    clearTimeout(timerRef.current);
+    setTip(t => (t.show ? { ...t, show: false } : t));
+  };
+  useEffect(() => () => clearTimeout(timerRef.current), []);
 
   // Measure the field's REAL pixel size (not a guess). We need actual
   // px to guarantee bubbles never cross into a neighbor's space —
@@ -215,8 +254,9 @@ export function StackBubbleField({ items }) {
               animationDelay: `${b.delay}s`,
               "--drift": `${b.drift}px`,
             }}
-            onMouseEnter={() => setHovered(b.key)}
-            onMouseLeave={() => setHovered(null)}
+            onMouseEnter={(e) => startHover(b.key, b.n, e)}
+            onMouseMove={moveHover}
+            onMouseLeave={endHover}
           >
             {hasStackIcon(b.n) ? (
               <StackIcon name={b.n} style={{ width: "48%", height: "48%" }} />
@@ -228,14 +268,18 @@ export function StackBubbleField({ items }) {
                 style={{ width: "48%", height: "48%", objectFit: "contain" }}
               />
             )}
-            <span
-              className={`stack-bubble-label${hovered === b.key ? " show" : ""}`}
-            >
-              {b.n}
-            </span>
           </div>
         </Reveal>
       ))}
+      {/* Rendered into <body> so it lines up with the real mouse position
+          (the page sits inside a scaled/transformed wrapper, which would
+          otherwise offset a fixed-position element). */}
+      {createPortal(
+        <div className="stack-tip" ref={tipRef} aria-hidden="true">
+          <span className={`stack-tip-inner${tip.show ? " show" : ""}`}>{tip.name}</span>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
