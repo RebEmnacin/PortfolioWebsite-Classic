@@ -34,9 +34,9 @@ export function FloatingNav({ onNav, onOpenChange, activeSection }) {
             <button
               className={`fnav-btn${activeSection===item.id?" active":""}`}
               onClick={(e) => {
-                onNav(item.id, e.currentTarget);   // the button is where the circle grows from
-                // on phones the menu would stay open over the page, so close it
-                if (window.matchMedia("(max-width: 960px)").matches) toggle(false);
+                // the button is where the circle grows from. The menu stays open until the
+                // hamburger is pressed (it no longer auto-closes on phones).
+                onNav(item.id, e.currentTarget);
               }}>
               <item.I s={22}/>
             </button>
