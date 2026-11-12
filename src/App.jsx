@@ -158,6 +158,10 @@ export default function App() {
     };
   }, [projectsOpen]);
 
+  // Which panel we're on right now (a ref, so goScroll can check it without re-creating itself).
+  const panelRef = useRef("home");
+  useEffect(() => { panelRef.current = panel; }, [panel]);
+
   const goScroll = useCallback((sectionId = "hero") => {
 if (sectionId === "home") {
   setRollingDir("reverse");
@@ -172,11 +176,17 @@ if (sectionId === "home") {
   return;
 }
 
-    setRollingDir("forward");
-    setP1Visible(false);
-    setPanel("scroll");
-    setZoomed(true);
-    setTimeout(() => setZoomed(false), 300);
+    // The zoom + rolling profile photo only belong to the move from the intro (home) panel
+    // into the long page. If we're ALREADY on the long page (sidebar jumping between
+    // sections), skip them and just scroll straight away.
+    const alreadyThere = panelRef.current === "scroll";
+    if (!alreadyThere) {
+      setRollingDir("forward");
+      setP1Visible(false);
+      setPanel("scroll");
+      setZoomed(true);
+      setTimeout(() => setZoomed(false), 300);
+    }
     setTimeout(() => {
       const el = document.getElementById(`sec-${sectionId}`);
       const sc = scrollRef.current;
@@ -194,7 +204,7 @@ if (sectionId === "home") {
         const offset = sectionId === "stack" ? (sc.clientHeight - el.offsetHeight) / 2 : 0;
         sc.scrollTo({ top: top - offset, behavior: "smooth" });
       } else if (sc) sc.scrollTop = 0;
-    }, 900);
+    }, alreadyThere ? 0 : 900);
   }, []);
 
   // Sidebar buttons: while we jump to a section, switch OFF the "pop in" animations
