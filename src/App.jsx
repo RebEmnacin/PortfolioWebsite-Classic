@@ -223,6 +223,10 @@ if (sectionId === "home") {
     clearTimeout(navJumpTimer.current);
     navJumpTimer.current = setTimeout(() => root.classList.remove("nav-jumping"), 3000);
 
+    // The Home button keeps the original zoom-out animation (goScroll("home")).
+    // Only the section buttons use the circular reveal below.
+    if (id === "home") { goScroll("home"); return; }
+
     // browser has no View Transitions (or no button given): old behaviour, panel slides over
     if (!document.startViewTransition || !btn) {
       goScroll(id === "home" ? "home" : id, { zoom: false });
@@ -251,7 +255,8 @@ if (sectionId === "home") {
     t.ready.then(() => {
       root.animate(
         { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${maxR}px at ${x}px ${y}px)`] },
-        { duration: 800, easing: "cubic-bezier(.22,1,.36,1)", pseudoElement: "::view-transition-new(root)" }
+        // sidebar circle: slower + smoother than the theme toggle's (1400ms; starts gently, lands softly)
+        { duration: 1400, easing: "cubic-bezier(.5,0,.15,1)", pseudoElement: "::view-transition-new(root)" }
       );
     });
     t.finished.finally(() => root.classList.remove("nav-instant"));
