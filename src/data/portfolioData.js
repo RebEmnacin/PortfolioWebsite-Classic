@@ -32,10 +32,11 @@ export const DATA = {
     ],
     Database: [
       { n: "MySQL",      /* img: "/assets/StackIcons/MySQL.png" */ },
+      { n: "PostgreSQL", },
+      { n: "NeonDB",     },
+      { n: "Supabase",   },
     ],
     Tools: [
-      { n: "Figma",      /* img: "/assets/StackIcons/Figma.png" */ },
-      { n: "Canva",      /* img: "/assets/StackIcons/Canva.png" */ },
       { n: "Git",        /* img: "/assets/StackIcons/Git.png" */ },
       { n: "Github",     /* img: "/assets/StackIcons/Github.png" */ },
     ],
