@@ -186,7 +186,15 @@ if (sectionId === "home") {
     }, 900);
   }, []);
 
-  const handleNav = useCallback((id) => goScroll(id === "home" ? "home" : id), [goScroll]);
+  // Sidebar buttons: while we jump to a section, switch OFF the "pop in" animations
+  // inside it (see "html.nav-jumping" in index.css). The class is removed after the scroll ends.
+  const navJumpTimer = useRef(null);
+  const handleNav = useCallback((id) => {
+    document.documentElement.classList.add("nav-jumping");
+    clearTimeout(navJumpTimer.current);
+    navJumpTimer.current = setTimeout(() => document.documentElement.classList.remove("nav-jumping"), 3000);
+    goScroll(id === "home" ? "home" : id);
+  }, [goScroll]);
 
   useEffect(() => {
     const onWheel = (e) => {
