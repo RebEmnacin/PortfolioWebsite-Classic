@@ -67,11 +67,11 @@ export function StackBubbleField({ items }) {
   const fieldRef = useRef(null);
   const [hovered, setHovered] = useState(null);
 
-  // ── "hover for 5 seconds" name tag that follows the cursor ──
+  // ── "hover for 2 seconds" name tag that follows the cursor ──
   // tip.name = which stack item it's for, tip.show = visible or fading out.
   // The cursor position lives in a ref and is written straight to the DOM,
   // so following the mouse never triggers a React re-render.
-  const HOVER_MS = 5000;               // how long to hover before the tag appears
+  const HOVER_MS = 2000;               // how long to hover before the tag appears
   const [tip, setTip] = useState({ name: "", show: false });
   const tipRef = useRef(null);
   const timerRef = useRef(null);
