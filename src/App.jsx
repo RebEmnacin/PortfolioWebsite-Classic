@@ -280,7 +280,7 @@ if (sectionId === "home") {
     };
     window.addEventListener("wheel", onWheel, { passive:true });
     return () => window.removeEventListener("wheel", onWheel);
-  }, [panel, goScroll]);
+  }, [panel, goScroll, projectsOpen]);
 
   // PHONE VERSION of the mouse-wheel logic above:
   // swipe UP on the landing page = enter the portfolio,
