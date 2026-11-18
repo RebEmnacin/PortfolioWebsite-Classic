@@ -369,7 +369,9 @@ if (sectionId === "home") {
               {DATA.projects.map((p, i) => {
                 const PI = p.I;
                 return (
-                  <a key={i} href={p.url} target="_blank" rel="noreferrer" className="pcard">
+                  <div key={i} className="pcard">
+                    {/* whole card still opens the GitHub repo (invisible link stretched over the card) */}
+                    <a className="pcard-link" href={p.url} target="_blank" rel="noreferrer" aria-label={`${p.n} on GitHub`} />
                     <div className="pcard-top">
                       <span className={`pcard-icon${p.logo ? " has-logo" : ""}`} style={p.logoBg ? { background: p.logoBg } : undefined}>
                         {p.logo ? <img src={p.logo} alt={`${p.n} logo`} /> : <PI s={22}/>}
@@ -377,8 +379,14 @@ if (sectionId === "home") {
                       <span className="pcard-arr"><ArrowIco s={18}/></span>
                     </div>
                     <div className="pcard-info"><h3>{p.n}</h3><p>{p.d}</p></div>
+                    {/* Live Demo button: only shows when the project has a "demo" link in portfolioData.js */}
+                    {p.demo && (
+                      <a className="pcard-demo" href={p.demo} target="_blank" rel="noreferrer">
+                        <span className="pcard-demo-dot" /> Live Demo <ArrowIco s={13}/>
+                      </a>
+                    )}
                     <div className="ptags">{p.tags.map(t => <span key={t} className="ptag">{t}</span>)}</div>
-                  </a>
+                  </div>
                 );
               })}
             </div>
