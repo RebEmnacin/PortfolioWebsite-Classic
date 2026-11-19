@@ -936,3 +936,11 @@ html[data-theme="dark"] .pcard-top.has-cover .pcard-icon { box-shadow:0 0 0 5px 
 .pcard-gh:hover { background:#111110; color:#fff; border-color:#111110; transform:translateY(-2px); }
 html[data-theme="dark"] .pcard-gh { color:#56b6c2; border-color:rgba(86,182,194,.55); }
 html[data-theme="dark"] .pcard-gh:hover { background:#56b6c2; color:#0d1117; border-color:#56b6c2; }
+/* ── SPINNING STAR: small sparkle at the start of every section title ── */
+.spin-star { display:inline-block; width:.55em; height:.55em; margin-right:.2em; vertical-align:.1em; overflow:visible; flex:none;
+  fill:#ffcb05; stroke:#111110; stroke-width:5; stroke-linejoin:round; animation:spin-star 8s linear infinite; }
+@keyframes spin-star { to { transform:rotate(360deg); } }
+html[data-theme="dark"] .spin-star { fill:#56b6c2; stroke:none; }
+.projects-overlay .spin-star { fill:#fff; stroke:#111110; }
+html[data-theme="dark"] .projects-overlay .spin-star { fill:#56b6c2; stroke:none; }
+@media (prefers-reduced-motion: reduce) { .spin-star { animation:none; } }
