@@ -144,17 +144,18 @@ export default function App() {
     ).onfinish = () => setProjectsOpen(false);
   }, []);
 
-  useEffect(() => {
+    useEffect(() => {
+    const sp = scrollRef.current;          // copy the ref once, at the top
     if (projectsOpen) {
       document.body.style.overflow = "hidden";
-      if (scrollRef.current) scrollRef.current.style.overflow = "hidden";
+      if (sp) sp.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
-      if (scrollRef.current) scrollRef.current.style.overflow = "";
+      if (sp) sp.style.overflow = "";
     }
     return () => {
       document.body.style.overflow = "";
-      if (scrollRef.current) scrollRef.current.style.overflow = "";
+      if (sp) sp.style.overflow = "";      // uses the copy, not scrollRef.current
     };
   }, [projectsOpen]);
 
@@ -280,7 +281,7 @@ if (sectionId === "home") {
     };
     window.addEventListener("wheel", onWheel, { passive:true });
     return () => window.removeEventListener("wheel", onWheel);
-  }, [panel, goScroll]);
+  }, [panel, goScroll, projectsOpen]);
 
   // PHONE VERSION of the mouse-wheel logic above:
   // swipe UP on the landing page = enter the portfolio,
