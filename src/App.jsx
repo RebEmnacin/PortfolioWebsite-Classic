@@ -418,8 +418,6 @@ if (sectionId === "home") {
                 const PI = p.I;
                 return (
                   <div key={i} className="pcard">
-                    {/* whole card still opens the GitHub repo (invisible link stretched over the card) */}
-                    <a className="pcard-link" href={p.url} target="_blank" rel="noreferrer" aria-hidden="true" tabIndex={-1} />
                     {/* header picture */}
                     {p.cover && <div className="pcard-cover"><img src={p.cover} alt={`${p.n} preview`} loading="lazy" /></div>}
                     <div className={`pcard-top${p.cover ? " has-cover" : ""}`}>
