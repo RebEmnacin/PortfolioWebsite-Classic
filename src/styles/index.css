@@ -409,7 +409,8 @@ html[data-theme="dark"] .back-btn:hover { background:#56b6c2; color:#0d1117; box
   animation-direction:alternate;
   will-change:transform;
 }
-.stack-bubble:hover {
+.stack-bubble:hover,
+.stack-bubble.is-active {      /* .is-active = pressed on a touch screen */
   scale:1.12;
   border-color:var(--ac);
   box-shadow:0 10px 30px rgba(0,0,0,.34), 0 0 0 3px color-mix(in srgb, var(--ac) 35%, transparent);
@@ -457,6 +458,9 @@ html:not([data-theme="dark"]) .stack-icon path { vector-effect:non-scaling-strok
   opacity:0; pointer-events:none; transition:opacity .18s ease, transform .18s ease;
 }
 .stack-bubble-label.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* touch: no long-press menu / text selection on the stack icons */
+.stack-bubble { -webkit-touch-callout:none; user-select:none; -webkit-tap-highlight-color:transparent; }
 
 /* name tag that follows the cursor after hovering an icon for 5 seconds.
    .stack-tip is moved by JS (position only); .stack-tip-inner does the

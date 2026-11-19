@@ -66,6 +66,7 @@ const EMPHASIS = new Set(["react", "html", "css", "javascript", "typescript"]);
 export function StackBubbleField({ items }) {
   const fieldRef = useRef(null);
   const [hovered, setHovered] = useState(null);
+  const [pressed, setPressed] = useState(null);   // touch screens: which bubble is "popped up" right now
 
   // ── "hover for 1 second" name tag that follows the cursor ──
   // tip.name = which stack item it's for, tip.show = visible or fading out.
@@ -98,7 +99,51 @@ export function StackBubbleField({ items }) {
     mouseRef.current = { x: e.clientX, y: e.clientY };
     placeTip();
   };
+  // ── TOUCH SCREENS (phones/tablets) ──
+  // press an icon  -> it pops up straight away (.is-active class)
+  // 1 second later -> its name tag appears, centred just above the icon
+  // tag stays a few seconds, or until you tap somewhere else
+  const touchTimerRef = useRef(null);
+  const touchHideRef = useRef(null);
+  const endTouch = useCallback(() => {
+    clearTimeout(touchTimerRef.current);
+    clearTimeout(touchHideRef.current);
+    setPressed(null);
+    setTip((t) => (t.show ? { ...t, show: false } : t));
+  }, []);
+  const startTouch = (key, name, e) => {
+    clearTimeout(touchTimerRef.current);
+    clearTimeout(touchHideRef.current);
+    setTip((t) => (t.show ? { ...t, show: false } : t));   // hide the previous icon's tag
+    setPressed(key);
+    const bubble = e.currentTarget;
+    touchTimerRef.current = setTimeout(() => {
+      setTip({ name, show: true });
+      requestAnimationFrame(() => {
+        const tipEl = tipRef.current;
+        if (!tipEl || !bubble.isConnected) return;
+        const r = bubble.getBoundingClientRect();
+        const w = tipEl.offsetWidth, h = tipEl.offsetHeight;
+        const x = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), window.innerWidth - w - 8);
+        const y = r.top - h - 10 < 8 ? r.bottom + 10 : r.top - h - 10;   // above the icon (below it if there's no room)
+        tipEl.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      });
+      touchHideRef.current = setTimeout(endTouch, 3000);   // auto-hide after 3s
+    }, HOVER_MS);
+  };
+  // tapping anywhere that is NOT an icon closes it
+  useEffect(() => {
+    const onDown = (e) => { if (!e.target.closest?.(".stack-bubble")) endTouch(); };
+    document.addEventListener("touchstart", onDown, { passive: true });
+    return () => {
+      document.removeEventListener("touchstart", onDown);
+      clearTimeout(touchTimerRef.current);
+      clearTimeout(touchHideRef.current);
+    };
+  }, [endTouch]);
+
   const endHover = () => {
+    if (window.matchMedia("(hover: none)").matches) return;   // touch screens are handled by the touch code above
     setHovered(null);
     clearTimeout(timerRef.current);
     setTip(t => (t.show ? { ...t, show: false } : t));
@@ -243,17 +288,18 @@ export function StackBubbleField({ items }) {
             // bubble). Each bubble sits in its own stacking context, so
             // bumping z-index on something *inside* it can't lift it above
             // a neighboring bubble — only raising the wrapper itself can.
-            zIndex: hovered === b.key ? 50 : 1,
+            zIndex: hovered === b.key || pressed === b.key ? 50 : 1,
           }}
         >
           <div
-            className="stack-bubble"
+            className={`stack-bubble${pressed === b.key ? " is-active" : ""}`}
             style={{
               clipPath: b.shape,
               animationDuration: `${b.duration}s`,
               animationDelay: `${b.delay}s`,
               "--drift": `${b.drift}px`,
             }}
+            onTouchStart={(e) => startTouch(b.key, b.n, e)}
             onMouseEnter={(e) => startHover(b.key, b.n, e)}
             onMouseMove={moveHover}
             onMouseLeave={endHover}
