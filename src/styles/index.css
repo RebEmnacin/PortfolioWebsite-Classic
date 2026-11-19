@@ -943,4 +943,3 @@ html[data-theme="dark"] .pcard-gh:hover { background:#56b6c2; color:#0d1117; bor
 html[data-theme="dark"] .spin-star { fill:#56b6c2; stroke:none; }
 .projects-overlay .spin-star { fill:#fff; stroke:#111110; }
 html[data-theme="dark"] .projects-overlay .spin-star { fill:#56b6c2; stroke:none; }
-@media (prefers-reduced-motion: reduce) { .spin-star { animation:none; } }
