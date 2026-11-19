@@ -3,7 +3,7 @@ import { SpinStar } from "../SpinStar";
 
 import { DATA } from "../../data/portfolioData";
 
-export function HeroIntro({ goScroll, p2ImgRef, p2Visible }) {
+export function HeroIntro({ p2ImgRef, p2Visible }) {
   return (
     <div className="hero2-wrap" id="sec-hero">
       <div className="hero2-photo">
