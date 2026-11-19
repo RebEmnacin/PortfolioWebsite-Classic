@@ -924,3 +924,17 @@ html[data-theme="dark"] .pcard-top.has-cover .pcard-icon { box-shadow:0 0 0 4px 
 .pcard-top.has-cover .pcard-arr { position:absolute; top:-30px; right:0; transform:translateY(-100%); margin:0; }  /* arrow sits on the picture */
 .pcard:hover .pcard-top.has-cover .pcard-arr { transform:translateY(-100%) rotate(-45deg); }
 @media (max-width:700px){ .pcard { --pad:22px; } }
+
+/* ── PROJECT CARDS: bigger logo, buttons side by side, tags under the description ── */
+.pcard-top.has-cover { margin-top:-38px; }
+.pcard-top.has-cover .pcard-icon { width:76px; height:76px; border-radius:20px; padding:8px; box-shadow:0 0 0 5px #fff, 0 6px 16px rgba(0,0,0,.18); }
+html[data-theme="dark"] .pcard-top.has-cover .pcard-icon { box-shadow:0 0 0 5px #161b22, 0 6px 16px rgba(0,0,0,.5); }
+.pcard-info .ptags { margin-top:16px; }
+.pcard-actions { position:relative; z-index:2; display:flex; align-items:center; gap:10px; }
+.pcard-demo { align-self:auto; height:42px; padding:0 20px; }
+.pcard-gh { display:inline-flex; align-items:center; justify-content:center; width:42px; height:42px; border-radius:50%;
+  background:transparent; color:#111110; border:1.5px solid rgba(17,17,16,.8); text-decoration:none;
+  transition:background .25s ease, color .25s ease, border-color .25s ease, transform .25s ease; }
+.pcard-gh:hover { background:#111110; color:#fff; border-color:#111110; transform:translateY(-2px); }
+html[data-theme="dark"] .pcard-gh { color:#56b6c2; border-color:rgba(86,182,194,.55); }
+html[data-theme="dark"] .pcard-gh:hover { background:#56b6c2; color:#0d1117; border-color:#56b6c2; }
