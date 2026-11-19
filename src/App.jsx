@@ -22,13 +22,20 @@ import { DATA } from "./data/portfolioData";
    overlay open/close, and scroll tracking. All visual sections
    live in their own component files (see ./components).
 ───────────────────────────────────────────────────────────────── */
+// ── remember where you were, so a refresh puts you back (sessionStorage = per tab, cleared when the tab closes) ──
+const POS_KEY = "portfolio-pos";
+const loadPos = () => { try { return JSON.parse(sessionStorage.getItem(POS_KEY)) || {}; } catch { return {}; } };
+const savePos = (patch) => { try { sessionStorage.setItem(POS_KEY, JSON.stringify({ ...loadPos(), ...patch })); } catch { /* ignore */ } };
+
 export default function App() {
-  const [panel, setPanel] = useState("home");
+  const [saved] = useState(loadPos);                       // what we saved before the refresh (read once)
+  const restoring = useRef(true);                          // true while we are putting the scroll position back
+  const [panel, setPanel] = useState(saved.panel === "scroll" ? "scroll" : "home");
   const [rollingDir, setRollingDir] = useState(null);
   const [zoomed, setZoomed] = useState(false);
-  const [p1Visible,  setP1Visible]  = useState(true);
-  const [p2Visible,  setP2Visible]  = useState(false);
-  const [projectsOpen, setProjectsOpen] = useState(false);
+  const [p1Visible,  setP1Visible]  = useState(saved.panel !== "scroll");
+  const [p2Visible,  setP2Visible]  = useState(saved.panel === "scroll");
+  const [projectsOpen, setProjectsOpen] = useState(!!saved.proj);
   const folderBtnRef = useRef(null);
   const p1ImgRef = useRef(null);
   const p2ImgRef = useRef(null);
@@ -105,7 +112,10 @@ export default function App() {
     }
   }, []);
 
-  const folderOrigin = useRef({ x: 0, y: 0, r: 0 });
+  // (if the page was refreshed with the projects open, the close circle shrinks toward the screen centre)
+  const folderOrigin = useRef(saved.proj
+    ? { x: innerWidth / 2, y: innerHeight / 2, r: Math.hypot(innerWidth / 2, innerHeight / 2) }
+    : { x: 0, y: 0, r: 0 });
 
   const handleOpenProjects = useCallback(() => {
     if (!folderBtnRef.current) { 
@@ -337,13 +347,48 @@ if (sectionId === "home") {
     return () => sp?.removeEventListener("scroll", update);
   }, [panel]);
 
+  // save: which panel / is the projects overlay open
+  useEffect(() => {
+    savePos({ panel, proj: projectsOpen });
+    if (panel === "home") savePos({ top: 0 });
+    if (!projectsOpen) savePos({ projTop: 0 });
+  }, [panel, projectsOpen]);
+
+  // save: how far the long page is scrolled
+  useEffect(() => {
+    const sp = scrollRef.current;
+    if (!sp) return;
+    const onScroll = () => { if (!restoring.current && panelRef.current === "scroll") savePos({ top: Math.round(sp.scrollTop) }); };
+    sp.addEventListener("scroll", onScroll, { passive:true });
+    return () => sp.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // restore: after a refresh, scroll back to the saved spot. Images/animations change the page height
+  // while it loads, so we re-apply a few times, and stop the moment you scroll or click yourself.
+  useEffect(() => {
+    const sp = scrollRef.current;
+    restoring.current = true;
+    const apply = () => {
+      if (saved.panel === "scroll" && sp && saved.top) sp.scrollTop = saved.top;
+      const ov = document.getElementById("projects-overlay");
+      if (saved.proj && ov && saved.projTop) ov.scrollTop = saved.projTop;
+    };
+    apply();
+    const timers = [100, 400, 900, 1600].map(ms => setTimeout(apply, ms));
+    const stop = () => { timers.forEach(clearTimeout); clearTimeout(endTimer); restoring.current = false; };
+    const endTimer = setTimeout(stop, 1800);
+    const evs = ["wheel", "touchstart", "keydown", "mousedown"];
+    evs.forEach(ev => window.addEventListener(ev, stop, { passive:true }));
+    return () => { timers.forEach(clearTimeout); clearTimeout(endTimer); evs.forEach(ev => window.removeEventListener(ev, stop)); };
+  }, [saved]);
+
   return (
     <>
       <style>{`::view-transition-old(root){animation:none;mix-blend-mode:normal;}::view-transition-new(root){animation:none;mix-blend-mode:normal;}`}</style>
       <SparkleBackground hide={projectsOpen} dark={dark}/>
 
       {projectsOpen && (
-        <div id="projects-overlay" className="projects-overlay" style={{
+        <div id="projects-overlay" className="projects-overlay" onScroll={(e) => { if (!restoring.current) savePos({ projTop: Math.round(e.currentTarget.scrollTop) }); }} style={{
           position:"fixed", top:0, left:0,
           zIndex:2147483646,
           background: dark ? "#0d1117" : "#ffcb05",
