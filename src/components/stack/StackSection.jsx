@@ -1,4 +1,5 @@
 import { Reveal } from "../Reveal";
+import { SpinStar } from "../SpinStar";
 import { StackBubbleField } from "./StackBubbleField";
 import { DATA } from "../../data/portfolioData";
 
@@ -19,7 +20,7 @@ export function StackSection() {
       <div className="stack-title-col">
         <Reveal>
           <div className="stack-big-title">
-            My
+            <SpinStar />My
             <br />
             <em>Stack</em>
           </div>

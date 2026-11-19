@@ -1,5 +1,6 @@
 import { FadeSection } from "../FadeSection";
 import { Reveal } from "../Reveal";
+import { SpinStar } from "../SpinStar";
 import { HeroIntro } from "./HeroIntro";
 import { ProjectsSection } from "../ProjectsSection";
 import { CertSlider } from "../CertSlider";
@@ -22,7 +23,7 @@ export function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef, p2ImgRef, 
       <FadeSection className="section-gap">
         <div id="sec-projects"/>
         
-        <Reveal delay={90}><h2 className="pg-title">Selected <em>Work</em></h2></Reveal>
+        <Reveal delay={90}><h2 className="pg-title"><SpinStar/>Selected <em>Work</em></h2></Reveal>
         <Reveal delay={180}>
           <ProjectsSection onOpen={onOpenProjects} folderBtnRef={folderBtnRef}/>
         </Reveal>
@@ -31,7 +32,7 @@ export function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef, p2ImgRef, 
       <FadeSection className="section-gap">
         <div id="sec-certs"/>
         
-        <Reveal delay={90}><h2 className="pg-title">My <em>Certifications</em></h2></Reveal>
+        <Reveal delay={90}><h2 className="pg-title"><SpinStar/>My <em>Certifications</em></h2></Reveal>
         <Reveal delay={180}>
           <CertSlider/>
         </Reveal>
@@ -49,7 +50,7 @@ export function ScrollPanel({ goScroll, onOpenProjects, folderBtnRef, p2ImgRef, 
         <div id="sec-contact"/>
         <div className="contact-heading-wrap">
           
-          <Reveal delay={90}><h2 className="pg-title">My<em> Contacts</em></h2></Reveal>
+          <Reveal delay={90}><h2 className="pg-title"><SpinStar/>My<em> Contacts</em></h2></Reveal>
         </div>
 
         <div className="contact-cta">

@@ -1,4 +1,5 @@
 import { Reveal } from "../Reveal";
+import { SpinStar } from "../SpinStar";
 
 import { DATA } from "../../data/portfolioData";
 
@@ -20,7 +21,7 @@ transition: p2Visible ? "opacity 0.08s ease, transform 0.18s cubic-bezier(0.34, 
       </div>
       <div className="hero2-text">
         <Reveal><div className="fsd-badge">Full Stack Developer</div></Reveal>
-        <Reveal delay={120}><h1 className="hero2-name">Hi, I'm <em>Reb</em></h1></Reveal>
+        <Reveal delay={120}><h1 className="hero2-name"><SpinStar/>Hi, I'm <em>Reb</em></h1></Reveal>
         <Reveal delay={180}><p className="hero-bio">{DATA.bio}</p></Reveal>
       </div>
     </div>

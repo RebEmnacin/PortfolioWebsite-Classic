@@ -13,6 +13,7 @@ import { ThemeToggle } from "./components/ThemeToggle";
 import { IntroPanel } from "./components/panels/IntroPanel";
 import { ScrollPanel } from "./components/panels/ScrollPanel";
 import { BackIco, PlusIco, GhIco, PlayIco } from "./components/icons/Icons";
+import { SpinStar } from "./components/SpinStar";
 import { DATA } from "./data/portfolioData";
 
 /* ─────────────────────────────────────────────────────────────────
@@ -412,7 +413,7 @@ if (sectionId === "home") {
               <button className="back-btn" onClick={handleCloseProjects}><BackIco s={12}/> Back</button>
             </div>
             
-            <h2 className="pg-title">Selected <em>Work</em></h2>
+            <h2 className="pg-title"><SpinStar/>Selected <em>Work</em></h2>
             <div className="proj-grid">
               {DATA.projects.map((p, i) => {
                 const PI = p.I;
