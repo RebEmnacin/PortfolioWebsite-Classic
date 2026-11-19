@@ -956,5 +956,16 @@ html[data-theme="dark"] .spin-star-body { fill:#56b6c2; stroke:#56b6c2; }
 html[data-theme="dark"] .projects-overlay .spin-star-body { fill:#56b6c2; stroke:#56b6c2; }
 /* ── "Hi, I'm Reb": hang the star in the left margin so the heading lines up with the badge + bio ── */
 .hero2-name { position:relative; }
-.hero2-name .spin-star { position:absolute; right:100%; top:50%; margin:-.275em .2em 0 0; }
-@media (max-width:760px) { .hero2-name .spin-star { width:17px; height:17px; margin:-8px 3px 0 0; } }
+.hero2-name .spin-star { position:absolute; right:100%; top:50%; margin:-.275em .1em 0 0; }   /* nudged toward the text, away from the photo */
+/* the photo pops with an overshoot, so keep it ABOVE the text column (the star no longer paints over it) */
+.hero2-photo { position:relative; z-index:3; }
+
+/* ── PHONE hero: everything centred, star sits inline before the name, bio gets a short bar on top instead of the side line ── */
+@media (max-width:760px) {
+  .hero2-text { display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 22px; box-sizing:border-box; }
+  .fsd-badge { margin-bottom:16px; }
+  .hero2-name { margin-bottom:16px; }
+  .hero2-name .spin-star { position:static; display:inline-block; width:.5em; height:.5em; margin:0 .14em 0 0; vertical-align:.06em; }
+  .hero-bio { border-left:0; padding-left:0; max-width:34ch; }
+  .hero-bio::before { content:""; display:block; width:44px; height:3px; border-radius:3px; background:var(--ac); margin:0 auto 14px; }
+}
