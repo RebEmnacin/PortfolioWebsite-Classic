@@ -12,7 +12,7 @@ import { FloatingNav } from "./components/FloatingNav";
 import { ThemeToggle } from "./components/ThemeToggle";
 import { IntroPanel } from "./components/panels/IntroPanel";
 import { ScrollPanel } from "./components/panels/ScrollPanel";
-import { ArrowIco, BackIco, PlusIco } from "./components/icons/Icons";
+import { BackIco, PlusIco, GhIco, PlayIco } from "./components/icons/Icons";
 import { DATA } from "./data/portfolioData";
 
 /* ─────────────────────────────────────────────────────────────────
@@ -372,23 +372,26 @@ if (sectionId === "home") {
                 return (
                   <div key={i} className="pcard">
                     {/* whole card still opens the GitHub repo (invisible link stretched over the card) */}
-                    <a className="pcard-link" href={p.url} target="_blank" rel="noreferrer" aria-label={`${p.n} on GitHub`} />
+                    <a className="pcard-link" href={p.url} target="_blank" rel="noreferrer" aria-hidden="true" tabIndex={-1} />
                     {/* header picture */}
                     {p.cover && <div className="pcard-cover"><img src={p.cover} alt={`${p.n} preview`} loading="lazy" /></div>}
                     <div className={`pcard-top${p.cover ? " has-cover" : ""}`}>
                       <span className={`pcard-icon${p.logo ? " has-logo" : ""}`} style={p.logoBg ? { background: p.logoBg } : undefined}>
                         {p.logo ? <img src={p.logo} alt={`${p.n} logo`} /> : <PI s={22}/>}
                       </span>
-                      <span className="pcard-arr"><ArrowIco s={18}/></span>
                     </div>
-                    <div className="pcard-info"><h3>{p.n}</h3><p>{p.d}</p></div>
-                    {/* Live Demo button: only shows when the project has a "demo" link in portfolioData.js */}
-                    {p.demo && (
-                      <a className="pcard-demo" href={p.demo} target="_blank" rel="noreferrer">
-                        <span className="pcard-demo-dot" /> Live Demo <ArrowIco s={13}/>
-                      </a>
-                    )}
-                    <div className="ptags">{p.tags.map(t => <span key={t} className="ptag">{t}</span>)}</div>
+                    <div className="pcard-info">
+                      <h3>{p.n}</h3>
+                      <p>{p.d}</p>
+                      <div className="ptags">{p.tags.map(t => <span key={t} className="ptag">{t}</span>)}</div>
+                    </div>
+                    {/* buttons side by side: Live Demo (only when "demo" is filled in portfolioData.js) + GitHub */}
+                    <div className="pcard-actions">
+                      {p.demo && (
+                        <a className="pcard-demo" href={p.demo} target="_blank" rel="noreferrer"><PlayIco s={15}/> Live Demo</a>
+                      )}
+                      <a className="pcard-gh" href={p.url} target="_blank" rel="noreferrer" aria-label={`${p.n} on GitHub`} title="View on GitHub"><GhIco s={18}/></a>
+                    </div>
                   </div>
                 );
               })}
