@@ -954,3 +954,7 @@ html[data-theme="dark"] .spin-star-edge { display:none; }
 html[data-theme="dark"] .spin-star-body { fill:#56b6c2; stroke:#56b6c2; }
 .projects-overlay .spin-star-body { fill:#fff; stroke:#fff; }
 html[data-theme="dark"] .projects-overlay .spin-star-body { fill:#56b6c2; stroke:#56b6c2; }
+/* ── "Hi, I'm Reb": hang the star in the left margin so the heading lines up with the badge + bio ── */
+.hero2-name { position:relative; }
+.hero2-name .spin-star { position:absolute; right:100%; top:50%; margin:-.275em .2em 0 0; }
+@media (max-width:760px) { .hero2-name .spin-star { width:17px; height:17px; margin:-8px 3px 0 0; } }
