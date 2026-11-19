@@ -913,3 +913,14 @@ html[data-theme="dark"] .pcard-demo { color:#56b6c2; border-color:rgba(86,182,19
 html[data-theme="dark"] .pcard-demo:hover { background:#56b6c2; color:#0d1117; border-color:#56b6c2; }
 /* cards: let height follow content instead of a forced square, so there is no big empty gap */
 .pcard { aspect-ratio:auto; min-height:330px; }
+/* ── PROJECT CARDS: header picture ── */
+.pcard { --pad:26px; padding:0 var(--pad) var(--pad); overflow:hidden; }
+.pcard-cover { margin:0 calc(var(--pad) * -1); aspect-ratio:2 / 1; overflow:hidden; background:rgba(128,128,128,.12); }
+.pcard-cover img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; transition:transform .8s cubic-bezier(.22,1,.36,1); }
+.pcard:hover .pcard-cover img { transform:scale(1.05); }
+.pcard-top.has-cover { margin-top:-30px; position:relative; z-index:1; }          /* logo overlaps the picture's bottom edge */
+.pcard-top.has-cover .pcard-icon { box-shadow:0 0 0 4px #fff; }
+html[data-theme="dark"] .pcard-top.has-cover .pcard-icon { box-shadow:0 0 0 4px #161b22; }
+.pcard-top.has-cover .pcard-arr { position:absolute; top:-30px; right:0; transform:translateY(-100%); margin:0; }  /* arrow sits on the picture */
+.pcard:hover .pcard-top.has-cover .pcard-arr { transform:translateY(-100%) rotate(-45deg); }
+@media (max-width:700px){ .pcard { --pad:22px; } }
