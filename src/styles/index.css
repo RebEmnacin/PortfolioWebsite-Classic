@@ -899,8 +899,6 @@ html.nav-instant .zoom-wrap { transition:none !important; }
 html.nav-jumping .reveal,
 html.nav-jumping .reveal.out { opacity:1 !important; transform:none !important; transition:none !important; }
 /* ── PROJECT CARDS: invisible repo link over the whole card + "Live Demo" button ── */
-.pcard-link { position:absolute; inset:0; border-radius:inherit; z-index:1; }
-.pcard-link:focus-visible { outline:2px solid var(--ac); outline-offset:3px; }
 .pcard-demo { position:relative; z-index:2; align-self:flex-start; display:inline-flex; align-items:center; gap:8px;
   padding:9px 16px; border-radius:999px; background:transparent; color:#111110; border:1.5px solid rgba(17,17,16,.8);
   font-family:var(--mono); font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; text-decoration:none;
