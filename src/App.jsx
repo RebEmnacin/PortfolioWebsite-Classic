@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useLayoutEffect } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { flushSync } from "react-dom";
 
@@ -365,7 +365,7 @@ if (sectionId === "home") {
 
   // restore: after a refresh, scroll back to the saved spot. Images/animations change the page height
   // while it loads, so we re-apply a few times, and stop the moment you scroll or click yourself.
-  useEffect(() => {
+  useLayoutEffect(() => {          // layout effect = runs BEFORE the first paint, so there is no flash of the top
     const sp = scrollRef.current;
     restoring.current = true;
     const apply = () => {
@@ -377,7 +377,9 @@ if (sectionId === "home") {
     const timers = [100, 400, 900, 1600].map(ms => setTimeout(apply, ms));
     const stop = () => { timers.forEach(clearTimeout); clearTimeout(endTimer); restoring.current = false; };
     const endTimer = setTimeout(stop, 1800);
-    const evs = ["wheel", "touchstart", "keydown", "mousedown"];
+    // only a real scroll gesture ends the restore. NOT keydown/mousedown: pressing F5 / Ctrl+R (or clicking
+    // refresh) many times would end it early, and the half-loaded page would then save a wrong position.
+    const evs = ["wheel", "touchstart"];
     evs.forEach(ev => window.addEventListener(ev, stop, { passive:true }));
     return () => { timers.forEach(clearTimeout); clearTimeout(endTimer); evs.forEach(ev => window.removeEventListener(ev, stop)); };
   }, [saved]);
