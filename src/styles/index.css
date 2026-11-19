@@ -960,12 +960,8 @@ html[data-theme="dark"] .projects-overlay .spin-star-body { fill:#56b6c2; stroke
 /* the photo pops with an overshoot, so keep it ABOVE the text column (the star no longer paints over it) */
 .hero2-photo { position:relative; z-index:3; }
 
-/* ── PHONE hero: everything centred, star sits inline before the name, bio gets a short bar on top instead of the side line ── */
+/* phone: keep the text left-aligned; give the hero text a wider left margin so the star can hang there without being cut off */
 @media (max-width:760px) {
-  .hero2-text { display:flex; flex-direction:column; align-items:center; text-align:center; padding:0 22px; box-sizing:border-box; }
-  .fsd-badge { margin-bottom:16px; }
-  .hero2-name { margin-bottom:16px; }
-  .hero2-name .spin-star { position:static; display:inline-block; width:.5em; height:.5em; margin:0 .14em 0 0; vertical-align:.06em; }
-  .hero-bio { border-left:0; padding-left:0; max-width:34ch; }
-  .hero-bio::before { content:""; display:block; width:44px; height:3px; border-radius:3px; background:var(--ac); margin:0 auto 14px; }
+  .hero2-text { padding-left:38px; padding-right:22px; box-sizing:border-box; }
+  .hero2-name .spin-star { width:20px; height:20px; margin:-10px 6px 0 0; }
 }
