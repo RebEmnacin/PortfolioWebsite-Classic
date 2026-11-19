@@ -144,18 +144,17 @@ export default function App() {
     ).onfinish = () => setProjectsOpen(false);
   }, []);
 
-    useEffect(() => {
-    const sp = scrollRef.current;          // copy the ref once, at the top
+  useEffect(() => {
     if (projectsOpen) {
       document.body.style.overflow = "hidden";
-      if (sp) sp.style.overflow = "hidden";
+      if (scrollRef.current) scrollRef.current.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
-      if (sp) sp.style.overflow = "";
+      if (scrollRef.current) scrollRef.current.style.overflow = "";
     }
     return () => {
       document.body.style.overflow = "";
-      if (sp) sp.style.overflow = "";      // uses the copy, not scrollRef.current
+      if (scrollRef.current) scrollRef.current.style.overflow = "";
     };
   }, [projectsOpen]);
 
@@ -281,7 +280,7 @@ if (sectionId === "home") {
     };
     window.addEventListener("wheel", onWheel, { passive:true });
     return () => window.removeEventListener("wheel", onWheel);
-  }, [panel, goScroll, projectsOpen]);
+  }, [panel, goScroll]);
 
   // PHONE VERSION of the mouse-wheel logic above:
   // swipe UP on the landing page = enter the portfolio,
@@ -373,7 +372,9 @@ if (sectionId === "home") {
                   <div key={i} className="pcard">
                     {/* whole card still opens the GitHub repo (invisible link stretched over the card) */}
                     <a className="pcard-link" href={p.url} target="_blank" rel="noreferrer" aria-label={`${p.n} on GitHub`} />
-                    <div className="pcard-top">
+                    {/* header picture */}
+                    {p.cover && <div className="pcard-cover"><img src={p.cover} alt={`${p.n} preview`} loading="lazy" /></div>}
+                    <div className={`pcard-top${p.cover ? " has-cover" : ""}`}>
                       <span className={`pcard-icon${p.logo ? " has-logo" : ""}`} style={p.logoBg ? { background: p.logoBg } : undefined}>
                         {p.logo ? <img src={p.logo} alt={`${p.n} logo`} /> : <PI s={22}/>}
                       </span>
