@@ -969,3 +969,24 @@ html[data-theme="dark"] .projects-overlay .spin-star-body { fill:#56b6c2; stroke
   .hero2-text { padding-left:38px; padding-right:22px; box-sizing:border-box; }
   .hero2-name .spin-star { width:20px; height:20px; margin:-10px 6px 0 0; }
 }
+
+/* ── MY STACK: 4 labelled groups (Frontend / Backend / Database / Tools) ── */
+.stack-section-wrap { align-items:flex-start; max-width:1280px; }   /* wider, so each group fits on one row */
+.stack-rows-col { max-width:900px; }
+.stack-title-col { position:sticky; top:18vh; align-self:flex-start; }      /* the title stays put while you scroll the groups */
+.stack-cat { margin-bottom:34px; }
+.stack-cat:last-child { margin-bottom:0; }
+.stack-cat-head { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
+/* group name: same yellow pill + black outline + hard shadow as the rest of the site */
+.stack-cat-tag { display:inline-flex; align-items:center; gap:9px; flex:none; background:var(--ac); color:#000;
+  font-family:var(--display); font-size:22px; letter-spacing:.08em; text-transform:uppercase; line-height:1;
+  padding:8px 18px 8px 14px; border-radius:999px; border:2px solid var(--outline); box-shadow:3px 3px 0 var(--outline); }
+.stack-cat-ico { width:20px; height:20px; flex:none; }
+.stack-cat-line { flex:1; height:0; border-top:2px dashed color-mix(in srgb, var(--txh) 30%, transparent); }
+.stack-cat-count { font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.1em; color:var(--txh); opacity:.55; }
+html[data-theme="dark"] .stack-cat-tag { color:#0d1117; border-color:#fff; box-shadow:3px 3px 0 #fff; }
+@media (max-width:760px) {
+  .stack-title-col { position:static; }
+  .stack-cat { margin-bottom:22px; }
+  .stack-cat-tag { font-size:18px; padding:7px 14px 7px 11px; }
+}
