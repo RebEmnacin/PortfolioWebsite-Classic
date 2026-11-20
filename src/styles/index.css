@@ -973,7 +973,10 @@ html[data-theme="dark"] .projects-overlay .spin-star-body { fill:#56b6c2; stroke
 /* ── MY STACK: 4 labelled groups (Frontend / Backend / Database / Tools) ── */
 .stack-section-wrap { align-items:flex-start; max-width:1280px; }   /* wider, so each group fits on one row */
 .stack-rows-col { max-width:900px; }
-.stack-title-col { position:sticky; top:18vh; align-self:flex-start; }      /* the title stays put while you scroll the groups */
+/* the title stays in the vertical MIDDLE of the screen while you scroll the groups.
+   --fs = the title's font size; the title is 2 lines x .88 line-height tall, so half of it = .88 x fs. */
+.stack-title-col { --fs:clamp(72px,8vw,120px); position:sticky; top:calc(50% - var(--fs) * .88); align-self:flex-start; }
+.stack-title-col .stack-big-title { font-size:var(--fs); }
 .stack-cat { margin-bottom:34px; }
 .stack-cat:last-child { margin-bottom:0; }
 .stack-cat-head { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
