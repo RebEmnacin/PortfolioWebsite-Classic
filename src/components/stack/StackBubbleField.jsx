@@ -63,7 +63,7 @@ function randomBlobPath(rand, size, points = 7) {
 // no matter where they land in the layout.
 const EMPHASIS = new Set(["react", "html", "css", "javascript", "typescript"]);
 
-export function StackBubbleField({ items }) {
+export function StackBubbleField({ items, cellSize = 140 }) {
   const fieldRef = useRef(null);
   const [hovered, setHovered] = useState(null);
   const [pressed, setPressed] = useState(null);   // touch screens: which bubble is "popped up" right now
@@ -164,116 +164,47 @@ export function StackBubbleField({ items }) {
     return () => obs.disconnect();
   }, []);
 
-  // useMemo = only recalculate the random layout when the inputs change,
-  // not on every re-render (e.g. when `hovered` state changes).
-  const bubbles = useMemo(() => {
-    if (!dims.w || !dims.h) return [];
-    const rand = mulberry32(items.length * 97 + 13);
+  // LAYOUT: bubbles sit in neat rows (left-aligned), each bubble in its own square "cell".
+  //   cellSize = the biggest a cell may get (px); on narrow screens it shrinks to ~72%.
+  //   perRow   = how many cells fit across the field; the field's height = rows × cell.
+  // A little seeded randomness (size + jitter) keeps the "river stone" look, but the jitter is
+  // capped to the leftover room in the cell, so bubbles can never overlap.
+  // useMemo = only recalculate when the inputs change, not on every re-render (e.g. hover).
+  const layout = useMemo(() => {
+    if (!dims.w || !items.length) return { list: [], height: 0 };
+    const rand = mulberry32(items.length * 97 + 13 + String(items[0].n).length * 31);
+    const cellMax = dims.w < 520 ? Math.round(cellSize * 0.72) : cellSize;
+    const perMax = Math.max(1, Math.min(items.length, Math.floor(dims.w / cellMax)));   // most that fit across
+    const rows = Math.ceil(items.length / perMax);
+    const perRow = Math.ceil(items.length / rows);        // spread evenly, so no lonely icon on the last row (4 -> 2+2, not 3+1)
+    const cell = Math.min(cellMax, dims.w / perMax);
 
-    // WHY ROWS INSTEAD OF A FIXED GRID: a fixed cols × rows grid
-    // (e.g. 5 × 3 = 15 slots) almost never divides evenly into our
-    // icon count (13), so some slots are always left empty — that's
-    // what caused the visible gaps. Instead, we decide how many ROWS
-    // to use, then split the icons across those rows as evenly as
-    // possible (some rows get one extra icon). Every row is sized to
-    // exactly fit however many icons are in it, so there is never a
-    // leftover empty slot anywhere.
-    const rows = Math.max(
-      1,
-      Math.round(Math.sqrt(items.length * (dims.h / dims.w)))
-    );
-    const base = Math.floor(items.length / rows);
-    let extra = items.length % rows; // how many rows get one extra icon
-
-    // shuffle which rows get the "extra" icon, so it's not always the
-    // last row that's longer
-    const rowIndices = Array.from({ length: rows }, (_, i) => i);
-    for (let i = rowIndices.length - 1; i > 0; i--) {
-      const j = Math.floor(rand() * (i + 1));
-      [rowIndices[i], rowIndices[j]] = [rowIndices[j], rowIndices[i]];
-    }
-    const rowCounts = new Array(rows).fill(base);
-    for (let i = 0; i < extra; i++) rowCounts[rowIndices[i]] += 1;
-
-    // shuffle the icons themselves, then hand them out row by row —
-    // this randomizes which icon ends up in which row/column
-    const shuffled = [...items];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(rand() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-
-    const centerRow = (rows - 1) / 2;
-    const maxRowDist = Math.max(centerRow, rows - 1 - centerRow) || 1;
-    const cellH = dims.h / rows;
-
-    const result = [];
-    let cursor = 0;
-    rowCounts.forEach((count, rowIndex) => {
-      const cellW = dims.w / count; // this row's cells exactly fill the width
-      const centerCol = (count - 1) / 2;
-      const maxColDist = Math.max(centerCol, count - 1 - centerCol) || 1;
-
-      for (let colIndex = 0; colIndex < count; colIndex++) {
-        const it = shuffled[cursor++];
-
-        // ring: 0 = dead center, 1 = far edge. Manhattan distance
-        // (row-distance + col-distance) is what makes the falloff
-        // shape a DIAMOND instead of a circle.
-        const ring =
-          (Math.abs(rowIndex - centerRow) / maxRowDist +
-            Math.abs(colIndex - centerCol) / maxColDist) /
-          2;
-
-        // Packed close to the edges of their own cell — like fitted
-        // paving stones — with only a small size dip toward the
-        // outer edges of the field, plus a touch of randomness.
-        let sizeFactor = 0.86 + 0.1 * (1 - ring) + (rand() - 0.5) * 0.04;
-
-        // emphasis skills get an extra boost on top of wherever they land
-        const isEmphasis = EMPHASIS.has(String(it.n).toLowerCase());
-        if (isEmphasis) sizeFactor *= 1.08;
-
-        sizeFactor = Math.min(0.99, Math.max(0.82, sizeFactor));
-        const cellMin = Math.min(cellW, cellH);
-        const size = cellMin * sizeFactor;
-
-        // jitter is capped at exactly the leftover room in the cell, so
-        // the bubble can NEVER cross into a neighboring cell — no overlap.
-        const maxJitterX = Math.max(0, (cellW - size) / 2);
-        const maxJitterY = Math.max(0, (cellH - size) / 2);
-        const jitterX = (rand() - 0.5) * 2 * maxJitterX;
-        const jitterY = (rand() - 0.5) * 2 * maxJitterY;
-
-        const left = colIndex * cellW + (cellW - size) / 2 + jitterX;
-        const top = rowIndex * cellH + (cellH - size) / 2 + jitterY;
-
-        const shape = randomBlobPath(rand, size);
-        const duration = 4.5 + rand() * 3; // idle float speed: 4.5–7.5s
-        const delay = rand() * -6; // negative delay = starts mid-animation, so bubbles don't sync up
-        const drift = 4 + rand() * 5; // subtle idle drift: 4–9px (kept small since stones sit close together)
-
-        result.push({
-          ...it,
-          size,
-          top,
-          left,
-          shape,
-          duration,
-          delay,
-          drift,
-          isEmphasis,
-          key: `${it.n}-${rowIndex}-${colIndex}`,
-        });
-      }
+    const list = items.map((it, i) => {
+      const row = Math.floor(i / perRow);
+      const col = i % perRow;
+      const isEmphasis = EMPHASIS.has(String(it.n).toLowerCase());   // core skills get a bit bigger
+      let sizeFactor = 0.84 + rand() * 0.08;
+      if (isEmphasis) sizeFactor *= 1.08;
+      sizeFactor = Math.min(0.99, Math.max(0.8, sizeFactor));
+      const size = cell * sizeFactor;
+      const room = (cell - size) / 2;                                // leftover space = max jitter
+      const left = col * cell + room + (rand() - 0.5) * 2 * room;
+      const top = row * cell + room + (rand() - 0.5) * 2 * room;
+      return {
+        ...it, size, top, left, isEmphasis,
+        shape: randomBlobPath(rand, size),
+        duration: 4.5 + rand() * 3,          // idle float speed: 4.5–7.5s
+        delay: rand() * -6,                  // negative delay = starts mid-animation, so bubbles don't sync up
+        drift: 4 + rand() * 5,               // subtle idle drift: 4–9px
+        key: `${it.n}-${row}-${col}`,
+      };
     });
-
-    return result;
-  }, [items, dims.w, dims.h]);
+    return { list, height: rows * cell };
+  }, [items, dims.w, cellSize]);
 
   return (
-    <div className="stack-bubble-field" ref={fieldRef}>
-      {bubbles.map((b, i) => (
+    <div className="stack-bubble-field" ref={fieldRef} style={layout.height ? { height: layout.height } : undefined}>
+      {layout.list.map((b, i) => (
         <Reveal
           key={b.key}
           delay={(i + 1) * 120} /* ms between each bubble popping in */
