@@ -45,8 +45,7 @@ export function StackSection() {
             <Reveal>
               <div className="stack-cat-head">
                 <span className="stack-cat-tag"><CatIcon name={cat} />{cat}</span>
-                <span className="stack-cat-line" />
-                <span className="stack-cat-count">{String(skills.length).padStart(2, "0")}</span>
+
               </div>
             </Reveal>
             <StackBubbleField items={skills.map((s) => ({ ...s, cat }))} />
