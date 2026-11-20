@@ -174,7 +174,9 @@ export function StackBubbleField({ items, cellSize = 140 }) {
     if (!dims.w || !items.length) return { list: [], height: 0 };
     const rand = mulberry32(items.length * 97 + 13 + String(items[0].n).length * 31);
     const cellMax = dims.w < 520 ? Math.round(cellSize * 0.72) : cellSize;
-    const perMax = Math.max(1, Math.min(items.length, Math.floor(dims.w / cellMax)));   // most that fit across
+    // if the whole group fits in ONE row with cells of at least 104px, use one row (fills the wide desktop space)
+    const fitsOneRow = dims.w >= 520 && items.length * 104 <= dims.w;
+    const perMax = fitsOneRow ? items.length : Math.max(1, Math.min(items.length, Math.floor(dims.w / cellMax)));   // most that fit across
     const rows = Math.ceil(items.length / perMax);
     const perRow = Math.ceil(items.length / rows);        // spread evenly, so no lonely icon on the last row (4 -> 2+2, not 3+1)
     const cell = Math.min(cellMax, dims.w / perMax);

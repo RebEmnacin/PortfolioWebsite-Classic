@@ -971,8 +971,8 @@ html[data-theme="dark"] .projects-overlay .spin-star-body { fill:#56b6c2; stroke
 }
 
 /* ── MY STACK: 4 labelled groups (Frontend / Backend / Database / Tools) ── */
-.stack-section-wrap { align-items:flex-start; max-width:1280px; }   /* wider, so each group fits on one row */
-.stack-rows-col { max-width:900px; }
+.stack-section-wrap { align-items:flex-start; max-width:1400px; }   /* wider, so each group fits on one row */
+.stack-rows-col { max-width:1040px; }
 /* the title stays in the vertical MIDDLE of the screen while you scroll the groups.
    --fs = the title's font size; the title is 2 lines x .88 line-height tall, so half of it = .88 x fs. */
 .stack-title-col { --fs:clamp(72px,8vw,120px); position:sticky; top:calc(50% - var(--fs) * .88); align-self:flex-start; }
