@@ -24,6 +24,8 @@ export const DATA = {
       { n: "TypeScript", /* img: "/assets/StackIcons/Typescript.png" */ },
       { n: "HTML",       /* img: "/assets/StackIcons/HTML.png" */ },
       { n: "CSS",        /* img: "/assets/StackIcons/CSS.png" */ },
+      { n: "Vue" },
+      { n: "Tailwind CSS" },
     ],
     Backend: [
       { n: "Node.js",    /* img: "/assets/StackIcons/NodeJS.png" */ },
@@ -39,6 +41,10 @@ export const DATA = {
     Tools: [
       { n: "Git",        /* img: "/assets/StackIcons/Git.png" */ },
       { n: "Github",     /* img: "/assets/StackIcons/Github.png" */ },
+      { n: "VS Code" },
+      { n: "Vercel" },
+      { n: "Claude" },
+      { n: "Gemini" },
     ],
   },
 
