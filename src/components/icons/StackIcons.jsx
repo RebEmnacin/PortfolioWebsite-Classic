@@ -19,7 +19,7 @@ export function StackIcon({ name, className = "stack-icon", style }) {
   if (name === "Vercel") {
     return (
       <svg {...common}>
-        <circle cx="12" cy="12" r="11" fill="#ffcb05" />
+        <circle cx="12" cy="12" r="11" fill="currentColor" />
         {/* the triangle, shrunk (scale .5) and nudged so it sits in the middle of the circle */}
         <path d={d} fill="#fff" stroke="none" transform="translate(6 6.4) scale(.5)" />
       </svg>
