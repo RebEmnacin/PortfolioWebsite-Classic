@@ -196,9 +196,9 @@ body::before {
 @keyframes floatY2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-16px)} }
 @keyframes blurPop { 0%{opacity:0;filter:blur(24px)} 60%{filter:blur(0)} 100%{opacity:1;filter:blur(0)} }
 .hero2-text { flex:1; max-width:620px; }
-.fsd-badge { display:inline-flex; align-items:center; gap:8px; background:var(--ac); color:#000;
-  font-family:var(--mono); font-size:10px; font-weight:700; padding:8px 20px; border-radius:999px;
-  letter-spacing:.1em; margin-bottom:20px; width:fit-content; }
+.fsd-badge { display:inline-flex; align-items:center; gap:8px; color:var(--txh);
+  font-family:var(--mono); font-size:11px; font-weight:700; padding:0;
+  letter-spacing:.14em; text-transform:uppercase; margin-bottom:20px; width:fit-content; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 .hero2-name { font-family:var(--display); font-size:clamp(52px,7vw,96px); color:var(--txh);
   line-height:.92; letter-spacing:2px; -webkit-text-stroke:1.5px var(--outline); paint-order:stroke fill;
@@ -283,8 +283,8 @@ html[data-theme="dark"] .back-btn:hover { background:#56b6c2; color:#0d1117; box
   letter-spacing:.5px; margin-bottom:8px; }
 .pcard-info p { font-size:13px; color:#333330; line-height:1.65; }
 .ptags { display:flex; flex-wrap:wrap; gap:6px; }
-.ptag { background:rgba(255,203,5,.28); color:#111110; font-family:var(--mono); font-size:9px;
-  font-weight:700; letter-spacing:.08em; padding:5px 11px; border-radius:999px; }
+.ptag { color:#55554f; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.08em; }
+.ptags { column-gap:14px; row-gap:4px; }
 .proj-footer { display:flex; align-items:center; gap:18px; margin-top:28px; padding-top:20px; }
 .more-circle { display:flex; flex-direction:column; align-items:center; justify-content:center;
   gap:5px; width:86px; height:86px; border:2px solid var(--ac); border-radius:24px; background:transparent; color:var(--ac);
@@ -628,7 +628,7 @@ html[data-theme="dark"] .pcard-num { color:#e6edf3; }
 html[data-theme="dark"] .pcard-arr { background:#56b6c2; color:#0d1117; }
 html[data-theme="dark"] .pcard-info h3 { color:#e6edf3; }
 html[data-theme="dark"] .pcard-info p { color:#adbac7; }
-html[data-theme="dark"] .ptag { background:rgba(86,182,194,.16); color:#56b6c2; }
+html[data-theme="dark"] .ptag { color:#56b6c2; }
 
 /* MY STACK bubbles in dark mode: same seamless look as light mode — the
    bubble is just a faint tint of the page background (no lighter grey
@@ -980,20 +980,17 @@ html[data-theme="dark"] .projects-overlay .spin-star-body { fill:#56b6c2; stroke
 .stack-cat { margin-bottom:34px; }
 .stack-cat:last-child { margin-bottom:0; }
 .stack-cat-head { display:flex; align-items:center; gap:14px; margin-bottom:8px; }
-/* group name: same yellow pill + black outline + hard shadow as the rest of the site */
-.stack-cat-tag { display:inline-flex; align-items:center; gap:9px; flex:none; background:var(--ac); color:#000;
-  font-family:var(--display); font-size:22px; letter-spacing:.08em; text-transform:uppercase; line-height:1;
-  padding:8px 18px 8px 14px; border-radius:999px; border:2px solid var(--outline); box-shadow:3px 3px 0 var(--outline); }
-.stack-cat-ico { width:20px; height:20px; flex:none; }
+/* group name: plain text + icon, no pill / background */
+.stack-cat-tag { display:inline-flex; align-items:center; gap:10px; flex:none; color:var(--txh);
+  font-family:var(--display); font-size:26px; letter-spacing:.08em; text-transform:uppercase; line-height:1; padding:0; }
+.stack-cat-ico { width:22px; height:22px; flex:none; }
 
-html[data-theme="dark"] .stack-cat-tag { color:#0d1117; border-color:#fff; box-shadow:3px 3px 0 #fff; }
 @media (max-width:760px) {
   .stack-title-col { position:static; }
   .stack-cat { margin-bottom:22px; }
-  .stack-cat-tag { font-size:18px; padding:7px 14px 7px 11px; }
+  .stack-cat-tag { font-size:20px; }
 }
 
-/* "Team Project" badge above the project name */
-.pcard-team { display:inline-block; margin-bottom:8px; padding:3px 10px; border:1.5px solid var(--outline); border-radius:999px;
-  font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#111110; background:#fff; }
-html[data-theme="dark"] .pcard-team { color:#56b6c2; background:transparent; border-color:#56b6c2; }
+/* "Team Project" label above the project name (plain text, no pill) */
+.pcard-team { display:block; margin-bottom:6px; font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:#6b6b66; }
+html[data-theme="dark"] .pcard-team { color:#56b6c2; }
