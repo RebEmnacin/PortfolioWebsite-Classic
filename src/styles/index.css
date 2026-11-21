@@ -992,3 +992,8 @@ html[data-theme="dark"] .stack-cat-tag { color:#0d1117; border-color:#fff; box-s
   .stack-cat { margin-bottom:22px; }
   .stack-cat-tag { font-size:18px; padding:7px 14px 7px 11px; }
 }
+
+/* "Team Project" badge above the project name */
+.pcard-team { display:inline-block; margin-bottom:8px; padding:3px 10px; border:1.5px solid var(--outline); border-radius:999px;
+  font-family:var(--mono); font-size:9px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#111110; background:#fff; }
+html[data-theme="dark"] .pcard-team { color:#56b6c2; background:transparent; border-color:#56b6c2; }

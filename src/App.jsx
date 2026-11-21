@@ -427,6 +427,7 @@ if (sectionId === "home") {
                       </span>
                     </div>
                     <div className="pcard-info">
+                      {p.team && <span className="pcard-team">{p.team}</span>}
                       <h3>{p.n}</h3>
                       <p>{p.d}</p>
                       <div className="ptags">{p.tags.map(t => <span key={t} className="ptag">{t}</span>)}</div>

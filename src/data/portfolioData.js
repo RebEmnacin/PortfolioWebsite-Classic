@@ -1,4 +1,4 @@
-import { BreadIco, BarIco, UserIco } from "../components/icons/Icons";
+import { BreadIco, BarIco, UserIco, DbIco, PlaneIco } from "../components/icons/Icons";
 
 /* ─────────────────────────────────────────────────────────────────
    DATA
@@ -63,6 +63,10 @@ export const DATA = {
   projects: [
     { I: BarIco,   n: "CashWell", cover: "/assets/projects/cashwell-cover.jpg",         logo: "/assets/projects/cashwell.png", logoBg: "#1f2937", d: "Personal finance tracker that shows you where your money goes. Log income and expenses, set monthly budgets per category, and watch the dashboard update as you go.", tags: ["React","TypeScript","FastAPI","PostgreSQL"], url: "https://github.com/RebEmnacin/CashWell", demo: "https://cashwell-finance.vercel.app" },
     { I: UserIco,  n: "HireRise", cover: "/assets/projects/hirerise-cover.jpg",         logo: "/assets/projects/hirerise.png", logoBg: "#ffffff", d: "HR management website built for a company’s HR team. Track employee status, workload, and attendance, and keep every record organized in one dashboard.",      tags: ["Vue 3","Vite","JavaScript","CSS"],           url: "https://github.com/RebEmnacin/HireRise", demo: "https://hirerise.vercel.app" },
-    { I: BreadIco, n: "breadcrumber", cover: "/assets/projects/breadcrumber-cover.jpg",     logo: "/assets/projects/breadcrumber.png", logoBg: "#fff3d6", d: "AI-powered roadmap builder for creatives. ADHD-friendly project manager that breaks goals into bite-sized, achievable steps.",                                          tags: ["React","FastAPI","Gemini AI","Python"],      url: "https://github.com/RebEmnacin/breadcrumber-app", demo: "https://breadcrumber-app.vercel.app" },
+    { I: BreadIco, n: "breadcrumber", team: "Team Project", cover: "/assets/projects/breadcrumber-cover.jpg",     logo: "/assets/projects/breadcrumber.png", logoBg: "#fff3d6", d: "AI-powered roadmap builder for creatives. ADHD-friendly project manager that breaks goals into bite-sized, achievable steps.",                                          tags: ["React","FastAPI","Gemini AI","Python"],      url: "https://github.com/RebEmnacin/breadcrumber-app", demo: "https://breadcrumber-app.vercel.app" },
+
+    // team: small badge on the card. No cover/logo yet -> add files in public/assets/projects/ and fill cover: / logo: / logoBg: like the cards above.
+    { I: DbIco,    n: "Hope ERP", team: "Team Project", d: "ERP system built by Group 5 for a Software Engineering course. I was the backend developer, working with a scrum master, UI/UX developer, DevSecOps engineer, and test engineer.", tags: ["Supabase","Vercel","Backend"], url: "https://github.com/rhonacailao/Group-5-SoftEng", demo: "https://hope-erp-group-5.vercel.app/" },
+    { I: PlaneIco, n: "BAI Passport Tracking", team: "Team UI/UX Case Study", d: "UI/UX case study prototype for tracking passport applications. Members link their DFA references to an account, get help from a Help Center with an AI assistant, and follow enquiries from Pending to Closed. A separate personnel portal handles the queue.", tags: ["HTML","CSS","JavaScript","UI/UX"], url: "https://github.com/bainary-empire/bainary-empire.github.io", demo: "https://bainary-empire.github.io/" },
   ],
 };
